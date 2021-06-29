@@ -5,8 +5,8 @@ import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import { currentUser as queryCurrentUser } from './services/histsys/user';
+import { BookOutlined } from '@ant-design/icons';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -86,18 +86,41 @@ export async function getInitialState(): Promise<{
     504: The gateway timed out. ',
  * @see https://beta-pro.ant.design/docs/request-cn
  */
+const domain = 'http://localhost:8080';
+const authHeaderInterceptor = (url: string, options: any) => {
+  const token = localStorage.getItem('token');
+  const authHeader = { Authorization: `Bearer ${token}` };
+  return {
+    url: `${domain}${url}`,
+    options: { ...options, interceptors: true, headers: authHeader },
+  };
+};
+// const responseInterceptor = (response: Response, options: any) => {
+//   // response.headers.append('interceptors', 'yes yo');
+//   return response;
+// };
 export const request: RequestConfig = {
-  errorHandler: (error: any) => {
+  errorHandler: async (error: any) => {
+    // console.log(error)
     const { response } = error;
-
     if (!response) {
       notification.error({
         description: '您的网络发生异常，无法连接服务器',
         message: '网络异常',
       });
+    } else {
+      // console.log(response)
+      const resp = await new Response(response.body).json();
+      // console.log(resp)
+      notification.error({
+        description: resp.message || '网络错误',
+        message: '请求错误',
+      });
     }
     throw error;
   },
+  requestInterceptors: [authHeaderInterceptor],
+  responseInterceptors: [responseInterceptor],
 };
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
@@ -118,10 +141,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     links: isDev
       ? [
-          // <Link to="/umi/plugin/openapi" target="_blank">
-          //   <LinkOutlined />
-          //   <span>openAPI 文档</span>
-          // </Link>,
           <Link to="/~docs">
             <BookOutlined />
             <span>业务组件文档</span>
