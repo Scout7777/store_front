@@ -12,6 +12,7 @@ import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
 
+
 /**
  * 添加节点
  *
@@ -213,8 +214,8 @@ const TableList: React.FC = () => {
     <PageContainer>
       <ProTable<API.RuleListItem, API.PageParams>
         headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
-          defaultMessage: '查询表格',
+          id: '用户列表',
+          defaultMessage: '用户列表',
         })}
         actionRef={actionRef}
         rowKey="key"
