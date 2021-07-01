@@ -18,7 +18,6 @@ jobs:
           node-version: '13'
       - run: npm install && npm run-script build
 
-
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
@@ -27,6 +26,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '13'
+      - run: npm install && npm run-script build
 
       - name: Setup Dir
         uses: appleboy/ssh-action@master
@@ -42,8 +42,6 @@ jobs:
             rm -rf ./prod
             mkdir -p ./prod
             echo "🙊Remove Old Source Files Success"
-
-      - run: npm install && npm run-script build
 
       - name: Copy file via scp
         uses: appleboy/scp-action@master
