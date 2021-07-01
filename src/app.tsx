@@ -10,7 +10,7 @@ import { BookOutlined } from '@ant-design/icons';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-const requireHost = process.env.HISTSYS_ENV === undefined ? 'http://localhost:8080' : `http://${process.env.HISTSYS_ENV}.histsys.seeu.studio`
+const requireHost = process.env.HISTSYS_ENV === undefined ? 'http://localhost:8080' : `http://${process.env.HISTSYS_ENV}.histsys.wbrtest.cn`
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -88,7 +88,7 @@ export async function getInitialState(): Promise<{
     504: The gateway timed out. ',
  * @see https://beta-pro.ant.design/docs/request-cn
  */
-// const domain = isDev ? 'http://localhost:8080' : 'http://prod.histsys.seeu.studio';
+// const domain = isDev ? 'http://localhost:8080' : 'http://prod.histsys.wbrtest.cn';
 const authHeaderInterceptor = (url: string, options: any) => {
   const token = localStorage.getItem('token');
   const authHeader = { Authorization: `Bearer ${token}` };
