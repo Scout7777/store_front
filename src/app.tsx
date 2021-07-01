@@ -10,7 +10,9 @@ import { BookOutlined } from '@ant-design/icons';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-const requireHost = process.env.HISTSYS_ENV === undefined ? 'http://localhost:8080' : `http://${process.env.HISTSYS_ENV}.histsys.wbrtest.cn`
+const requireHost = !process.env.HISTSYS_ENV
+  ? 'http://localhost:8080'
+  : `http://${process.env.HISTSYS_ENV}.histsys.wbrtest.cn`;
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -37,7 +39,7 @@ export async function getInitialState(): Promise<{
   // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
-    console.log(currentUser)
+    // console.log(currentUser)
     return {
       fetchUserInfo,
       currentUser,

@@ -26,7 +26,11 @@ const UpdateForm = (props) => {
       width={900}
       bodyStyle={{ padding: '32px 40px 48px' }}
       visible={props.visible}
-      modalProps={{ onCancel: props.onCancel, destroyOnClose: true }}
+      modalProps={{
+        onCancel: props.onCancel,
+        destroyOnClose: true,
+        bodyStyle: { padding: '32px 0 36px 68px' },
+      }}
       onFinish={props.onSubmit}
     >
       <FormItemDivider>用户基本信息</FormItemDivider>

@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { pageUser as pageuser, createUser as createuser } from '@/services/histsys/user';
+import { pageUser, createUser, updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 
@@ -67,7 +67,7 @@ export default () => {
         },
         disable: {
           text: '禁用',
-          status: 'Error',
+          status: 'default',
         },
       },
     },
@@ -123,7 +123,7 @@ export default () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={pageuser}
+        request={pageUser}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {
@@ -133,7 +133,7 @@ export default () => {
       />
       <CreateForm
         onSubmit={async (value) => {
-          const resp = await createuser(value);
+          const resp = await createUser(value);
           if (resp.status === 201) {
             handleCreateModalVisible(false);
             if (actionRef.current) {
@@ -148,7 +148,8 @@ export default () => {
       />
       <UpdateForm
         onSubmit={async (value) => {
-          const success = await handleUpdate(value);
+          const { id } = currentRow || {};
+          const success = await updateUser(id, value);
           if (success) {
             handleUpdateModalVisible(false);
             setCurrentRow(undefined);

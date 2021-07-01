@@ -19,8 +19,9 @@ export async function login({ username, password }) {
   });
 }
 
-export async function pageUser({ page = 0, size = 10 }) {
-  return request(`/api/users/page?page=${page}&size=${size}`, {
+export async function pageUser({ params: { pageSize = 20, current = 1 } = {}, sort, filter }) {
+  console.log({ sort, filter });
+  return request(`/api/users/page?page=${current - 1}&size=${pageSize}`, {
     method: 'GET',
   }).then((response) => {
     return {
@@ -34,6 +35,16 @@ export async function pageUser({ page = 0, size = 10 }) {
 export async function createUser(values) {
   return request('/api/users', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function updateUser(id, values) {
+  return request(`/api/users/${id}`, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
