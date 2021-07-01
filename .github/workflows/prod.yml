@@ -24,6 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '13'
 
       - name: Setup Dir
         uses: appleboy/ssh-action@master
@@ -35,10 +38,12 @@ jobs:
 #          KEY: ${{ secrets.SSHKEY2 }}
           script: |
             mkdir -p /histsys_front/prod
-            cd /histsys_front/prod
-            rm -rf ./source_files
-            mkdir -p ./source_files
+            cd /histsys_front
+            rm -rf ./prod
+            mkdir -p ./prod
             echo "🙊Remove Old Source Files Success"
+
+      - run: npm install && npm run-script build
 
       - name: Copy file via scp
         uses: appleboy/scp-action@master
@@ -49,23 +54,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           password: ${{ secrets.PASSWORD }}
-          source: "."
-          target: "/histsys_front/prod/source_files"
-
-      - name: Build App
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          password: ${{ secrets.PASSWORD }}
-#          KEY: ${{ secrets.SSHKEY2 }}
-          script: |
-            echo "===============================[Start Building]======================================"
-            cd /histsys_front/prod/source_files
-            npm install
-            npm run-script build
-            cd /histsys_front/prod
-            rm -rf dist
-            mv /histsys_front/prod/source_files/dist /histsys_front/prod/dist
-            echo "😀Build Success"
+          source: "./dist"
+          target: "/histsys_front/prod/"
