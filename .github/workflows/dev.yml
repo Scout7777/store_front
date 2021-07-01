@@ -16,9 +16,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '13'
-          script: |
-            npm install
-            npm run-script build
+      - run: npm install & npm run-script build
 
   deploy:
     needs: [build]
