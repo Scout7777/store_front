@@ -50,7 +50,7 @@ export default () => {
           text: '护士',
           color: 'yellow',
         },
-        enginer: {
+        engineer: {
           text: '工程师',
           color: 'blue',
         },
