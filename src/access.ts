@@ -4,10 +4,12 @@
 export default function access(initialState: { currentUser?: API.CurrentUser | undefined }) {
   const { currentUser } = initialState || {};
   return {
+    alluser: currentUser && currentUser.role,
     admin: currentUser && currentUser.role === 'admin',
-    doctor: currentUser && currentUser.role === 'doctor',
-    nurse: currentUser && currentUser.role === 'nurse',
-    engineer: currentUser && currentUser.role === 'engineer',
-    // doctor: xx, 不同的角色以不同名称返回即可
+    worker:
+      currentUser &&
+      (currentUser.role === 'admin' ||
+        currentUser.role === 'doctor' ||
+        currentUser.role === 'nurse'),
   };
 }

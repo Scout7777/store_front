@@ -18,3 +18,25 @@ export async function login({ username, password }) {
     data: { username, password },
   });
 }
+
+export async function pageUser({ page = 0, size = 10 }) {
+  return request(`/api/users/page?page=${page}&size=${size}`, {
+    method: 'GET',
+  }).then((response) => {
+    return {
+      data: response.data.content || [],
+      success: true,
+      total: response.data.totalElements || 0,
+    };
+  });
+}
+
+export async function createUser(values) {
+  return request('/api/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}

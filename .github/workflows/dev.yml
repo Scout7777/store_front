@@ -1,0 +1,72 @@
+name: HistSys Frontend Development CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '13'
+      - run: |
+        npm install
+        npm run-script build
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Dir
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          password: ${{ secrets.PASSWORD }}
+#          KEY: ${{ secrets.SSHKEY2 }}
+          script: |
+            mkdir -p /histsys_front/dev
+            cd /histsys_front/dev
+            rm -rf ./source_files
+            mkdir -p ./source_files
+            echo "🙊Remove Old Source Files Success"
+
+      - name: Copy file via scp
+        uses: appleboy/scp-action@master
+#        env:
+##          KEY: ${{ secrets.SSHKEY2 }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          password: ${{ secrets.PASSWORD }}
+          source: "."
+          target: "/histsys_front/dev/source_files"
+
+      - name: Build App
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          password: ${{ secrets.PASSWORD }}
+#          KEY: ${{ secrets.SSHKEY2 }}
+          script: |
+            echo "===============================[Start Building]======================================"
+            cd /histsys_front/dev/source_files
+            npm install
+            npm run-script build
+            cd /histsys_front/dev
+            rm -rf dist
+            mv /histsys_front/dev/source_files/dist /histsys_front/dev/dist
+            echo "😀Build Success"
