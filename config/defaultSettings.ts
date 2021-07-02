@@ -15,9 +15,9 @@ const Settings: LayoutSettings & {
   title: '血液透析系统',
   pwa: false,
   menu: {
-    locale: false,  //关闭国际化
+    locale: false, //关闭国际化
   },
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  // logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '',
 };
 
