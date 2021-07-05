@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { pageUser, createUser, updateUser } from '@/services/histsys/user';
+import { searchUser, createUser, updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 
@@ -123,7 +123,7 @@ export default () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={pageUser}
+        request={searchUser}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {
