@@ -1,5 +1,6 @@
 import { request } from 'umi';
 import { toQueryString, toSearchPayload } from './utils';
+import technicalPosition from './static_files/user_technical_position';
 
 export async function currentUser() {
   return request('/api/users/me', {
@@ -78,4 +79,8 @@ export async function deleteUser(id) {
       'Content-Type': 'application/json',
     },
   });
+}
+
+export async function listTechnicalPosition() {
+  return technicalPosition;
 }
