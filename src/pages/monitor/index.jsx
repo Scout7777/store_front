@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { searchUser, createUser, updateUser, deleteUser } from '@/services/histsys/user';
+import { searchUser, updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 
@@ -14,14 +14,14 @@ export default () => {
   const actionRef = useRef();
 
   const columns = [
+    // {
+    //   title: '头像',
+    //   dataIndex: 'avatar',
+    //   valueType: 'avatar',
+    //   search: false,
+    // },
     {
-      title: '头像',
-      dataIndex: 'avatar',
-      valueType: 'avatar',
-      search: false,
-    },
-    {
-      title: '工号',
+      title: '患者号',
       dataIndex: 'staffNo',
       sorter: true,
     },
@@ -30,28 +30,28 @@ export default () => {
       dataIndex: 'name',
       sorter: true,
     },
+    // {
+    //   title: '手机',
+    //   dataIndex: 'telephone',
+    // },
     {
-      title: '手机',
-      dataIndex: 'telephone',
-    },
-    {
-      title: '用户类型',
+      title: '患者类型',
       dataIndex: 'role',
       valueEnum: {
         admin: {
-          text: '管理员',
+          text: '正常',
           color: 'pink',
         },
         doctor: {
-          text: '医生',
+          text: 'HIV',
           color: 'red',
         },
         nurse: {
-          text: '护士',
+          text: '乙肝',
           color: 'yellow',
         },
         engineer: {
-          text: '工程师',
+          text: '梅毒',
           color: 'blue',
         },
       },
@@ -62,11 +62,11 @@ export default () => {
       hideInForm: true,
       valueEnum: {
         active: {
-          text: '激活',
+          text: '进行中',
           status: 'Success',
         },
         disable: {
-          text: '禁用',
+          text: '已结束',
           status: 'default',
         },
       },
@@ -92,17 +92,7 @@ export default () => {
         >
           更新
         </a>,
-        <a
-          key="delete"
-          onClick={async () => {
-            const success = await deleteUser(record.id);
-            if (success) {
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-        >
+        <a key="delete" onClick={() => {}}>
           删除
         </a>,
       ],
@@ -111,7 +101,7 @@ export default () => {
   return (
     <PageContainer>
       <ProTable
-        headerTitle="用户列表"
+        headerTitle="患者列表"
         actionRef={actionRef}
         rowKey="key"
         search={{
@@ -137,20 +127,6 @@ export default () => {
         // }}
       />
       <CreateForm
-        onSubmit={async (value) => {
-          const reform = value;
-          const [a, b] = value.id;
-          reform.idType = a;
-          reform.idNo = b;
-          reform.staffStatus = value.status === 'active' ? 'online' : 'offline';
-          const resp = await createUser(reform);
-          if (resp.status === 201) {
-            handleCreateModalVisible(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
         onCancel={() => {
           handleCreateModalVisible(false);
         }}
@@ -159,9 +135,7 @@ export default () => {
       <UpdateForm
         onSubmit={async (value) => {
           const { id } = currentRow || {};
-          const reform = value;
-          reform.staffStatus = value.status === 'disable' ? 'offline' : 'online';
-          const success = await updateUser(id, reform);
+          const success = await updateUser(id, value);
           if (success) {
             handleUpdateModalVisible(false);
             setCurrentRow(undefined);

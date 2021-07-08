@@ -35,7 +35,7 @@ export async function pageUser(payload) {
 }
 
 export async function searchUser(payload) {
-  console.log(payload);
+  // console.log(payload);
   // const { params: { pageSize = 20, current = 1 } = {}, sort, filter } = payload
   return request(`/api/users/search`, {
     method: 'POST',
@@ -69,6 +69,15 @@ export async function updateUser(id, values) {
       'Content-Type': 'application/json',
     },
     data: { ...values },
+  });
+}
+
+export async function deleteUser(id) {
+  return request(`/api/users/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 }
 

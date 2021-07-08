@@ -20,14 +20,14 @@
     name: '血液透析中心',
     access: 'alluser',
     icon: 'home',
-    component: './Welcome',
+    component: './patient',
   },
   {
     path: '/monitor',
     name: '透析监控',
     access: 'alluser',
     icon: 'FundOutlined',
-    component: './Welcome',
+    component: './monitor',
   },
   {
     path: '/record',
@@ -41,7 +41,7 @@
     name: '患者管理',
     access: 'alluser',
     icon: 'TeamOutlined',
-    component: './Welcome',
+    component: './patient',
   },
   {
     path: '/bed',
@@ -95,7 +95,7 @@
   {
     path: '/system',
     name: '系统管理',
-    access: 'admin',
+    access: 'alluser',
     icon: 'ToolOutlined',
     routes: [
       {
