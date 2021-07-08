@@ -245,7 +245,7 @@ const CreateForm = (props) => {
         name="inDate"
         width="md"
         label="加入血透时间"
-        rules={[{ required: false, message: '请选择时间' }]}
+        rules={[{ required: true }]}
       />
     </ModalForm>
   );
