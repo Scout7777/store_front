@@ -20,7 +20,7 @@
     name: '血液透析中心',
     access: 'alluser',
     icon: 'home',
-    component: './patient',
+    component: './home',
   },
   {
     path: '/monitor',
