@@ -34,7 +34,7 @@
     name: '透析记录',
     access: 'alluser',
     icon: 'FileSearchOutlined',
-    component: './Welcome',
+    component: './record',
   },
   {
     path: '/patient',
@@ -48,7 +48,14 @@
     name: '排床管理',
     access: 'worker',
     icon: 'OrderedListOutlined',
-    component: './Welcome',
+    component: './bed',
+  },
+  {
+    path: '/bed_backup',
+    name: '排床管理_日历',
+    access: 'worker',
+    icon: 'OrderedListOutlined',
+    component: './bed_backup',
   },
   {
     path: '/schedule',
