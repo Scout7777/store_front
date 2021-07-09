@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button, Card } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+// import { Button, Card } from 'antd';
+// import { PlusOutlined } from '@ant-design/icons';
 import { searchUser, updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
-import MonitorList from './components/MonitorList';
+// import MonitorList from './components/MonitorList';
 
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
@@ -94,33 +94,30 @@ export default () => {
           更新
         </a>,
         <a key="delete" onClick={() => {}}>
-          删除
+          查看详情
         </a>,
       ],
     },
   ];
   return (
     <PageContainer>
-      <Card>
-        <MonitorList />
-      </Card>
       <ProTable
-        headerTitle="患者列表"
+        // headerTitle="患者列表"
         actionRef={actionRef}
         rowKey="key"
         search={{
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleCreateModalVisible(true);
-            }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
+          // <Button
+          //   type="primary"
+          //   key="primary"
+          //   onClick={() => {
+          //     handleCreateModalVisible(true);
+          //   }}
+          // >
+          //   <PlusOutlined /> 新建
+          // </Button>,
         ]}
         request={searchUser}
         columns={columns}

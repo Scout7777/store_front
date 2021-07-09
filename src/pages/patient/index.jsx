@@ -93,7 +93,7 @@ export default () => {
           更新
         </a>,
         <a key="delete" onClick={() => {}}>
-          删除
+          查看
         </a>,
       ],
     },

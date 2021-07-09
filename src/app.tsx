@@ -14,10 +14,10 @@ const loginPath = '/user/login';
 //   ? 'http://localhost:8080'
 //   : `http://${process.env.HISTSYS_ENV}.histsys.wbrtest.cn`;
 const requireHost =
-  window.location.hostname === 'localhost' ? 'http://localhost:8080' : window.location.origin;
-// window.location.hostname === 'localhost'
-//   ? 'http://dev.histsys.yootane.com'
-//   : window.location.origin;
+  // window.location.hostname === 'localhost' ? 'http://localhost:8080' : window.location.origin;
+  window.location.hostname === 'localhost'
+    ? 'http://dev.histsys.yootane.com'
+    : window.location.origin;
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {

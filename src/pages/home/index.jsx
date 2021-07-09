@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { searchUser, updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
@@ -127,7 +127,9 @@ export default () => {
         //   },
         // }}
       />
-      <MonitorList />
+      <Card>
+        <MonitorList />
+      </Card>
       <CreateForm
         onCancel={() => {
           handleCreateModalVisible(false);
