@@ -58,16 +58,16 @@ export default () => {
       },
     },
     {
-      title: '状态',
+      title: '检验状态',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         active: {
-          text: '进行中',
+          text: '检验时效中',
           status: 'Success',
         },
         disable: {
-          text: '已结束',
+          text: '已过期，请及时检验',
           status: 'default',
         },
       },
@@ -101,9 +101,6 @@ export default () => {
   ];
   return (
     <PageContainer>
-      <Card>
-        <MonitorList />
-      </Card>
       <ProTable
         headerTitle="患者列表"
         actionRef={actionRef}
@@ -130,6 +127,9 @@ export default () => {
         //   },
         // }}
       />
+      <Card>
+        <MonitorList />
+      </Card>
       <CreateForm
         onCancel={() => {
           handleCreateModalVisible(false);

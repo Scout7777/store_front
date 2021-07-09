@@ -20,7 +20,7 @@
     name: '血液透析中心',
     access: 'alluser',
     icon: 'home',
-    component: './patient',
+    component: './home',
   },
   {
     path: '/monitor',
@@ -34,7 +34,7 @@
     name: '透析记录',
     access: 'alluser',
     icon: 'FileSearchOutlined',
-    component: './Welcome',
+    component: './record',
   },
   {
     path: '/patient',
@@ -48,7 +48,14 @@
     name: '排床管理',
     access: 'worker',
     icon: 'OrderedListOutlined',
-    component: './Welcome',
+    component: './bed',
+  },
+  {
+    path: '/bed_backup',
+    name: '排床管理_日历',
+    access: 'worker',
+    icon: 'OrderedListOutlined',
+    component: './bed_backup',
   },
   {
     path: '/schedule',
