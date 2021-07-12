@@ -1,11 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { searchUser, updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
+
+const ProcessMap = {
+  // close: 'normal',
+  active: 'active',
+  // online: 'success',
+  disable: 'exception',
+};
 
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
@@ -30,10 +37,23 @@ export default () => {
       dataIndex: 'name',
       sorter: true,
     },
-    // {
-    //   title: '手机',
-    //   dataIndex: 'telephone',
-    // },
+    {
+      title: '排床',
+      dataIndex: 'labels',
+      search: false,
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          <Tag>一/晚</Tag>
+          <Tag>三/晚</Tag>
+          <Tag>五/晚</Tag>
+        </Space>
+      ),
+    },
     {
       title: '患者类型',
       dataIndex: 'role',
@@ -57,19 +77,57 @@ export default () => {
       },
     },
     {
-      title: '检验状态',
+      title: '检验时效',
       dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        active: {
-          text: '检验时效中',
-          status: 'Success',
-        },
-        disable: {
-          text: '已过期，请及时检验',
-          status: 'default',
-        },
-      },
+      hideInForm: false,
+      valueType: (item) => ({
+        type: 'progress',
+        status: ProcessMap[item.status],
+      }),
+      // valueEnum: {
+      //   active: {
+      //     text: '检验时效中',
+      //     status: 'Success',
+      //   },
+      //   disable: {
+      //     text: '已过期，请及时检验',
+      //     status: 'default',
+      //   },
+      // },
+    },
+    {
+      title: '血管通路',
+      dataIndex: 'status',
+      hideInForm: false,
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          <Tag>AVF</Tag>
+        </Space>
+      ),
+    },
+    {
+      title: '症状评估',
+    },
+    {
+      title: '用药情况',
+    },
+    {
+      title: '过敏史',
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          <Tag>药物</Tag>
+        </Space>
+      ),
     },
     {
       title: '创建时间',

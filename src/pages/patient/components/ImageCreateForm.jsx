@@ -1,14 +1,35 @@
 import React from 'react';
-import { Row, Col } from 'antd';
-import ProForm, {
-  ProFormSelect,
-  ProFormText,
-  ProFormRadio,
-  ProFormDatePicker,
-  ProFormFieldSet,
-} from '@ant-design/pro-form';
+import { Upload, message } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
+import ProForm from // ProFormText, // ProFormSelect,
+// ProFormRadio,
+// ProFormDatePicker,
+// ProFormFieldSet,
+'@ant-design/pro-form';
 
-import FormItemDivider from '@/components/FormItemDivider';
+// import FormItemDivider from '@/components/FormItemDivider';
+
+const { Dragger } = Upload;
+
+const localProps = {
+  name: 'file',
+  multiple: true,
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  onChange(info) {
+    const { status } = info.file;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+  onDrop(e) {
+    console.log('Dropped files', e.dataTransfer.files);
+  },
+};
 
 /* 功能键：从HIS获取患者信息
 患者基本信息：
@@ -18,167 +39,13 @@ import FormItemDivider from '@/components/FormItemDivider';
 const ImageCreateForm = (props) => {
   return (
     <ProForm onFinish={props.onSubmit}>
-      <FormItemDivider>必填</FormItemDivider>
-      <Row>
-        <Col span={12}>
-          <ProFormText name="staffNo" label="住院号" width="md" rules={[{ required: true }]} />
-        </Col>
-        <Col span={12}>
-          <ProFormText
-            name="staffNo"
-            label="门诊号（登记号）"
-            width="md"
-            rules={[{ required: true }]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormText
-            name="staffNo"
-            label="医保号"
-            width="md"
-            placeholder="默认为工号，可修改"
-            rules={[{ required: true }]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormText
-            name="staffNo"
-            label="透析号"
-            width="md"
-            placeholder="默认为工号，可修改"
-            rules={[{ required: true }]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormFieldSet name="id" label="证件" rules={[{ required: true }]}>
-            <ProFormSelect
-              width="xs"
-              request={async () => [
-                // 居民身份证(01),
-                // 居民户口簿(02),
-                // 护照(03),
-                // 军官证(04),
-                // 驾驶证(05),
-                // 港澳居民来往内地通行证(06),
-                // 台湾居民来往内地通行证(07),
-                // 其他法定有效证件(99)
-                { label: '居民身份证', value: '居民身份证' },
-                { label: '居民户口簿', value: '居民户口簿' },
-                { label: '护照', value: '护照' },
-                { label: '军官证', value: '军官证' },
-                { label: '驾驶证', value: '驾驶证' },
-                { label: '港澳居民来往内地通行证', value: '港澳居民来往内地通行证' },
-                { label: '台湾居民来往内地通行证', value: '台湾居民来往内地通行证' },
-                { label: '其他法定有效证件', value: '其他法定有效证件' },
-              ]}
-              name="idType"
-              label="类型"
-            />
-            <ProFormText width="sm" name="idNo" label="证件号码" />
-          </ProFormFieldSet>
-        </Col>
-        <Col span={12}>
-          <ProFormText
-            name="name"
-            label="姓名"
-            width="md"
-            placeholder="请输入真实姓名"
-            rules={[{ required: true }]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormRadio.Group
-            name="gender"
-            label="性别"
-            initialValue="male"
-            options={[
-              { value: 'male', label: '男' },
-              { value: 'female', label: '女' },
-            ]}
-            rules={[{ required: true }]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormDatePicker
-            name="birthday"
-            width="md"
-            label="出生日期"
-            rules={[{ required: true }]}
-          />
-        </Col>
-        {/* <ProForm.Item label="出生日期">
-        <ProFormDependency name={['list']}>
-          {({ list }) => {
-            return <div>{JSON.stringify(list, null, 2)}</div>;
-          }}
-        </ProFormDependency>
-      </ProForm.Item> */}
-        <Col span={12}>
-          <ProFormRadio.Group
-            name="isAdvanced"
-            label="慢性肾衰竭标志"
-            rules={[{ required: true }]}
-            options={[
-              {
-                value: true,
-                label: '是',
-              },
-              {
-                value: false,
-                label: '否',
-              },
-            ]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormSelect
-            name="role"
-            width="md"
-            label="医疗支付方式"
-            valueEnum={{
-              doctor: '医保',
-              nurse: '自费',
-            }}
-            rules={[{ required: true }]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormRadio.Group
-            name="isAdvanced"
-            label="是否本地医保"
-            rules={[{ required: true }]}
-            options={[
-              {
-                value: true,
-                label: '是',
-              },
-              {
-                value: false,
-                label: '否',
-              },
-            ]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormDatePicker
-            name="firstDate"
-            width="md"
-            label="首次透析日期"
-            rules={[{ required: true }]}
-          />
-        </Col>
-        <Col span={12}>
-          <ProFormDatePicker
-            name="localFirst"
-            width="md"
-            label="本院首次透析日期"
-            rules={[{ required: true }]}
-          />
-        </Col>
-      </Row>
-      <FormItemDivider>选填</FormItemDivider>
-
-      <ProFormText name="telephone" width="md" label="本人电话" />
+      <Dragger {...localProps} style={{ marginBottom: 24 }}>
+        <p className="ant-upload-drag-icon">
+          <InboxOutlined />
+        </p>
+        <p className="ant-upload-text">点击或拖拽到此区域上传</p>
+        <p className="ant-upload-hint">支持单个文件/文件夹上传</p>
+      </Dragger>
     </ProForm>
   );
 };
