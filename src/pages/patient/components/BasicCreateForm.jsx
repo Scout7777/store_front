@@ -17,7 +17,7 @@ import FormItemDivider from '@/components/FormItemDivider';
 上传头像，更新患者LIS信息，时间段 */
 const BasicCreateForm = (props) => {
   return (
-    <ProForm onFinish={props.onSubmit}>
+    <ProForm onFinish={props.onSubmit} title="电子病历">
       <FormItemDivider>必填</FormItemDivider>
       <Row>
         <Col span={12}>
