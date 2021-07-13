@@ -140,12 +140,11 @@ export default () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: () => [
         <a
           key="config"
           onClick={() => {
             handleUpdateModalVisible(true);
-            setCurrentRow(record);
           }}
         >
           更新
