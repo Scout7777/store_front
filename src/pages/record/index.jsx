@@ -27,53 +27,70 @@ export default () => {
       sorter: true,
     },
     {
+      title: '床位',
+      dataIndex: 'position',
+    },
+    {
       title: '姓名',
       dataIndex: 'name',
       sorter: true,
     },
-    // {
-    //   title: '手机',
-    //   dataIndex: 'telephone',
-    // },
     {
-      title: '患者类型',
+      title: '联系电话',
+      dataIndex: 'telephone',
+    },
+    {
+      title: '透析方式',
       dataIndex: 'role',
       valueEnum: {
         admin: {
-          text: '正常',
-          color: 'pink',
+          text: 'HD',
+          color: 'blue',
         },
         doctor: {
-          text: 'HIV',
+          text: 'HDF',
           color: 'red',
         },
         nurse: {
-          text: '乙肝',
-          color: 'yellow',
-        },
-        engineer: {
-          text: '梅毒',
+          text: 'HD',
           color: 'blue',
         },
-      },
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        active: {
-          text: '进行中',
-          status: 'Success',
-        },
-        disable: {
-          text: '已结束',
-          status: 'default',
+        engineer: {
+          text: 'HDF',
+          color: 'red',
         },
       },
     },
     {
-      title: '创建时间',
+      title: '灌流器',
+      dataIndex: '灌流器',
+    },
+    {
+      title: '透析器',
+      dataIndex: '透析器',
+    },
+    {
+      title: '透前血压',
+      dataIndex: '透前血压',
+    },
+    {
+      title: '透前体重',
+      dataIndex: '透前体重',
+    },
+    {
+      title: '透后体重',
+      dataIndex: '透后体重',
+    },
+    {
+      title: '设定脱水量',
+      dataIndex: '透后体重',
+    },
+    {
+      title: '器显脱水量',
+      dataIndex: '透后体重',
+    },
+    {
+      title: '透析时间',
       sorter: true,
       search: false,
       dataIndex: 'createdAt',
@@ -83,18 +100,22 @@ export default () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalVisible(true);
-            setCurrentRow(record);
-          }}
-        >
-          更新
-        </a>,
+      render: () => [
+        // render: (_, record) => [
+        // <a
+        //   key="config"
+        //   onClick={() => {
+        //     handleUpdateModalVisible(true);
+        //     setCurrentRow(record);
+        //   }}
+        // >
+        //   更新
+        // </a>,
         <a key="delete" onClick={() => {}}>
           查看详情
+        </a>,
+        <a key="delete" onClick={() => {}}>
+          打印
         </a>,
       ],
     },

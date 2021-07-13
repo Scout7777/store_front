@@ -9,12 +9,24 @@ import AccessCreateForm from './AccessCreateForm';
 import ChronicCreateForm from './ChronicCreateForm';
 import AccessComplicationCreateForm from './AccessComplicationCreateForm';
 import LongCreateForm from './LongCreateForm';
+import ChargeCreateForm from './ChargeCreateForm';
+import AssessCreateForm from './AssessCreateForm';
+import MedicalCreateForm from './MedicalCreateForm';
+import InfectionForm from './InfectionForm';
+import BedForm from './BedForm';
+import Card from './Card';
 
 const { TabPane } = Tabs;
 
 const CreateForm = (props) => {
   return (
-    <Modal title="患者信息" width={1200} visible={props.visible} onCancel={props.onCancel}>
+    <Modal
+      title="患者信息"
+      width={1350}
+      visible={props.visible}
+      onCancel={props.onCancel}
+      destroyOnClose={true}
+    >
       <Tabs defaultActiveKey="1" tabPosition="left">
         <TabPane tab="电子病历" key="1">
           <PageContainer title="电子病历" style={{ padding: 24 }}>
@@ -54,31 +66,33 @@ const CreateForm = (props) => {
           <LongCreateForm />
         </TabPane>
         <TabPane tab="耗材设置" key="10">
-          Content of Tab Pane 1
+          <ChargeCreateForm />
         </TabPane>
-        <TabPane tab="传染病检察" key="11">
-          Content of Tab Pane 1
+        <TabPane tab="传染病检查" key="11">
+          <InfectionForm />
         </TabPane>
         <TabPane tab="排床规律" key="12">
-          Content of Tab Pane 1
+          <BedForm />
         </TabPane>
         <TabPane tab="病症评估" key="13">
-          Content of Tab Pane 1
+          <PageContainer title="病症评估" style={{ padding: 24 }}>
+            <AssessCreateForm />
+          </PageContainer>
         </TabPane>
         <TabPane tab="检验结果" key="14">
-          Content of Tab Pane 1
+          获取HIS信息后同步开发
         </TabPane>
         <TabPane tab="住院信息" key="15">
-          Content of Tab Pane 1
+          获取HIS信息后同步开发
         </TabPane>
         <TabPane tab="常规透析用药" key="16">
-          Content of Tab Pane 1
+          移动端录入
         </TabPane>
         <TabPane tab="门诊用药医嘱" key="17">
-          Content of Tab Pane 1
+          <MedicalCreateForm />
         </TabPane>
         <TabPane tab="发卡" key="18">
-          Content of Tab Pane 1
+          <Card />
         </TabPane>
       </Tabs>
     </Modal>
