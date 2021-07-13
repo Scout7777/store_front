@@ -3,8 +3,9 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { searchUser, updateUser } from '@/services/histsys/user';
-import UpdateForm from './components/UserUpdateForm';
+// import { searchUser, updateUser } from '@/services/histsys/user';
+import { searchUser } from '@/services/histsys/user';
+// import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 
 const ProcessMap = {
@@ -17,7 +18,7 @@ const ProcessMap = {
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
   const [updateModalVisible, handleUpdateModalVisible] = useState();
-  const [currentRow, setCurrentRow] = useState();
+  // const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
   const columns = [
@@ -59,20 +60,20 @@ export default () => {
       dataIndex: 'role',
       valueEnum: {
         admin: {
-          text: '正常',
-          color: 'pink',
+          text: '丙肝',
+          color: 'green',
         },
         doctor: {
           text: 'HIV',
-          color: 'red',
+          color: 'blue',
         },
         nurse: {
           text: '乙肝',
-          color: 'yellow',
+          color: 'red',
         },
         engineer: {
           text: '梅毒',
-          color: 'blue',
+          color: 'black',
         },
       },
     },
@@ -97,7 +98,6 @@ export default () => {
     },
     {
       title: '血管通路',
-      dataIndex: 'status',
       hideInForm: false,
       render: () => (
         <Space>
@@ -140,12 +140,11 @@ export default () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: () => [
         <a
           key="config"
           onClick={() => {
             handleUpdateModalVisible(true);
-            setCurrentRow(record);
           }}
         >
           更新
@@ -190,7 +189,7 @@ export default () => {
         }}
         visible={createModalVisible}
       />
-      <UpdateForm
+      {/* <UpdateForm
         onSubmit={async (value) => {
           const { id } = currentRow || {};
           const success = await updateUser(id, value);
@@ -208,6 +207,12 @@ export default () => {
         }}
         visible={updateModalVisible}
         values={currentRow || {}}
+      /> */}
+      <CreateForm
+        onCancel={() => {
+          handleUpdateModalVisible(false);
+        }}
+        visible={updateModalVisible}
       />
     </PageContainer>
   );
