@@ -7,6 +7,7 @@ import { searchUser, updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 import MonitorList from './components/MonitorList';
+import TotalCard from './components/TotalCard';
 
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
@@ -167,6 +168,7 @@ export default () => {
   ];
   return (
     <PageContainer>
+      <TotalCard></TotalCard>
       <ProTable
         actionRef={actionRef}
         rowKey="key"

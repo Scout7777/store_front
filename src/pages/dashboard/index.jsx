@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { searchUser, updateUser } from '@/services/histsys/user';
+import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 // import MonitorList from './components/MonitorList';
@@ -14,6 +14,44 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
+  const MockData = [
+    {
+      id: '01',
+      name: '设备1',
+      qType: 'a',
+      bed: '床位1',
+      stock: '1000',
+      type: 'a',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      id: '02',
+      name: '设备2',
+      qType: 'b',
+      bed: '床位2',
+      stock: '1000',
+      type: 'b',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      id: '03',
+      name: '设备3',
+      qType: 'b',
+      bed: '床位3',
+      stock: '1000',
+      type: 'c',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      id: '05',
+      name: '设备4',
+      qType: 'a',
+      stock: '1000',
+      type: 'd',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+  ];
+
   const columns = [
     // {
     //   title: '头像',
@@ -22,75 +60,91 @@ export default () => {
     //   search: false,
     // },
     {
-      title: '患者号',
-      dataIndex: 'staffNo',
+      title: '设备编号',
+      dataIndex: 'id',
       sorter: true,
     },
     {
-      title: '床位',
-      dataIndex: 'position',
-    },
-    {
-      title: '姓名',
+      title: '设备名称',
       dataIndex: 'name',
       sorter: true,
     },
     {
-      title: '联系电话',
-      dataIndex: 'telephone',
+      title: '归属床位',
+      dataIndex: 'bed',
+      sorter: true,
     },
     {
-      title: '透析方式',
-      dataIndex: 'role',
+      title: '设备类别',
+      dataIndex: 'qType',
       valueEnum: {
-        admin: {
-          text: 'HD',
+        a: {
+          text: '类别1',
+          color: 'green',
+        },
+        b: {
+          text: '类别2',
           color: 'blue',
         },
-        doctor: {
-          text: 'HDF',
+        c: {
+          text: '类别3',
           color: 'red',
         },
-        nurse: {
-          text: 'HD',
-          color: 'blue',
-        },
-        engineer: {
-          text: 'HDF',
-          color: 'red',
+        d: {
+          text: '类别4',
+          color: 'pink',
         },
       },
     },
     {
-      title: '灌流器',
-      dataIndex: '灌流器',
+      title: '设备状态',
+      dataIndex: 'type',
+      valueEnum: {
+        a: {
+          text: '正常',
+          color: 'green',
+        },
+        b: {
+          text: '检修',
+          color: 'blue',
+        },
+        c: {
+          text: '故障',
+          color: 'red',
+        },
+        d: {
+          text: '停用',
+          color: 'gray',
+        },
+      },
     },
     {
-      title: '透析器',
-      dataIndex: '透析器',
+      title: '监控指标1',
+      dataIndex: 'a',
+      sorter: true,
     },
     {
-      title: '透前血压',
-      dataIndex: '透前血压',
+      title: '监控指标2',
+      dataIndex: 'b',
+      sorter: true,
     },
     {
-      title: '透前体重',
-      dataIndex: '透前体重',
+      title: '监控指标3',
+      dataIndex: 'c',
+      sorter: true,
     },
     {
-      title: '透后体重',
-      dataIndex: '透后体重',
+      title: '监控指标4',
+      dataIndex: 'd',
+      sorter: true,
     },
     {
-      title: '设定脱水量',
-      dataIndex: '透后体重',
+      title: '监控指标5',
+      dataIndex: 'e',
+      sorter: true,
     },
     {
-      title: '器显脱水量',
-      dataIndex: '透后体重',
-    },
-    {
-      title: '透析时间',
+      title: '最近检修时间',
       sorter: true,
       search: false,
       dataIndex: 'createdAt',
@@ -102,17 +156,9 @@ export default () => {
       valueType: 'option',
       render: () => [
         // render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleCreateModalVisible(true);
-          }}
-        >
-          查看详情
-        </a>,
-        <a key="delete" onClick={() => {}}>
-          打印
-        </a>,
+        <a>查看详情</a>,
+        <a>检修</a>,
+        <a>停用</a>,
       ],
     },
   ];
@@ -133,10 +179,11 @@ export default () => {
               handleCreateModalVisible(true);
             }}
           >
-            <PlusOutlined /> 手动补录
+            <PlusOutlined /> 新增设备
           </Button>,
         ]}
-        request={searchUser}
+        // request={searchUser}
+        dataSource={MockData}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {

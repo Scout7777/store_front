@@ -5,7 +5,7 @@ import { Button, Space, Tag, Popover } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { FilterOutlined } from '@ant-design/icons';
-import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
+import { QueryFilter, ProFormSelect, ProFormDatePicker, ProFormText } from '@ant-design/pro-form';
 // @ts-ignore
 import styles from './split.less';
 
@@ -63,104 +63,118 @@ const DetailList = (props) => {
       dataIndex: 'banci',
     },
     {
-      title: '一区',
+      title: '星期一',
       width: 150,
       render: () => (
         <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'患者'}></PopTag>
           <PopTag lable={'小红'}></PopTag>
-          <PopTag lable={'小刚'}></PopTag>
+          <PopTag lable={'小霞'}></PopTag>
           <PopTag lable={'小明'}></PopTag>
-          <PopTag lable={'普患'}></PopTag>
+          <PopTag lable={'小张'}></PopTag>
+          <PopTag lable={'小李'}></PopTag>
+          <PopTag lable={'小王'}></PopTag>
         </div>
       ),
     },
     {
-      title: '二区',
+      title: '星期二',
       width: 150,
       render: () => (
         <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'患者'}></PopTag>
           <PopTag lable={'小红'}></PopTag>
-          <PopTag lable={'小刚'}></PopTag>
+          <PopTag lable={'小霞'}></PopTag>
           <PopTag lable={'小明'}></PopTag>
-          <PopTag lable={'普患'}></PopTag>
+          <PopTag lable={'小张'}></PopTag>
+          <PopTag lable={'小李'}></PopTag>
+          <PopTag lable={'小王'}></PopTag>
         </div>
       ),
     },
     {
-      title: '三区',
+      title: '星期三',
       width: 150,
       render: () => (
         <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'患者'}></PopTag>
           <PopTag lable={'小红'}></PopTag>
-          <PopTag lable={'小刚'}></PopTag>
+          <PopTag lable={'小霞'}></PopTag>
           <PopTag lable={'小明'}></PopTag>
-          <PopTag lable={'普患'}></PopTag>
+          <PopTag lable={'小张'}></PopTag>
+          <PopTag lable={'小李'}></PopTag>
+          <PopTag lable={'小王'}></PopTag>
         </div>
       ),
     },
     {
-      title: '乙肝区',
+      title: '星期四',
       width: 150,
       render: () => (
         <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'小刚'} color={'red'}></PopTag>
-          <PopTag lable={'小明'} color={'red'}></PopTag>
+          <PopTag lable={'小红'}></PopTag>
+          <PopTag lable={'小霞'}></PopTag>
+          <PopTag lable={'小明'}></PopTag>
+          <PopTag lable={'小张'}></PopTag>
+          <PopTag lable={'小李'}></PopTag>
+          <PopTag lable={'小王'}></PopTag>
         </div>
       ),
     },
     {
-      title: '丙肝区',
+      title: '星期五',
       width: 150,
       render: () => (
         <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'张三'} color={'green'}></PopTag>
-          <PopTag lable={'李四'} color={'green'}></PopTag>
-          <PopTag lable={'王五'} color={'green'}></PopTag>
+          <PopTag lable={'小红'}></PopTag>
+          <PopTag lable={'小霞'}></PopTag>
+          <PopTag lable={'小明'}></PopTag>
+          <PopTag lable={'小张'}></PopTag>
+          <PopTag lable={'小李'}></PopTag>
+          <PopTag lable={'小王'}></PopTag>
         </div>
       ),
     },
     {
-      title: '梅毒区',
+      title: '星期六',
       width: 150,
       render: () => (
         <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'张三'} color={'grey'}></PopTag>
-          <PopTag lable={'李四'} color={'grey'}></PopTag>
-          <PopTag lable={'王五'} color={'grey'}></PopTag>
+          <PopTag lable={'小红'}></PopTag>
+          <PopTag lable={'小霞'}></PopTag>
+          <PopTag lable={'小明'}></PopTag>
+          <PopTag lable={'小张'}></PopTag>
+          <PopTag lable={'小李'}></PopTag>
+          <PopTag lable={'小王'}></PopTag>
         </div>
       ),
     },
     {
-      title: '艾滋区',
+      title: '星期日',
       width: 150,
       render: () => (
         <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'张三'} color={'blue'}></PopTag>
-          <PopTag lable={'李四'} color={'blue'}></PopTag>
-          <PopTag lable={'王五'} color={'blue'}></PopTag>
+          <PopTag lable={'小红'}></PopTag>
+          <PopTag lable={'小霞'}></PopTag>
+          <PopTag lable={'小明'}></PopTag>
+          <PopTag lable={'小张'}></PopTag>
+          <PopTag lable={'小李'}></PopTag>
+          <PopTag lable={'小王'}></PopTag>
         </div>
       ),
-    },
-    {
-      title: '临时预留区域',
-      width: 150,
-      render: () => <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}></div>,
     },
     // {
-    //   title: '操作',
-    //   key: 'option',
-    //   //   width: 80,
-    //   valueType: 'option',
-    //   render: () => [
-    //     <a key="a">预警</a>,
-    //     <a key="a">备注</a>,
-    //     <a key="a">临时调整</a>,
-    //     <a key="a">长期调整</a>,
-    //   ],
+    //   title: '临时预留区域',
+    //   width: 150,
+    //   render: () => (
+    //     <div style={{flexWrap: 'wrap', display: 'inline-flex'}}>
+    //     </div>
+    //   ),
     // },
+    {
+      title: '操作',
+      key: 'option',
+      //   width: 80,
+      valueType: 'option',
+      render: () => [<a key="a">临时调整</a>, <a key="a">长期调整</a>],
+    },
   ];
 
   useEffect(() => {
@@ -171,7 +185,7 @@ const DetailList = (props) => {
   return (
     <div>
       <ProTable
-        headerTitle="执行排床"
+        headerTitle="执行排班"
         columns={columns}
         dataSource={tableListDataSource}
         pagination={false}
@@ -180,18 +194,10 @@ const DetailList = (props) => {
         toolbar={{
           actions: [
             <Button key="list" type="primary">
-              新增排床
+              新增排班
             </Button>,
           ],
         }}
-      />
-      <ProTable
-        headerTitle="排床模板"
-        columns={columns}
-        dataSource={tableListDataSource}
-        pagination={false}
-        rowKey="key"
-        search={false}
       />
     </div>
   );
@@ -213,8 +219,8 @@ const ipListDataSource = [];
 
 for (let i = 0; i < 20; i += 1) {
   ipListDataSource.push({
-    ip: `患者${i + 1}`,
-    cpu: '2/3',
+    ip: `护士${i + 1}`,
+    cpu: '6/7',
     mem: 20,
     status: valueEnum[Math.floor(Math.random() * 10) % 4],
     disk: 30,
@@ -228,7 +234,7 @@ for (let i = 0; i < 20; i += 1) {
 
 const Filter = () => {
   return (
-    <LightFilter
+    <QueryFilter
       initialValues={{
         sex: 'man',
       }}
@@ -241,46 +247,13 @@ const Filter = () => {
         valueEnum={{
           this: '本周',
           last: '上周',
+          next: '下周',
         }}
         initialValue={'this'}
       />
-      <ProFormRadio.Group
-        name="radio"
-        radioType="button"
-        initialValue={'Mon'}
-        options={[
-          {
-            value: 'Mon',
-            label: '周一',
-          },
-          {
-            value: 'Tues',
-            label: '周二',
-          },
-          {
-            value: 'Wed',
-            label: '周三',
-          },
-          {
-            value: 'Thur',
-            label: '周四',
-          },
-          {
-            value: 'Fri',
-            label: '周五',
-          },
-          {
-            value: 'Sat',
-            label: '周六',
-          },
-          {
-            value: 'Sun',
-            label: '周日',
-          },
-        ]}
-      />
       <ProFormDatePicker name="time" placeholder="指定日期" />
-    </LightFilter>
+      <ProFormText name="name" placeholder="指定医护人员" />
+    </QueryFilter>
   );
 };
 
