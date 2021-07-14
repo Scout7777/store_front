@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { searchUser, updateUser } from '@/services/histsys/user';
+import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 // import MonitorList from './components/MonitorList';
@@ -14,6 +14,39 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
+  const MockData = [
+    {
+      name: '耗材1',
+      stock: '1000',
+      type: 'a',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      name: '耗材2',
+      stock: '1000',
+      type: 'b',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      name: '耗材3',
+      stock: '1000',
+      type: 'b',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      name: '耗材4',
+      stock: '1000',
+      type: 'c',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      name: '耗材5',
+      stock: '1000',
+      type: 'd',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+  ];
+
   const columns = [
     // {
     //   title: '头像',
@@ -22,75 +55,38 @@ export default () => {
     //   search: false,
     // },
     {
-      title: '患者号',
-      dataIndex: 'staffNo',
-      sorter: true,
-    },
-    {
-      title: '床位',
-      dataIndex: 'position',
-    },
-    {
-      title: '姓名',
+      title: '耗材名称',
       dataIndex: 'name',
       sorter: true,
     },
     {
-      title: '联系电话',
-      dataIndex: 'telephone',
+      title: '库存数量',
+      dataIndex: 'stock',
     },
     {
-      title: '透析方式',
-      dataIndex: 'role',
+      title: '耗材类别',
+      dataIndex: 'type',
       valueEnum: {
-        admin: {
-          text: 'HD',
+        a: {
+          text: '类别1',
           color: 'blue',
         },
-        doctor: {
-          text: 'HDF',
+        b: {
+          text: '类别2',
+          color: 'green',
+        },
+        c: {
+          text: '类别3',
           color: 'red',
         },
-        nurse: {
-          text: 'HD',
-          color: 'blue',
-        },
-        engineer: {
-          text: 'HDF',
-          color: 'red',
+        d: {
+          text: '类别4',
+          color: 'pink',
         },
       },
     },
     {
-      title: '灌流器',
-      dataIndex: '灌流器',
-    },
-    {
-      title: '透析器',
-      dataIndex: '透析器',
-    },
-    {
-      title: '透前血压',
-      dataIndex: '透前血压',
-    },
-    {
-      title: '透前体重',
-      dataIndex: '透前体重',
-    },
-    {
-      title: '透后体重',
-      dataIndex: '透后体重',
-    },
-    {
-      title: '设定脱水量',
-      dataIndex: '透后体重',
-    },
-    {
-      title: '器显脱水量',
-      dataIndex: '透后体重',
-    },
-    {
-      title: '透析时间',
+      title: '最近入库时间',
       sorter: true,
       search: false,
       dataIndex: 'createdAt',
@@ -102,17 +98,8 @@ export default () => {
       valueType: 'option',
       render: () => [
         // render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleCreateModalVisible(true);
-          }}
-        >
-          查看详情
-        </a>,
-        <a key="delete" onClick={() => {}}>
-          打印
-        </a>,
+        <a>查看详情</a>,
+        <a>入库</a>,
       ],
     },
   ];
@@ -133,10 +120,11 @@ export default () => {
               handleCreateModalVisible(true);
             }}
           >
-            <PlusOutlined /> 手动补录
+            <PlusOutlined /> 新品入库
           </Button>,
         ]}
-        request={searchUser}
+        // request={searchUser}
+        dataSource={MockData}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {

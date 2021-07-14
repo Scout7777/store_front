@@ -21,6 +21,30 @@ const CreateForm = (props) => {
       >
         <ProForm title="基本信息">
           <Row>
+            <ProFormText
+              name="name"
+              label="姓名"
+              placeholder="请输入真实姓名"
+              initialValue={'测试姓名'}
+            />
+            <ProFormText name="name" label="治疗编号" initialValue={'1111111111'} />
+            <ProFormDigit name="耗材费用" label="耗材费用"></ProFormDigit>
+            <ProFormDigit name="药品费用" label="药品费用"></ProFormDigit>
+            <ProFormDigit name="设备费用" label="设备费用"></ProFormDigit>
+            <ProFormDigit name="其他费用" label="其他费用"></ProFormDigit>
+          </Row>
+          <Row>合计：（自动生成）</Row>
+          <Row>根据透析流程生成 可手动编辑</Row>
+        </ProForm>
+      </ProCard>
+      <ProCard
+        title="基本信息"
+        // extra="2019年9月28日"
+        bordered
+        headerBordered
+      >
+        <ProForm title="基本信息">
+          <Row>
             <Col span={8}>
               <ProFormText
                 name="name"

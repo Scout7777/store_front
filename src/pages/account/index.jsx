@@ -27,17 +27,13 @@ export default () => {
       sorter: true,
     },
     {
-      title: '床位',
-      dataIndex: 'position',
+      title: '透析编号',
+      dataIndex: 'dialysisId',
     },
     {
       title: '姓名',
       dataIndex: 'name',
       sorter: true,
-    },
-    {
-      title: '联系电话',
-      dataIndex: 'telephone',
     },
     {
       title: '透析方式',
@@ -62,31 +58,23 @@ export default () => {
       },
     },
     {
-      title: '灌流器',
+      title: '耗材费用',
       dataIndex: '灌流器',
     },
     {
-      title: '透析器',
+      title: '药品费用',
       dataIndex: '透析器',
     },
     {
-      title: '透前血压',
+      title: '设备费用',
       dataIndex: '透前血压',
     },
     {
-      title: '透前体重',
+      title: '其他费用',
       dataIndex: '透前体重',
     },
     {
-      title: '透后体重',
-      dataIndex: '透后体重',
-    },
-    {
-      title: '设定脱水量',
-      dataIndex: '透后体重',
-    },
-    {
-      title: '器显脱水量',
+      title: '合计',
       dataIndex: '透后体重',
     },
     {
@@ -110,8 +98,13 @@ export default () => {
         >
           查看详情
         </a>,
-        <a key="delete" onClick={() => {}}>
-          打印
+        <a
+          key="config"
+          onClick={() => {
+            handleCreateModalVisible(true);
+          }}
+        >
+          打印单据
         </a>,
       ],
     },
