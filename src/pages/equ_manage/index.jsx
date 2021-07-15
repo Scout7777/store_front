@@ -14,10 +14,27 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
-  const MockData = [
+  const MockValue = [];
+
+  const aa = ['a', 'b'];
+
+  const role = ['a', 'b', 'c', 'd'];
+
+  for (let i = 0; i < 20; i += 1) {
+    MockValue.push({
+      id: `20000${i + 1}`,
+      name: `设备${i + 1}`,
+      qType: aa[Math.floor(Math.random() * aa.length)],
+      bed: `床位${i + 1}`,
+      type: role[Math.floor(Math.random() * role.length)],
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    });
+  }
+
+  const last = [
     {
-      id: '01',
-      name: '设备1',
+      id: '91',
+      name: '设备91',
       qType: 'a',
       bed: '床位1',
       stock: '1000',
@@ -25,8 +42,8 @@ export default () => {
       createdAt: Date.now() - Math.floor(Math.random() * 10000),
     },
     {
-      id: '02',
-      name: '设备2',
+      id: '92',
+      name: '设备92',
       qType: 'b',
       bed: '床位2',
       stock: '1000',
@@ -34,8 +51,8 @@ export default () => {
       createdAt: Date.now() - Math.floor(Math.random() * 10000),
     },
     {
-      id: '03',
-      name: '设备3',
+      id: '93',
+      name: '设备93',
       qType: 'b',
       bed: '床位3',
       stock: '1000',
@@ -43,14 +60,40 @@ export default () => {
       createdAt: Date.now() - Math.floor(Math.random() * 10000),
     },
     {
-      id: '05',
-      name: '设备4',
+      id: '94',
+      name: '设备94',
+      qType: 'a',
+      stock: '1000',
+      type: 'd',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      id: '95',
+      name: '设备95',
+      qType: 'a',
+      stock: '1000',
+      type: 'd',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      id: '96',
+      name: '设备96',
+      qType: 'a',
+      stock: '1000',
+      type: 'd',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    },
+    {
+      id: '97',
+      name: '设备97',
       qType: 'a',
       stock: '1000',
       type: 'd',
       createdAt: Date.now() - Math.floor(Math.random() * 10000),
     },
   ];
+
+  MockValue.concat(last);
 
   const columns = [
     // {
@@ -158,7 +201,7 @@ export default () => {
           </Button>,
         ]}
         // request={searchUser}
-        dataSource={MockData}
+        dataSource={MockValue}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {

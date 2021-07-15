@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
-import { searchUser } from '@/services/histsys/user';
+// import { searchUser } from '@/services/histsys/user';
 // import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 
@@ -21,6 +21,30 @@ export default () => {
   // const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
+  const MockValue = [];
+  const aa = ['a', 'b'];
+  const role = ['a', 'b', 'c', 'd', 'e'];
+  //  let result= Math.floor(Math.random() * aa.length);
+
+  for (let i = 0; i < 20; i += 1) {
+    MockValue.push({
+      time: 'a',
+      name: '测试患者',
+      problem: '心梗',
+      notice: '轮椅',
+      dashboard: '高血压',
+      way: aa[Math.floor(Math.random() * aa.length)],
+      role: role[Math.floor(Math.random() * role.length)],
+      status: 'progress',
+      bp: '90/150',
+      weight_before: '70',
+      weight_later: '68',
+      water: '2.0',
+      water_now: '1.8',
+      createdAt: Date.now() - Math.floor(Math.random() * 10000),
+    });
+  }
+
   const columns = [
     // {
     //   title: '头像',
@@ -32,6 +56,7 @@ export default () => {
       title: '患者号',
       dataIndex: 'staffNo',
       sorter: true,
+      render: (_, record, index) => <div>00000{index + 1}</div>,
     },
     {
       title: '姓名',
@@ -59,21 +84,24 @@ export default () => {
       title: '患者类型',
       dataIndex: 'role',
       valueEnum: {
-        admin: {
+        a: {
           text: '丙肝',
           color: 'green',
         },
-        doctor: {
+        b: {
           text: 'HIV',
           color: 'blue',
         },
-        nurse: {
+        c: {
           text: '乙肝',
           color: 'red',
         },
-        engineer: {
+        d: {
           text: '梅毒',
           color: 'black',
+        },
+        e: {
+          text: '正常',
         },
       },
     },
@@ -175,7 +203,8 @@ export default () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={searchUser}
+        // request={searchUser}
+        dataSource={MockValue}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {

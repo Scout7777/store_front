@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { Space, Tag } from 'antd';
 // import { PlusOutlined } from '@ant-design/icons';
-import { searchUser, updateUser } from '@/services/histsys/user';
+import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 import MonitorList from './components/MonitorList';
@@ -15,6 +15,26 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
+  const MockValue = [];
+
+  const aa = ['a', 'b'];
+
+  for (let i = 0; i < 20; i += 1) {
+    MockValue.push({
+      time: 'a',
+      name: '测试患者',
+      problem: '心梗',
+      notice: '轮椅',
+      dashboard: '高血压',
+      way: aa[Math.floor(Math.random() * aa.length)],
+      bp: '90/150',
+      weight_before: '70',
+      weight_later: '68',
+      water: '2.0',
+      water_now: '1.8',
+    });
+  }
+
   const columns = [
     {
       title: '床位',
@@ -23,23 +43,19 @@ export default () => {
     },
     {
       title: '班次',
-      dataIndex: 'role',
+      dataIndex: 'time',
       valueEnum: {
-        admin: {
+        a: {
           text: '上午',
           color: 'blue',
         },
-        doctor: {
+        b: {
           text: '下午',
           color: 'red',
         },
-        nurse: {
+        c: {
           text: '晚间',
           color: 'blue',
-        },
-        engineer: {
-          text: '下午',
-          color: 'red',
         },
       },
     },
@@ -47,6 +63,7 @@ export default () => {
       title: '患者号',
       dataIndex: 'staffNo',
       sorter: true,
+      render: (_, record, index) => <div>00000{index + 1}</div>,
     },
     {
       title: '姓名',
@@ -55,7 +72,7 @@ export default () => {
     },
     {
       title: '症状评估',
-      dataIndex: 'labels',
+      dataIndex: 'problem',
       search: false,
       render: () => (
         <Space>
@@ -71,7 +88,7 @@ export default () => {
     },
     {
       title: '评估提醒',
-      dataIndex: 'labels',
+      dataIndex: 'way',
       search: false,
       render: () => (
         <Space>
@@ -86,7 +103,7 @@ export default () => {
     },
     {
       title: '监控警告',
-      dataIndex: 'labels',
+      dataIndex: 'dashboard',
       search: false,
       render: () => (
         <Space>
@@ -106,21 +123,13 @@ export default () => {
     },
     {
       title: '透析方式',
-      dataIndex: 'role',
+      dataIndex: 'way',
       valueEnum: {
-        admin: {
+        a: {
           text: 'HD',
           color: 'blue',
         },
-        doctor: {
-          text: 'HDF',
-          color: 'red',
-        },
-        nurse: {
-          text: 'HD',
-          color: 'blue',
-        },
-        engineer: {
+        b: {
           text: 'HDF',
           color: 'red',
         },
@@ -128,30 +137,29 @@ export default () => {
     },
     {
       title: '透前血压',
-      dataIndex: '透前血压',
+      dataIndex: 'bp',
     },
     {
       title: '透前体重',
-      dataIndex: '透前体重',
+      dataIndex: 'weight_before',
     },
     {
       title: '透后体重',
-      dataIndex: '透后体重',
+      dataIndex: 'weight_later',
     },
     {
       title: '设定脱水量',
-      dataIndex: '透后体重',
+      dataIndex: 'water',
     },
     {
       title: '器显脱水量',
-      dataIndex: '透后体重',
+      dataIndex: 'water_now',
     },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: () => [
-        // render: (_, record) => [
         <a
           key="config"
           onClick={() => {
@@ -186,7 +194,8 @@ export default () => {
           //   <PlusOutlined /> 新建
           // </Button>,
         ]}
-        request={searchUser}
+        // request={searchUser}
+        dataSource={MockValue}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {
