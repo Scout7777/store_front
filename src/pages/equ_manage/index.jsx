@@ -22,10 +22,10 @@ export default () => {
 
   for (let i = 0; i < 20; i += 1) {
     MockValue.push({
-      id: `20000${i}`,
-      name: `设备${i}`,
+      id: `20000${i + 1}`,
+      name: `设备${i + 1}`,
       qType: aa[Math.floor(Math.random() * aa.length)],
-      bed: `床位${i}`,
+      bed: `床位${i + 1}`,
       type: role[Math.floor(Math.random() * role.length)],
       createdAt: Date.now() - Math.floor(Math.random() * 10000),
     });
