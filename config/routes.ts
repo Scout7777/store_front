@@ -23,6 +23,13 @@
     component: './home',
   },
   {
+    path: '/room',
+    name: '透析室',
+    access: 'alluser',
+    icon: 'AppstoreOutlined',
+    component: './room',
+  },
+  {
     path: '/monitor',
     name: '透析监控',
     access: 'alluser',

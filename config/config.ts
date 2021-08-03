@@ -10,6 +10,9 @@ const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
+  // publicPath: "./",
+  // base: "./",
+  // history:{type: 'hash'},
   antd: {},
   dva: {
     hmr: true,
