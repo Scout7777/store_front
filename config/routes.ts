@@ -30,6 +30,13 @@
     component: './room',
   },
   {
+    path: '/monitor_pad',
+    name: '透析监控-移动端',
+    access: 'alluser',
+    icon: 'FundOutlined',
+    component: './monitor_pad',
+  },
+  {
     path: '/monitor',
     name: '透析监控',
     access: 'alluser',
