@@ -1,28 +1,46 @@
 import React, { useState, useRef } from 'react';
 // import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Space, Tag, Row, Col } from 'antd';
-import { InfoCircleFilled } from '@ant-design/icons';
+import { Space, Tag, Row, Col, Button } from 'antd';
+import { FilterOutlined, PlusOutlined } from '@ant-design/icons';
 // import { PlusOutlined } from '@ant-design/icons';
 import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/MonitorForm';
+import PatientCard from './components/Card';
+import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
 
+// const { TabPane } = Tabs;
 // import MonitorList from './components/MonitorList';
 // import { orange } from '@material-ui/core/colors';
+
+function log(e) {
+  console.log(e);
+}
+
+function preventDefault(e) {
+  e.preventDefault();
+  console.log('Clicked! But prevent default.');
+}
 
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
   const [updateModalVisible, handleUpdateModalVisible] = useState();
   const [currentRow, setCurrentRow] = useState();
-  const [layOut] = useState('traditional');
+  const [layOut] = useState('card');
+  const [selectMode, setSelectMode] = useState(false);
   const actionRef = useRef();
+
+  // const options = [
+  //   { label: '传统布局', value: 'traditional' },
+  //   { label: '卡片布局', value: 'card' }
+  // ];
 
   const MockValue = [];
 
   const aa = ['a', 'b'];
 
-  for (let i = 0; i < 20; i += 1) {
+  for (let i = 0; i < 10; i += 1) {
     MockValue.push({
       time: 'a',
       name: '测试患者',
@@ -35,6 +53,7 @@ export default () => {
       weight_later: '68',
       water: '2.0',
       water_now: '1.8',
+      select: false,
     });
   }
 
@@ -190,7 +209,6 @@ export default () => {
       {layOut === 'traditional' ? (
         <div>
           <ProTable
-            scroll={{ x: '100%' }}
             actionRef={actionRef}
             rowKey="key"
             search={{
@@ -244,53 +262,109 @@ export default () => {
         </div>
       ) : (
         <div>
-          <div style={{ marginBottom: '18px', fontSize: '16px' }}>一区</div>
-          <Space size={[12, 18]} wrap>
-            {MockValue.map((item, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div
-                style={{
-                  width: 216,
-                  height: 68,
-                  padding: 0,
-                  boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.06)',
+          <Row>
+            <Col span={18}>
+              <LightFilter
+                initialValues={{
+                  area: 'one',
                 }}
-                key={index}
+                bordered
+                collapseLabel={<FilterOutlined />}
+                size={'large'}
+                onFinish={async (values) => console.log(values)}
               >
-                <Row>
-                  <Col
-                    span={8}
-                    style={{
-                      fontSize: '16px',
-                      color: '#3F529E',
-                      backgroundColor: '#DADDEA',
-                      height: '68px',
-                      padding: '16px',
-                      fontFamily: 'SourceHanSansSC-Bold',
-                      textAlign: 'center',
+                <ProFormSelect
+                  name="area"
+                  valueEnum={{
+                    one: '一区',
+                    two: '二区',
+                  }}
+                  placeholder="分区"
+                />
+                <ProFormDatePicker name="time" placeholder="日期" />
+                <ProFormRadio.Group
+                  name="radio"
+                  radioType="button"
+                  options={[
+                    {
+                      value: 'morning',
+                      label: '上午',
+                    },
+                    {
+                      value: 'afternoon',
+                      label: '下午',
+                    },
+                    {
+                      value: 'evenning',
+                      label: '晚间',
+                    },
+                  ]}
+                />
+                <ProFormSelect
+                  name="nurse"
+                  valueEnum={{
+                    nurse1: '护士1',
+                    nurse2: '护士2',
+                    nurse3: '护士3',
+                  }}
+                  placeholder="责任护士"
+                />
+              </LightFilter>
+            </Col>
+            <Col span={6}>
+              {!selectMode ? (
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={() => {
+                    setSelectMode(true);
+                  }}
+                >
+                  选择我的病人
+                </Button>
+              ) : (
+                <div>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setSelectMode(false);
                     }}
                   >
-                    <div>{index + 1}床</div>
-                  </Col>
-                  <Col
-                    span={16}
-                    style={{ backgroundColor: 'white', height: '68px', padding: '12px' }}
+                    保存
+                  </Button>
+                  <Button
+                    type="primary"
+                    style={{ marginLeft: 18 }}
+                    onClick={() => {
+                      setSelectMode(false);
+                    }}
                   >
-                    <div style={{ fontSize: '20px' }}>{item.name}</div>
-                    <div style={{ display: 'inline' }}>HD</div>
-                    <div style={{ display: 'inline', marginLeft: 12 }}>住院</div>
-                    <InfoCircleFilled
-                      style={{
-                        fontSize: '21px',
-                        position: 'absolute',
-                        right: '15.5px',
-                        top: '23.5px',
-                        color: '#B5A647',
-                      }}
-                    />
-                  </Col>
-                </Row>
-              </div>
+                    取消
+                  </Button>
+                </div>
+              )}
+            </Col>
+          </Row>
+          <Row style={{ marginTop: '18px' }}>
+            <Tag color="#406aaC" closable={false} onClose={log}>
+              我的患者1
+            </Tag>
+            <Tag color="#406aaC" closable onClose={preventDefault}>
+              我的患者2
+            </Tag>
+          </Row>
+          <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>一区</div>
+          {/* <Space size={[12, 18]} wrap style={{background: (selectMode ? "#848587" : "#F0F2F5")}}> */}
+          {MockValue.map((item, index) => (
+            <PatientCard selectMode={selectMode} name={item.name} index={index} />
+            // eslint-disable-next-line react/no-array-index-key
+          ))}
+          <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>二区</div>
+          {/* <Space size={[12, 18]} wrap style={{background: (selectMode ? "#848587" : "#F0F2F5")}}> */}
+          <Space size={[12, 18]} wrap>
+            {MockValue.map((item, index) => (
+              <PatientCard selectMode={selectMode} name={item.name} index={index + 10} />
+              // eslint-disable-next-line react/no-array-index-key
             ))}
           </Space>
         </div>

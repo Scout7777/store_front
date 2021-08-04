@@ -15,6 +15,7 @@ import MedicalCreateForm from './MedicalCreateForm';
 import InfectionForm from './InfectionForm';
 import BedForm from './BedForm';
 import Card from './Card';
+import { createPatient } from '@/services/histsys/patient';
 
 const { TabPane } = Tabs;
 
@@ -30,7 +31,16 @@ const CreateForm = (props) => {
       <Tabs defaultActiveKey="1" tabPosition="left">
         <TabPane tab="电子病历" key="1">
           <PageContainer title="电子病历" style={{ padding: 24 }}>
-            <BasicCreateForm />
+            <BasicCreateForm
+              onSubmit={async (value) => {
+                const reform = value;
+                const [a, b] = value.id;
+                reform.idType = a;
+                reform.idNo = b;
+                const resp = await createPatient(reform);
+                console.log(resp);
+              }}
+            />
           </PageContainer>
         </TabPane>
         <TabPane tab="诊断信息" key="2">

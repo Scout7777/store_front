@@ -21,33 +21,26 @@ const BasicCreateForm = (props) => {
       <FormItemDivider>必填</FormItemDivider>
       <Row>
         <Col span={12}>
-          <ProFormText name="staffNo" label="住院号" width="md" rules={[{ required: true }]} />
+          <ProFormText
+            name="hospitalizedNo"
+            label="住院号"
+            width="md"
+            rules={[{ required: true }]}
+          />
         </Col>
         <Col span={12}>
           <ProFormText
-            name="staffNo"
+            name="outpatientNo"
             label="门诊号（登记号）"
             width="md"
             rules={[{ required: true }]}
           />
         </Col>
         <Col span={12}>
-          <ProFormText
-            name="staffNo"
-            label="医保号"
-            width="md"
-            placeholder="默认为工号，可修改"
-            rules={[{ required: true }]}
-          />
+          <ProFormText name="insuranceNo" label="医保号" width="md" rules={[{ required: true }]} />
         </Col>
         <Col span={12}>
-          <ProFormText
-            name="staffNo"
-            label="透析号"
-            width="md"
-            placeholder="默认为工号，可修改"
-            rules={[{ required: true }]}
-          />
+          <ProFormText name="staffNo" label="dialysisNo" width="md" rules={[{ required: true }]} />
         </Col>
         <Col span={12}>
           <ProFormFieldSet name="id" label="证件" rules={[{ required: true }]}>
@@ -79,7 +72,7 @@ const BasicCreateForm = (props) => {
         </Col>
         <Col span={12}>
           <ProFormText
-            name="name"
+            name="patientName"
             label="姓名"
             width="md"
             placeholder="请输入真实姓名"
@@ -100,7 +93,7 @@ const BasicCreateForm = (props) => {
         </Col>
         <Col span={12}>
           <ProFormDatePicker
-            name="birthday"
+            name="birthDate"
             width="md"
             label="出生日期"
             rules={[{ required: true }]}
@@ -115,7 +108,7 @@ const BasicCreateForm = (props) => {
       </ProForm.Item> */}
         <Col span={12}>
           <ProFormRadio.Group
-            name="isAdvanced"
+            name="isCrf"
             label="慢性肾衰竭标志"
             rules={[{ required: true }]}
             options={[
@@ -132,7 +125,7 @@ const BasicCreateForm = (props) => {
         </Col>
         <Col span={12}>
           <ProFormSelect
-            name="role"
+            name="payMethod"
             width="md"
             label="医疗支付方式"
             valueEnum={{
@@ -144,7 +137,7 @@ const BasicCreateForm = (props) => {
         </Col>
         <Col span={12}>
           <ProFormRadio.Group
-            name="isAdvanced"
+            name="localInsurance"
             label="是否本地医保"
             rules={[{ required: true }]}
             options={[
@@ -161,7 +154,7 @@ const BasicCreateForm = (props) => {
         </Col>
         <Col span={12}>
           <ProFormDatePicker
-            name="firstDate"
+            name="firstDialysisDate"
             width="md"
             label="首次透析日期"
             rules={[{ required: true }]}
@@ -169,7 +162,7 @@ const BasicCreateForm = (props) => {
         </Col>
         <Col span={12}>
           <ProFormDatePicker
-            name="localFirst"
+            name="firstDialysisDateInOurHospital"
             width="md"
             label="本院首次透析日期"
             rules={[{ required: true }]}
