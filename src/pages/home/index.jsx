@@ -178,6 +178,7 @@ export default () => {
     <PageContainer>
       <TotalCard></TotalCard>
       <ProTable
+        scroll={{ x: '100%' }}
         actionRef={actionRef}
         rowKey="key"
         search={{

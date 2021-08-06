@@ -186,6 +186,7 @@ export default () => {
   return (
     <PageContainer>
       <ProTable
+        scroll={{ x: '100%' }}
         headerTitle="患者列表"
         actionRef={actionRef}
         rowKey="key"
