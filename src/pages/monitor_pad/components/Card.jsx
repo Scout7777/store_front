@@ -116,7 +116,10 @@ const PatientCard = (props) => {
               }}
             >
               <Row>
-                <div style={{ fontSize: '20px' }}>接诊</div>
+                <div style={{ fontSize: '18px' }}>接诊</div>
+              </Row>
+              <Row>
+                <div>11:30</div>
               </Row>
             </div>
           </Col>
@@ -138,7 +141,10 @@ const PatientCard = (props) => {
               }}
             >
               <Row>
-                <div style={{ fontSize: '20px' }}>评估</div>
+                <div style={{ fontSize: '18px' }}>评估</div>
+              </Row>
+              <Row>
+                <div>11:30</div>
               </Row>
             </div>
           </Col>
@@ -160,7 +166,10 @@ const PatientCard = (props) => {
               }}
             >
               <Row>
-                <div style={{ fontSize: '20px' }}>穿刺</div>
+                <div style={{ fontSize: '18px' }}>穿刺</div>
+              </Row>
+              <Row>
+                <div>11:30</div>
               </Row>
             </div>
           </Col>
@@ -182,7 +191,10 @@ const PatientCard = (props) => {
               }}
             >
               <Row>
-                <div style={{ fontSize: '20px' }}>核对</div>
+                <div style={{ fontSize: '18px' }}>核对</div>
+              </Row>
+              <Row>
+                <div>11:30</div>
               </Row>
             </div>
           </Col>
@@ -192,7 +204,7 @@ const PatientCard = (props) => {
             </div>
           </Col>
           <Col span={4}>
-            <div
+            {/* <div
               style={{
                 width: '100%',
                 height: '100%',
@@ -204,7 +216,28 @@ const PatientCard = (props) => {
               }}
             >
               <Row>
-                <div style={{ fontSize: '20px' }}>上机</div>
+                <div style={{ fontSize: '18px' }}>上机</div>
+              </Row>
+              <Row>
+                <div>11:30</div>
+              </Row>
+            </div> */}
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                padding: '12px',
+                // boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.06)',
+                borderRadius: '12px',
+                border: '0px solid',
+                backgroundColor: '#DADADA',
+              }}
+            >
+              <Row>
+                <div style={{ fontSize: '18px' }}>上机</div>
+              </Row>
+              <Row>
+                <div>— —</div>
               </Row>
             </div>
           </Col>

@@ -29,7 +29,7 @@ const CreateForm = (props) => {
         bordered
         headerBordered
       >
-        <ProForm title="透析医嘱">
+        <ProForm title="透析医嘱" submitter={false}>
           <Row>
             <ProFormSelect
               valueEnum={{
