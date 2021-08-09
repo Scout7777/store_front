@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
-// import { searchUser } from '@/services/histsys/user';
+import { searchPatient } from '@/services/histsys/patient';
 // import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 
@@ -204,8 +204,8 @@ export default () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        // request={searchUser}
-        dataSource={MockValue}
+        request={searchPatient}
+        // dataSource={MockValue}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {

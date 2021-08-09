@@ -361,12 +361,12 @@ export default () => {
           ))}
           <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>二区</div>
           {/* <Space size={[12, 18]} wrap style={{background: (selectMode ? "#848587" : "#F0F2F5")}}> */}
-          <Space size={[12, 18]} wrap>
-            {MockValue.map((item, index) => (
-              <PatientCard selectMode={selectMode} name={item.name} index={index + 10} />
-              // eslint-disable-next-line react/no-array-index-key
-            ))}
-          </Space>
+          {/* <Space size={[12, 18]} wrap> */}
+          {MockValue.map((item, index) => (
+            <PatientCard selectMode={selectMode} name={item.name} index={index + 10} />
+            // eslint-disable-next-line react/no-array-index-key
+          ))}
+          {/* </Space> */}
         </div>
       )}
     </div>
