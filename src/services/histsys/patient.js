@@ -34,10 +34,10 @@ export async function pageUser(payload) {
   });
 }
 
-export async function searchUser(payload) {
+export async function searchPatient(payload) {
   // console.log(payload);
   // const { params: { pageSize = 20, current = 1 } = {}, sort, filter } = payload
-  return request(`/api/users/search`, {
+  return request(`/api/patients/search`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
