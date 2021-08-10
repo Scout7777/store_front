@@ -40,7 +40,7 @@ const BasicCreateForm = (props) => {
           <ProFormText name="insuranceNo" label="医保号" width="md" rules={[{ required: true }]} />
         </Col>
         <Col span={12}>
-          <ProFormText name="staffNo" label="dialysisNo" width="md" rules={[{ required: true }]} />
+          <ProFormText name="dialysisNo" label="透析号" width="md" rules={[{ required: true }]} />
         </Col>
         <Col span={12}>
           <ProFormFieldSet name="id" label="证件" rules={[{ required: true }]}>
@@ -85,8 +85,8 @@ const BasicCreateForm = (props) => {
             label="性别"
             initialValue="male"
             options={[
-              { value: 'male', label: '男' },
-              { value: 'female', label: '女' },
+              { value: '男', label: '男' },
+              { value: '女', label: '女' },
             ]}
             rules={[{ required: true }]}
           />
@@ -129,8 +129,8 @@ const BasicCreateForm = (props) => {
             width="md"
             label="医疗支付方式"
             valueEnum={{
-              doctor: '医保',
-              nurse: '自费',
+              具有本市干保局方面的医疗费用承担: '具有本市干保局方面的医疗费用承担',
+              城镇职工基本医疗保险: '城镇职工基本医疗保险',
             }}
             rules={[{ required: true }]}
           />

@@ -8,6 +8,7 @@ import { FilterOutlined } from '@ant-design/icons';
 import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
 // @ts-ignore
 import styles from './split.less';
+import Area from './Area';
 
 // type TableListItem = {
 //   createdAtRange?: number[];
@@ -56,6 +57,7 @@ const PopTag = (props) => {
 const DetailList = (props) => {
   const { ip } = props;
   const [tableListDataSource, setTableListDataSource] = useState([]);
+  const [areaShow, setAreaShow] = useState(false);
 
   const columns = [
     {
@@ -179,6 +181,15 @@ const DetailList = (props) => {
         search={false}
         toolbar={{
           actions: [
+            <Button
+              key="list"
+              type="primary"
+              onClick={() => {
+                setAreaShow(true);
+              }}
+            >
+              区域管理
+            </Button>,
             <Button key="list" type="primary">
               新增排床
             </Button>,
@@ -192,6 +203,12 @@ const DetailList = (props) => {
         pagination={false}
         rowKey="key"
         search={false}
+      />
+      <Area
+        onFinish={() => {
+          setAreaShow(false);
+        }}
+        visible={areaShow}
       />
     </div>
   );
