@@ -5,8 +5,8 @@ import { Button, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
 import { searchPatient } from '@/services/histsys/patient';
-// import UpdateForm from './components/UserUpdateForm';
-import CreateForm from './components/UserCreateForm';
+import UpdateForm from './components/PatientUpdateForm';
+import CreateForm from './components/PatientCreateForm';
 
 const ProcessMap = {
   // close: 'normal',
@@ -18,7 +18,7 @@ const ProcessMap = {
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
   const [updateModalVisible, handleUpdateModalVisible] = useState();
-  // const [currentRow, setCurrentRow] = useState();
+  const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
   const MockValue = [];
@@ -53,14 +53,14 @@ export default () => {
     //   search: false,
     // },
     {
-      title: '患者号',
-      dataIndex: 'staffNo',
+      title: '门诊号（登记号）',
+      dataIndex: 'outpatientNo',
       sorter: true,
-      render: (_, record, index) => <div>00000{index + 1}</div>,
+      // render: (_, record, index) => <div>00000{index + 1}</div>,
     },
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'patientName',
       sorter: true,
     },
     {
@@ -168,11 +168,12 @@ export default () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => [
+      render: (_, record) => [
         <a
           key="config"
           onClick={() => {
             handleUpdateModalVisible(true);
+            setCurrentRow(record);
           }}
         >
           更新
@@ -219,31 +220,20 @@ export default () => {
         }}
         visible={createModalVisible}
       />
-      {/* <UpdateForm
-        onSubmit={async (value) => {
-          const { id } = currentRow || {};
-          const success = await updateUser(id, value);
-          if (success) {
-            handleUpdateModalVisible(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
+      <UpdateForm
         onCancel={() => {
           handleUpdateModalVisible(false);
           setCurrentRow(undefined);
         }}
         visible={updateModalVisible}
         values={currentRow || {}}
-      /> */}
-      <CreateForm
+      />
+      {/* <CreateForm
         onCancel={() => {
           handleUpdateModalVisible(false);
         }}
         visible={updateModalVisible}
-      />
+      /> */}
     </PageContainer>
   );
 };

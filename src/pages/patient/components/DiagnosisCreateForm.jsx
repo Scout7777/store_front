@@ -21,15 +21,36 @@ const DiagnosisCreateForm = (props) => {
   return (
     <ProForm onFinish={props.onSubmit}>
       <ProFormTextArea
-        name="text"
+        name="mainDiagnosis"
         label="主要诊断"
         // fieldProps={inputTextAreaProps}
       />
+      <ProFormTextArea
+        name="medicalHistory"
+        label="病史"
+        // fieldProps={inputTextAreaProps}
+      />
+      <ProFormTextArea
+        name="pastHistory"
+        label="既往史"
+        // fieldProps={inputTextAreaProps}
+      />
       <ProFormCheckbox.Group
-        name="原发病"
+        name="diagnosisInfoItemList"
         layout="horizonal"
         label="原发病"
-        options={['原发病1', '原发病2', '原发病3']}
+        options={[
+          '病理诊断',
+          '继发性肾小球疾病',
+          'HIV 相关性肾损害',
+          '丙型肝炎病毒相关性肾炎',
+          '淀粉样变性',
+          '多发骨髓瘤肾病',
+          '肥胖相关性肾病',
+          '干燥综合征肾损害',
+          '高血压肾硬化',
+        ]}
+        // 病理诊断 1001 继发性肾小球疾病 100101 HIV 相关性肾损害 100102 丙型肝炎病毒相关性肾炎 100103 淀粉样变性 100104 多发骨髓瘤肾病 100105 肥胖相关性肾病 100106 干燥综合征肾损害 100107 高血压肾硬化
       />
     </ProForm>
   );

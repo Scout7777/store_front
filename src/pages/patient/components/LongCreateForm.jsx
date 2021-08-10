@@ -5,10 +5,11 @@ import ProForm, {
   ProFormText,
   // ProFormRadio,
   // ProFormDatePicker,
-  // ProFormFieldSet,
   ProFormDigit,
   ProFormSwitch,
 } from '@ant-design/pro-form';
+// import { useState } from 'react';
+// import { PropertySafetyFilled } from '@ant-design/icons';
 
 // import FormItemDivider from '@/components/FormItemDivider';
 
@@ -20,79 +21,98 @@ import ProForm, {
 const LongCreateForm = (props) => {
   console.log(props);
   return (
-    <ProForm>
-      <ProFormDigit name="DryWeight" label="干体重（kg）"></ProFormDigit>
+    <ProForm onFinish={props.onSubmit}>
+      <ProFormDigit name="netWeight" label="干体重（kg）"></ProFormDigit>
       <Row>
         <Col span={8}>
           <Card>
             <ProFormSelect
               valueEnum={{
                 none: '无',
-                HD: 'HD',
-                HF: 'HF',
-                HDF: 'HDF',
+                hd: 'HD',
+                hf: 'HF',
+                hdf: 'HDF',
               }}
               name="Type"
               label="HD/HF/HDF类型"
-              fieldProps={{
-                onChange: (value) => {
-                  console.log(value);
-                },
-              }}
             />
-            <ProFormDigit name="DialysisDuration" label="透析时长（小时）"></ProFormDigit>
-            <ProFormDigit name="BloodVol" label="血流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="Conductivity" label="电导度（mS/cm）"></ProFormDigit>
-            <ProFormDigit name="DlTemperature" label="透析液温度（℃）"></ProFormDigit>
-            <ProFormDigit name="DlFlow" label="透析液流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="BicarbonateRadical" label="碳酸氢根（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlSodium" label="透析液钠（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlPotassium" label="透析液钾"></ProFormDigit>
-            <ProFormDigit name="DlCalcium" label="透析液钙"></ProFormDigit>
-            <ProFormText name="Anticoagulant" label="抗凝剂"></ProFormText>
-            <ProFormDigit name="AnticoagulantQuantity" label="抗凝剂剂量（AxaIU）"></ProFormDigit>
-            <ProFormDigit name="InitialAmount" label="初始量"></ProFormDigit>
-            <ProFormDigit name="MaintenanceQuantity" label="维持量"></ProFormDigit>
-            <ProFormDigit name="RlAmount" label="置换液量（L）"></ProFormDigit>
-            <ProFormText name="ReplacementMode" label="置换模式"></ProFormText>
+            <ProFormDigit name={['main', 'time']} label="透析时长（小时）"></ProFormDigit>
+            <ProFormDigit name={['main', 'bloodFlow']} label="血流量（ml/min）"></ProFormDigit>
+            <ProFormDigit name={['main', 'conductivity']} label="电导度（mS/cm）"></ProFormDigit>
+            <ProFormDigit
+              name={['main', 'dialyzesTemperature']}
+              label="透析液温度（℃）"
+            ></ProFormDigit>
+            <ProFormDigit
+              name={['main', 'dialyzesFlow']}
+              label="透析液流量（ml/min）"
+            ></ProFormDigit>
+            <ProFormDigit name={['main', 'bicarbonate']} label="碳酸氢根（mmol/l）"></ProFormDigit>
+            <ProFormDigit name={['main', 'dialyzesNa']} label="透析液钠（mmol/l）"></ProFormDigit>
+            <ProFormDigit name={['main', 'dialyzesK']} label="透析液钾"></ProFormDigit>
+            <ProFormDigit name={['main', 'dialyzesCa']} label="透析液钙"></ProFormDigit>
+            <ProFormText name={['main', 'anticoagulant']} label="抗凝剂"></ProFormText>
+            <ProFormDigit
+              name={['main', 'anticoagulantAxaIU']}
+              label="抗凝剂剂量（AxaIU）"
+            ></ProFormDigit>
+            <ProFormDigit name={['main', 'initialAxaIU']} label="初始量"></ProFormDigit>
+            <ProFormDigit name={['main', 'preserveAxaIU']} label="维持量"></ProFormDigit>
+            <ProFormDigit name={['main', 'replaceQuantity']} label="置换液量（L）"></ProFormDigit>
+            <ProFormText name={['main', 'replaceMethod']} label="置换模式"></ProFormText>
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <ProFormSwitch name="switch1" label="HP" />
-            <ProFormDigit name="DialysisDuration" label="透析时长（小时）"></ProFormDigit>
-            <ProFormDigit name="BloodVol" label="血流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="Conductivity" label="电导度（mS/cm）"></ProFormDigit>
-            <ProFormDigit name="DlTemperature" label="透析液温度（℃）"></ProFormDigit>
-            <ProFormDigit name="DlFlow" label="透析液流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="BicarbonateRadical" label="碳酸氢根（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlSodium" label="透析液钠（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlPotassium" label="透析液钾"></ProFormDigit>
-            <ProFormDigit name="DlCalcium" label="透析液钙"></ProFormDigit>
-            <ProFormText name="Anticoagulant" label="抗凝剂"></ProFormText>
-            <ProFormDigit name="AnticoagulantQuantity" label="抗凝剂剂量（AxaIU）"></ProFormDigit>
-            <ProFormDigit name="InitialAmount" label="初始量"></ProFormDigit>
-            <ProFormDigit name="MaintenanceQuantity" label="维持量"></ProFormDigit>
-            <ProFormDigit name="RlAmount" label="置换液量（L）"></ProFormDigit>
-            <ProFormText name="ReplacementMode" label="置换模式"></ProFormText>
+            <ProFormSwitch name="hpActive" label="HP" initialValue={false} />
+            <ProFormDigit name={['hp', 'time']} label="透析时长（小时）"></ProFormDigit>
+            <ProFormDigit name={['hp', 'bloodFlow']} label="血流量（ml/min）"></ProFormDigit>
+            <ProFormDigit name={['hp', 'conductivity']} label="电导度（mS/cm）"></ProFormDigit>
+            <ProFormDigit
+              name={['hp', 'dialyzesTemperature']}
+              label="透析液温度（℃）"
+            ></ProFormDigit>
+            <ProFormDigit name={['hp', 'dialyzesFlow']} label="透析液流量（ml/min）"></ProFormDigit>
+            <ProFormDigit name={['hp', 'bicarbonate']} label="碳酸氢根（mmol/l）"></ProFormDigit>
+            <ProFormDigit name={['hp', 'dialyzesNa']} label="透析液钠（mmol/l）"></ProFormDigit>
+            <ProFormDigit name={['hp', 'dialyzesK']} label="透析液钾"></ProFormDigit>
+            <ProFormDigit name={['hp', 'dialyzesCa']} label="透析液钙"></ProFormDigit>
+            <ProFormText name={['hp', 'anticoagulant']} label="抗凝剂"></ProFormText>
+            <ProFormDigit
+              name={['hp', 'anticoagulantAxaIU']}
+              label="抗凝剂剂量（AxaIU）"
+            ></ProFormDigit>
+            <ProFormDigit name={['hp', 'initialAxaIU']} label="初始量"></ProFormDigit>
+            <ProFormDigit name={['hp', 'preserveAxaIU']} label="维持量"></ProFormDigit>
+            {/* <ProFormDigit name={['hp', 'bloodFlow']} label="置换液量（L）"></ProFormDigit>
+            <ProFormText name={['hp', 'bloodFlow']} label="置换模式"></ProFormText> */}
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <ProFormSwitch name="switch2" label="SUF" />
-            <ProFormDigit name="DialysisDuration" label="透析时长（小时）"></ProFormDigit>
-            <ProFormDigit name="BloodVol" label="血流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="Conductivity" label="电导度（mS/cm）"></ProFormDigit>
-            <ProFormDigit name="DlTemperature" label="透析液温度（℃）"></ProFormDigit>
-            <ProFormDigit name="DlFlow" label="透析液流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="BicarbonateRadical" label="碳酸氢根（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlSodium" label="透析液钠（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlPotassium" label="透析液钾"></ProFormDigit>
-            <ProFormDigit name="DlCalcium" label="透析液钙"></ProFormDigit>
-            <ProFormText name="Anticoagulant" label="抗凝剂"></ProFormText>
-            <ProFormDigit name="AnticoagulantQuantity" label="抗凝剂剂量（AxaIU）"></ProFormDigit>
-            <ProFormDigit name="InitialAmount" label="初始量"></ProFormDigit>
-            <ProFormDigit name="MaintenanceQuantity" label="维持量"></ProFormDigit>
+            <ProFormSwitch name="sufActive" label="SUF" initialValue={false} />
+            <ProFormDigit name={['suf', 'time']} label="透析时长（小时）"></ProFormDigit>
+            <ProFormDigit name={['suf', 'bloodFlow']} label="血流量（ml/min）"></ProFormDigit>
+            <ProFormDigit name={['suf', 'conductivity']} label="电导度（mS/cm）"></ProFormDigit>
+            <ProFormDigit
+              name={['suf', 'dialyzesTemperature']}
+              label="透析液温度（℃）"
+            ></ProFormDigit>
+            <ProFormDigit
+              name={['suf', 'dialyzesFlow']}
+              label="透析液流量（ml/min）"
+            ></ProFormDigit>
+            <ProFormDigit name={['suf', 'bicarbonate']} label="碳酸氢根（mmol/l）"></ProFormDigit>
+            <ProFormDigit name={['suf', 'dialyzesNa']} label="透析液钠（mmol/l）"></ProFormDigit>
+            <ProFormDigit name={['suf', 'dialyzesK']} label="透析液钾"></ProFormDigit>
+            <ProFormDigit name={['suf', 'dialyzesCa']} label="透析液钙"></ProFormDigit>
+            <ProFormText name={['suf', 'anticoagulant']} label="抗凝剂"></ProFormText>
+            <ProFormDigit
+              name={['suf', 'anticoagulantAxaIU']}
+              label="抗凝剂剂量（AxaIU）"
+            ></ProFormDigit>
+            <ProFormDigit name={['suf', 'initialAxaIU']} label="初始量"></ProFormDigit>
+            <ProFormDigit name={['suf', 'preserveAxaIU']} label="维持量"></ProFormDigit>
           </Card>
         </Col>
       </Row>

@@ -1,38 +1,6 @@
 import { request } from 'umi';
-import { toQueryString, toSearchPayload } from './utils';
+import { toSearchPayload } from './utils';
 import technicalPosition from './static_files/user_technical_position';
-
-export async function currentUser() {
-  return request('/api/users/me', {
-    method: 'GET',
-  }).then((response) => {
-    // console.log(response)
-    return response.data;
-  });
-}
-
-export async function login({ username, password }) {
-  return request('/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: { username, password },
-  });
-}
-
-export async function pageUser(payload) {
-  // const { params: { pageSize = 20, current = 1 } = {}, sort, filter } = payload
-  return request(`/api/users/page?${toQueryString(payload)}`, {
-    method: 'GET',
-  }).then((response) => {
-    return {
-      data: response.data.content || [],
-      success: true,
-      total: response.data.totalElements || 0,
-    };
-  });
-}
 
 export async function searchPatient(payload) {
   // console.log(payload);
@@ -62,8 +30,26 @@ export async function createPatient(values) {
   });
 }
 
-export async function updateUser(id, values) {
-  return request(`/api/users/${id}`, {
+export async function getPatient(id) {
+  return request(`/api/patients/detail/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+export async function getLongTermMedicalAdvice(id) {
+  return request(`/api/patient-long-term-medical-advices/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+export async function updateLongTermMedicalAdvice(id, values) {
+  return request(`/api/patient-long-term-medical-advices/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -72,12 +58,23 @@ export async function updateUser(id, values) {
   });
 }
 
-export async function deleteUser(id) {
-  return request(`/api/users/${id}`, {
-    method: 'DELETE',
+export async function getPatientBed(id) {
+  return request(`/api/patient-time-reservations/${id}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
+  });
+}
+
+export async function updatePatientBed(id, values) {
+  console.log(values);
+  return request(`/api/patient-time-reservations/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: values,
   });
 }
 
