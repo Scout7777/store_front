@@ -17,6 +17,7 @@ import BedForm from './BedForm';
 import Card from './Card';
 import {
   createPatient,
+  getLongTermMedicalAdvice,
   updateLongTermMedicalAdvice,
   getPatient,
   updatePatientBed,
@@ -27,7 +28,9 @@ const { TabPane } = Tabs;
 
 const UpdateForm = (props) => {
   console.log(props.values);
+  const { id } = props.values;
   const [currentPatient, setCurrentPatient] = useState({ ...props.values });
+  const [longM, setlongM] = useState({ ...props.values });
 
   return (
     <Modal
@@ -37,7 +40,31 @@ const UpdateForm = (props) => {
       onCancel={props.onCancel}
       destroyOnClose={true}
     >
-      <Tabs defaultActiveKey="1" tabPosition="left">
+      <Tabs
+        defaultActiveKey="1"
+        tabPosition="left"
+        onTabClick={async (key) => {
+          let resp;
+          let data;
+          switch (key) {
+            case '9':
+              resp = await getLongTermMedicalAdvice(id);
+              data = resp.data;
+              if (data.hdActive) {
+                data.Type = 'hd';
+              }
+              if (data.hfActive) {
+                data.Type = 'hf';
+              }
+              if (data.hdfActive) {
+                data.Type = 'hdf';
+              }
+              setlongM(data);
+              break;
+            default:
+          }
+        }}
+      >
         <TabPane tab="电子病历" key="1">
           <PageContainer title="电子病历" style={{ padding: 24 }}>
             <BasicCreateForm
@@ -61,8 +88,7 @@ const UpdateForm = (props) => {
           <PageContainer title="诊断信息" style={{ padding: 24 }}>
             <DiagnosisCreateForm
               onSubmit={async () => {
-                console.log(currentPatient);
-                const resp = await getPatient(currentPatient.id);
+                const resp = await getPatient(id);
                 console.log(resp);
               }}
             />
@@ -92,8 +118,15 @@ const UpdateForm = (props) => {
         <TabPane tab="慢性并发症" key="8">
           <ChronicCreateForm />
         </TabPane>
-        <TabPane tab="长期透析医嘱" key="9">
+        <TabPane
+          onClick={async () => {
+            await getLongTermMedicalAdvice(id);
+          }}
+          tab="长期透析医嘱"
+          key="9"
+        >
           <LongCreateForm
+            lastValue={longM}
             onSubmit={async (value) => {
               console.log(value);
               const reform = value;
@@ -116,7 +149,7 @@ const UpdateForm = (props) => {
               delete reform.main;
               console.log(reform);
               console.log(currentPatient);
-              const resp = await updateLongTermMedicalAdvice(currentPatient.id, reform);
+              const resp = await updateLongTermMedicalAdvice(id, reform);
               notification.open({
                 description: resp.status + resp.message,
                 message: '调试',
@@ -164,7 +197,7 @@ const UpdateForm = (props) => {
               }
               const all = reform1.concat(reform2);
               console.log(all);
-              const resp = await updatePatientBed(currentPatient.id, all);
+              const resp = await updatePatientBed(id, all);
               notification.open({
                 description: resp.status + resp.message,
                 message: '调试',

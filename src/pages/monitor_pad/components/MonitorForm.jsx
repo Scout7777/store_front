@@ -18,13 +18,13 @@ const CreateForm = (props) => {
       </ProCard>
       <Tabs defaultActiveKey="1">
         {[...Array.from({ length: 30 }, (v, i) => i)].map((i) => (
-          <TabPane tab={`记录单${i}`} key={i} disabled={i === 28}>
+          <TabPane tab={`记录单${i + 1}`} key={i} disabled={i === 28}>
             {/* Content of tab {i} */}
           </TabPane>
         ))}
       </Tabs>
       <ProCard
-        title="透析医嘱"
+        title="长期透析医嘱"
         // extra="2019年9月28日"
         bordered
         headerBordered

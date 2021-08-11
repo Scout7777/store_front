@@ -87,15 +87,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -123,15 +123,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -159,15 +159,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -195,15 +195,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -231,15 +231,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -305,15 +305,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -341,15 +341,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -377,15 +377,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -413,15 +413,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />
@@ -449,15 +449,15 @@ const DiagnosisCreateForm = (props) => {
             options={[
               {
                 label: '上午班',
-                value: 'a',
+                value: 'Morning',
               },
               {
                 label: '下午班',
-                value: 'b',
+                value: 'Afternoon',
               },
               {
                 label: '晚上班',
-                value: 'c',
+                value: 'Evening',
               },
             ]}
           />

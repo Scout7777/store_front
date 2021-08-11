@@ -4,7 +4,9 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
-import { searchPatient } from '@/services/histsys/patient';
+import { getPatientBed, searchPatient } from '@/services/histsys/patient';
+import { getWeek, getReal, getTemplate } from '@/services/histsys/bed';
+import { getProcess, getProcessLast } from '@/services/histsys/dialysis';
 import UpdateForm from './components/PatientUpdateForm';
 import CreateForm from './components/PatientCreateForm';
 
@@ -54,9 +56,9 @@ export default () => {
     // },
     {
       title: '门诊号（登记号）',
-      dataIndex: 'outpatientNo',
+      dataIndex: ['electronicMedicalRecord', 'outpatientNo'],
       sorter: true,
-      // render: (_, record, index) => <div>00000{index + 1}</div>,
+      // render: (_, record) => <div>{record.electronicMedicalRecord}</div>,
     },
     {
       title: '姓名',
@@ -172,8 +174,12 @@ export default () => {
         <a
           key="config"
           onClick={() => {
+            console.log(record);
             handleUpdateModalVisible(true);
             setCurrentRow(record);
+            console.log(getProcess(record.id));
+            console.log(getProcessLast(record.id));
+            console.log(getPatientBed(record.id));
           }}
         >
           更新
@@ -199,6 +205,9 @@ export default () => {
             type="primary"
             key="primary"
             onClick={() => {
+              console.log(getWeek());
+              console.log(getTemplate());
+              console.log(getReal());
               handleCreateModalVisible(true);
             }}
           >

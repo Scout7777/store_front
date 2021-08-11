@@ -20,8 +20,8 @@ export async function searchPatient(payload) {
   });
 }
 
-export async function createPatient(values) {
-  return request('/api/patients', {
+export async function createAdmission(patientId, values) {
+  return request(`/api/dialysis/${patientId}/admission`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,12 +30,40 @@ export async function createPatient(values) {
   });
 }
 
-export async function getPatient(id) {
-  return request(`/api/patients/detail/${id}`, {
+export async function createProcess(patientId, aId) {
+  return request(`/api/dialysis/${patientId}/process/${aId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+export async function getProcessLast(patientId) {
+  return request(`/api/dialysis/${patientId}/last/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
+  });
+}
+
+export async function getProcess(patientId) {
+  return request(`/api/dialysis/${patientId}/process?pageSize=50&current=0`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+export async function updatePre(processId, values) {
+  return request(`/api/dialysis/${processId}/pre-assessment`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
   });
 }
 
@@ -69,12 +97,12 @@ export async function getPatientBed(id) {
 
 export async function updatePatientBed(id, values) {
   console.log(values);
-  return request(`/api/patient-time-reservations/${id}/book`, {
+  return request(`/api/patient-time-reservations/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    data: { reservations: values },
+    data: values,
   });
 }
 
