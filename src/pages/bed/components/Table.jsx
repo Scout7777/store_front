@@ -173,6 +173,7 @@ const DetailList = (props) => {
   return (
     <div>
       <ProTable
+        scroll={{ x: '100' }}
         headerTitle="执行排床"
         columns={columns}
         dataSource={tableListDataSource}
@@ -197,6 +198,7 @@ const DetailList = (props) => {
         }}
       />
       <ProTable
+        scroll={{ x: '100' }}
         headerTitle="排床模板"
         columns={columns}
         dataSource={tableListDataSource}
@@ -370,7 +372,7 @@ const IPList = (props) => {
 const Table = () => {
   const [ip, setIp] = useState('1床');
   return (
-    <ProCard split="vertical">
+    <ProCard split="vertical" scroll={{ x: '100' }}>
       <ProCard colSpan="260px" ghost>
         <IPList onChange={(cIp) => setIp(cIp)} ip={ip} />
       </ProCard>

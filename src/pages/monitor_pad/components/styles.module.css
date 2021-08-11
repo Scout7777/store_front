@@ -1,0 +1,30 @@
+body {
+  background-color: gray;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.container {
+  width: 500px;
+  height: 400px;
+}
+
+.sigContainer {
+  width: 500px;
+  height: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.sigPad {
+  width: 500px;
+  height: 400px;
+}
+
+.sigImage {
+  background-size: 500px 400px;
+  width: 500px;
+  height: 400px;
+  background-color: white;
+}

@@ -67,8 +67,8 @@ export async function deleteArea(id) {
   });
 }
 
-export async function getPatient(id) {
-  return request(`/api/patients/detail/${id}`, {
+export async function getWeek() {
+  return request(`/api/bed-arrangements/current-week/code`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -76,8 +76,8 @@ export async function getPatient(id) {
   });
 }
 
-export async function getLongTermMedicalAdvice(id) {
-  return request(`/api/patient-long-term-medical-advices/${id}`, {
+export async function getTemplate() {
+  return request(`/api/bed-arrangements/current-week/template`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -85,13 +85,12 @@ export async function getLongTermMedicalAdvice(id) {
   });
 }
 
-export async function updateLongTermMedicalAdvice(id, values) {
-  return request(`/api/patient-long-term-medical-advices/${id}`, {
-    method: 'PUT',
+export async function getReal() {
+  return request(`/api/bed-arrangements/current-week/real`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    data: { ...values },
   });
 }
 

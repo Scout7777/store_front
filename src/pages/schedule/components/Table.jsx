@@ -185,6 +185,7 @@ const DetailList = (props) => {
   return (
     <div>
       <ProTable
+        scroll={{ x: '100' }}
         headerTitle="执行排班"
         columns={columns}
         dataSource={tableListDataSource}

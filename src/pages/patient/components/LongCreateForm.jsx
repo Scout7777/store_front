@@ -19,7 +19,7 @@ import ProForm, {
 选填：身高、密级、重名附加符、血型、教育程度、职业、婚姻状况、生育情况、本人电话、家庭电话、联系人电话、联系人关系、家庭住址
 上传头像，更新患者LIS信息，时间段 */
 const LongCreateForm = (props) => {
-  console.log(props);
+  console.log(props.lastValue);
   return (
     <ProForm onFinish={props.onSubmit}>
       <ProFormDigit name="netWeight" label="干体重（kg）"></ProFormDigit>
@@ -27,6 +27,7 @@ const LongCreateForm = (props) => {
         <Col span={8}>
           <Card>
             <ProFormSelect
+              // initialValue={props.lastValue.Type ? props.lastValue.Type : 'none'}
               valueEnum={{
                 none: '无',
                 hd: 'HD',
