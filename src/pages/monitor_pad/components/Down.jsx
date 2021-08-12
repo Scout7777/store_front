@@ -5,13 +5,24 @@ import {
   // ProFormText,
   ModalForm,
   // ProFormRadio,
+  // ProFormDigit,
   // ProFormCheckbox
   // ProFormFieldSet,
 } from '@ant-design/pro-form';
+import Sign from './Signature';
 
-// import FormItemDivider from '@/components/FormItemDivider';
+import FormItemDivider from '@/components/FormItemDivider';
 
 const CreateForm = (props) => {
+  async function handleSubmit() {
+    console.log('执行');
+    props.onSubmit();
+  }
+
+  function handleGetMsg(value) {
+    console.log(value);
+  }
+
   return (
     <ModalForm
       title="下机"
@@ -21,8 +32,13 @@ const CreateForm = (props) => {
         onCancel: props.onCancel,
         destroyOnClose: true,
       }}
-      onFinish={props.onSubmit}
-    ></ModalForm>
+      onFinish={handleSubmit}
+    >
+      <FormItemDivider>下机操作签名</FormItemDivider>
+      <div>
+        <Sign getUrl={handleGetMsg} />
+      </div>
+    </ModalForm>
   );
 };
 export default CreateForm;

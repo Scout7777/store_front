@@ -4,6 +4,8 @@ import { EditableProTable } from '@ant-design/pro-table';
 import ProField from '@ant-design/pro-field';
 // import { ProFormRadio } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 const waitTime = (time = 100) => {
   return new Promise((resolve) => {
@@ -16,8 +18,8 @@ const waitTime = (time = 100) => {
 const defaultData = [
   {
     id: 624748504,
-    title: '青霉素',
-    decs: '无',
+    title: '药物过敏',
+    decs: '说明',
     state: 'open',
     created_at: '2020-05-26T09:42:56Z',
     update_at: '2020-05-26T09:42:56Z',
@@ -25,7 +27,7 @@ const defaultData = [
   {
     id: 624691229,
     title: '透析器过敏',
-    decs: '请勿使用',
+    decs: '说明',
     state: 'closed',
     created_at: '2020-05-26T08:19:22Z',
     update_at: '2020-05-26T08:19:22Z',
@@ -38,43 +40,48 @@ export default () => {
   const [position] = useState('bottom');
 
   const columns = [
+    // {
+    //   title: '过敏源',
+    //   dataIndex: 'title',
+    //   formItemProps: (form, { rowIndex }) => {
+    //     return {
+    //       rules: rowIndex > 2 ? [{ required: true, message: '此项为必填项' }] : [],
+    //     };
+    //   },
+    //   // 第二行不允许编辑
+    //   // editable: (text, record, index) => {
+    //   //   return index !== 0;
+    //   // },
+    //   width: '30%',
+    // },
     {
-      title: '过敏源',
-      dataIndex: 'title',
-      formItemProps: (form, { rowIndex }) => {
-        return {
-          rules: rowIndex > 2 ? [{ required: true, message: '此项为必填项' }] : [],
-        };
-      },
-      // 第二行不允许编辑
-      // editable: (text, record, index) => {
-      //   return index !== 0;
-      // },
-      width: '30%',
+      title: '开始',
+      dataIndex: 'start',
+      children: [
+        { title: '日期', dataIndex: 'date', valueType: 'date' },
+        { title: '医生', dataIndex: 'doctor' },
+        { title: '护士', dataIndex: 'nurse' },
+      ],
     },
     {
-      title: '过敏类型',
-      key: 'state',
-      dataIndex: 'state',
-      valueType: 'select',
-      valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        open: {
-          text: '药物',
-          status: 'Error',
-        },
-        closed: {
-          text: '透析器',
-          status: 'Success',
-        },
-        other: {
-          text: '其他',
-          status: 'Info',
-        },
-      },
+      title: '透析医嘱',
+      dataIndex: 'advice',
+      children: [
+        { title: '医嘱', dataIndex: 'medical' },
+        { title: '用法', dataIndex: 'times' },
+      ],
     },
     {
-      title: '描述',
+      title: '结束',
+      dataIndex: 'start',
+      children: [
+        { title: '日期', dataIndex: 'date', valueType: 'date' },
+        { title: '医生', dataIndex: 'doctor' },
+        { title: '护士', dataIndex: 'nurse' },
+      ],
+    },
+    {
+      title: '说明',
       dataIndex: 'decs',
       fieldProps: (from, { rowKey, rowIndex }) => {
         if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
@@ -89,11 +96,6 @@ export default () => {
         }
         return {};
       },
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'created_at',
-      valueType: 'date',
     },
     {
       title: '操作',
@@ -123,7 +125,7 @@ export default () => {
     <>
       <EditableProTable
         rowKey="id"
-        headerTitle="过敏记录"
+        headerTitle="透析医嘱"
         maxLength={5}
         recordCreatorProps={
           position !== 'hidden'
@@ -133,6 +135,12 @@ export default () => {
               }
             : false
         }
+        toolBarRender={() => [
+          <Button type="primary" key="primary">
+            <PlusOutlined />
+            从HIS导入
+          </Button>,
+        ]}
         columns={columns}
         request={async () => ({
           data: defaultData,

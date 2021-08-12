@@ -104,7 +104,7 @@ const PatientCard = (props) => {
                   <div style={{ display: 'inline' }}>11:30</div>
                 </Col>
                 <Col span={16}>
-                  <Progress percent={30} size="small" />
+                  <Progress percent={0} size="small" />
                 </Col>
               </Row>
             </Col>
@@ -320,6 +320,7 @@ const PatientCard = (props) => {
                   //   const resp = await updatePre(process.id, value)
                   //   console.log(resp)
                   // }}
+                  processid={process?.id}
                   onSubmit={() => {
                     handlePunctureVisible(false);
                     setPuncture(true);

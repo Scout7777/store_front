@@ -6,7 +6,6 @@ import { Space, Tag } from 'antd';
 import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
-import MonitorList from './components/MonitorList';
 import TotalCard from './components/TotalCard';
 
 export default () => {
@@ -229,7 +228,6 @@ export default () => {
         visible={updateModalVisible}
         values={currentRow || {}}
       />
-      <MonitorList />
     </PageContainer>
   );
 };

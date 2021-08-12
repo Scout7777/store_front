@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Tabs, notification } from 'antd';
+import { Modal, Tabs, notification, Button, Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import BasicCreateForm from './BasicCreateForm';
 import DiagnosisCreateForm from './DiagnosisCreateForm';
@@ -9,9 +9,10 @@ import AccessCreateForm from './AccessCreateForm';
 import ChronicCreateForm from './ChronicCreateForm';
 import AccessComplicationCreateForm from './AccessComplicationCreateForm';
 import LongCreateForm from './LongCreateForm';
-// import ChargeCreateForm from './ChargeCreateForm';
+import ChargeCreateForm from './ChargeCreateForm';
 import AssessCreateForm from './AssessCreateForm';
 import MedicalCreateForm from './MedicalCreateForm';
+import DlMedicalCreateForm from './DlMedicalCreateForm';
 import InfectionForm from './InfectionForm';
 import BedForm from './BedForm';
 import Card from './Card';
@@ -22,6 +23,7 @@ import {
   updatePatientBed,
 } from '@/services/histsys/patient';
 import { useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -96,23 +98,6 @@ const CreateForm = (props) => {
             onSubmit={async (value) => {
               console.log(value);
               const reform = value;
-              switch (reform.Type) {
-                case 'hd':
-                  reform.hdActive = true;
-                  reform.hd = reform.main;
-                  break;
-                case 'hdf':
-                  reform.hdfActive = true;
-                  reform.hdf = reform.main;
-                  break;
-                case 'hf':
-                  reform.hfActive = true;
-                  reform.hf = reform.main;
-                  break;
-                default:
-              }
-              delete reform.Type;
-              delete reform.main;
               console.log(reform);
               console.log(currentPatient);
               const resp = await updateLongTermMedicalAdvice(currentPatient.id, reform);
@@ -124,7 +109,7 @@ const CreateForm = (props) => {
           />
         </TabPane>
         <TabPane tab="耗材设置" key="10">
-          {/* <ChargeCreateForm /> */}
+          <ChargeCreateForm />
         </TabPane>
         <TabPane tab="传染病检查" key="11">
           <InfectionForm />
@@ -178,19 +163,33 @@ const CreateForm = (props) => {
           </PageContainer>
         </TabPane>
         <TabPane tab="检验结果" key="14">
-          {/* 获取HIS信息后同步开发 */}
+          <Button type="primary" key="primary">
+            <PlusOutlined />
+            从LIS导入
+          </Button>
         </TabPane>
         <TabPane tab="住院信息" key="15">
-          {/* 获取HIS信息后同步开发 */}
+          <Button type="primary" key="primary">
+            <PlusOutlined />
+            从HIS导入
+          </Button>
         </TabPane>
         <TabPane tab="常规透析用药" key="16">
-          {/* 移动端录入 */}
+          <DlMedicalCreateForm />
         </TabPane>
         <TabPane tab="门诊用药医嘱" key="17">
           <MedicalCreateForm />
         </TabPane>
         <TabPane tab="发卡" key="18">
           <Card />
+          <Space size={[12, 18]} wrap>
+            <Button type="primary" key="primary">
+              打印
+            </Button>
+            <Button type="primary" key="primary">
+              写卡
+            </Button>
+          </Space>
         </TabPane>
       </Tabs>
     </Modal>

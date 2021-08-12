@@ -192,7 +192,13 @@ const DetailList = (props) => {
               区域管理
             </Button>,
             <Button key="list" type="primary">
-              新增排床
+              导入模板
+            </Button>,
+            <Button key="list" type="primary">
+              应用上周
+            </Button>,
+            <Button key="list" type="primary">
+              执行排床
             </Button>,
           ],
         }}

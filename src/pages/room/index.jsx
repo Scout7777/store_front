@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 // import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
 import { Space, Tag, Row, Col, Button } from 'antd';
 import { FilterOutlined, PlusOutlined } from '@ant-design/icons';
 // import { PlusOutlined } from '@ant-design/icons';
@@ -9,6 +8,7 @@ import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/MonitorForm';
 import PatientCard from './components/Card';
 import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
+import { getAreas } from '@/services/histsys/bed';
 
 // const { TabPane } = Tabs;
 // import MonitorList from './components/MonitorList';
@@ -57,146 +57,6 @@ export default () => {
     });
   }
 
-  const columns = [
-    {
-      title: '床位',
-      dataIndex: 'position',
-      render: (_, record, index) => <div>{index + 1}床</div>,
-    },
-    {
-      title: '班次',
-      dataIndex: 'time',
-      valueEnum: {
-        a: {
-          text: '上午',
-          color: 'blue',
-        },
-        b: {
-          text: '下午',
-          color: 'red',
-        },
-        c: {
-          text: '晚间',
-          color: 'blue',
-        },
-      },
-    },
-    {
-      title: '患者号',
-      dataIndex: 'staffNo',
-      sorter: true,
-      render: (_, record, index) => <div>00000{index + 1}</div>,
-    },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      sorter: true,
-    },
-    {
-      title: '症状评估',
-      dataIndex: 'problem',
-      search: false,
-      render: () => (
-        <Space>
-          {/* {record.labels.map(({ name, color }) => (
-            <Tag color={color} key={name}>
-              {name}
-            </Tag>
-          ))} */}
-          <Tag>脑梗</Tag>
-          <Tag>糖尿病</Tag>
-        </Space>
-      ),
-    },
-    {
-      title: '评估提醒',
-      dataIndex: 'way',
-      search: false,
-      render: () => (
-        <Space>
-          {/* {record.labels.map(({ name, color }) => (
-            <Tag color={color} key={name}>
-              {name}
-            </Tag>
-          ))} */}
-          <Tag color={'orange'}>轮椅</Tag>
-        </Space>
-      ),
-    },
-    {
-      title: '监控警告',
-      dataIndex: 'dashboard',
-      search: false,
-      render: () => (
-        <Space>
-          {/* {record.labels.map(({ name, color }) => (
-            <Tag color={color} key={name}>
-              {name}
-            </Tag>
-          ))} */}
-          <Tag color={'red'}>高血压</Tag>
-        </Space>
-      ),
-    },
-    {
-      title: '临时医嘱',
-      dataIndex: 'advice',
-      sorter: true,
-    },
-    {
-      title: '透析方式',
-      dataIndex: 'way',
-      valueEnum: {
-        a: {
-          text: 'HD',
-          color: 'blue',
-        },
-        b: {
-          text: 'HDF',
-          color: 'red',
-        },
-      },
-    },
-    {
-      title: '透前血压',
-      dataIndex: 'bp',
-    },
-    {
-      title: '透前体重',
-      dataIndex: 'weight_before',
-    },
-    {
-      title: '透后体重',
-      dataIndex: 'weight_later',
-    },
-    {
-      title: '设定脱水量',
-      dataIndex: 'water',
-    },
-    {
-      title: '器显脱水量',
-      dataIndex: 'water_now',
-    },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: () => [
-        <a
-          key="config"
-          onClick={() => {
-            handleCreateModalVisible(true);
-          }}
-        >
-          查看详情/操作
-        </a>,
-        // <a key="delete" onClick={() => {}}>
-        //   查看详情/操作
-        // </a>,
-      ],
-    },
-  ];
-
   return (
     <div>
       {/* <Radio.Group
@@ -208,32 +68,6 @@ export default () => {
         /> */}
       {layOut === 'traditional' ? (
         <div>
-          <ProTable
-            actionRef={actionRef}
-            rowKey="key"
-            search={{
-              labelWidth: 120,
-            }}
-            toolBarRender={() => [
-              // <Button
-              //   type="primary"
-              //   key="primary"
-              //   onClick={() => {
-              //     handleCreateModalVisible(true);
-              //   }}
-              // >
-              //   <PlusOutlined /> 新建
-              // </Button>,
-            ]}
-            // request={searchUser}
-            dataSource={MockValue}
-            columns={columns}
-            // rowSelection={{
-            //   onChange: (_, selectedRows) => {
-            //     setSelectedRows(selectedRows);
-            //   },
-            // }}
-          />
           <CreateForm
             onCancel={() => {
               handleCreateModalVisible(false);
@@ -263,7 +97,7 @@ export default () => {
       ) : (
         <div>
           <Row>
-            <Col span={18}>
+            <Col span={16}>
               <LightFilter
                 initialValues={{
                   area: 'one',
@@ -274,12 +108,59 @@ export default () => {
                 onFinish={async (values) => console.log(values)}
               >
                 <ProFormSelect
-                  name="area"
-                  valueEnum={{
-                    one: '一区',
-                    two: '二区',
+                  name="bedAreaId"
+                  request={async () => {
+                    const resp = await getAreas();
+                    const value = resp.data.map((item) => ({
+                      label: item.name,
+                      value: item.id,
+                    }));
+                    return value;
                   }}
                   placeholder="分区"
+                />
+                <ProFormSelect
+                  name="week"
+                  valueEnum={{
+                    this: '本周',
+                    last: '上周',
+                  }}
+                  initialValue={'this'}
+                />
+                <ProFormRadio.Group
+                  name="radio"
+                  radioType="button"
+                  initialValue={'Mon'}
+                  options={[
+                    {
+                      value: 'Mon',
+                      label: '周一',
+                    },
+                    {
+                      value: 'Tues',
+                      label: '周二',
+                    },
+                    {
+                      value: 'Wed',
+                      label: '周三',
+                    },
+                    {
+                      value: 'Thur',
+                      label: '周四',
+                    },
+                    {
+                      value: 'Fri',
+                      label: '周五',
+                    },
+                    {
+                      value: 'Sat',
+                      label: '周六',
+                    },
+                    {
+                      value: 'Sun',
+                      label: '周日',
+                    },
+                  ]}
                 />
                 <ProFormDatePicker name="time" placeholder="日期" />
                 <ProFormRadio.Group
@@ -311,19 +192,29 @@ export default () => {
                 />
               </LightFilter>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               {!selectMode ? (
-                <Button
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={() => {
-                    setSelectMode(true);
-                  }}
-                >
-                  选择我的病人
-                </Button>
+                <Space>
+                  <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={() => {
+                      setSelectMode(true);
+                    }}
+                  >
+                    我的病人
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setSelectMode(true);
+                    }}
+                  >
+                    床位互换
+                  </Button>
+                </Space>
               ) : (
-                <div>
+                <Space>
                   <Button
                     type="primary"
                     onClick={() => {
@@ -334,14 +225,13 @@ export default () => {
                   </Button>
                   <Button
                     type="primary"
-                    style={{ marginLeft: 18 }}
                     onClick={() => {
                       setSelectMode(false);
                     }}
                   >
                     取消
                   </Button>
-                </div>
+                </Space>
               )}
             </Col>
           </Row>

@@ -5,7 +5,7 @@ import { Button, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
 import { getPatientBed, searchPatient } from '@/services/histsys/patient';
-import { getWeek, getReal, getTemplate } from '@/services/histsys/bed';
+import { getWeek, getReal, getTemplateWeek } from '@/services/histsys/bed';
 import { getProcess, getProcessLast } from '@/services/histsys/dialysis';
 import UpdateForm from './components/PatientUpdateForm';
 import CreateForm from './components/PatientCreateForm';
@@ -26,6 +26,54 @@ export default () => {
   const MockValue = [];
   const aa = ['a', 'b'];
   const role = ['a', 'b', 'c', 'd', 'e'];
+  const mock = [
+    <>
+      <Tag>急诊</Tag>
+      <Tag>临时</Tag>
+    </>,
+    <Tag>退出</Tag>,
+    <Tag>请假</Tag>,
+    '-',
+    '-',
+    '-',
+    '-',
+  ];
+  const bed = [
+    <>
+      <Tag>一/晚</Tag>
+      <Tag>四/晚</Tag>
+    </>,
+    <>
+      <Tag>一/早</Tag>
+      <Tag>三/早</Tag>
+      <Tag>五/早</Tag>
+    </>,
+    <>
+      <Tag>二/下</Tag>
+      <Tag>四/下</Tag>
+      <Tag>六/下</Tag>
+    </>,
+    '-',
+  ];
+  const zhengzhuang = [
+    <Tag color={'purple'}>房颤</Tag>,
+    <Tag color={'purple'}>甲</Tag>,
+    '-',
+    '-',
+    '-',
+  ];
+  const guomin = [
+    <Tag color={'red'}>药物</Tag>,
+    <Tag color={'red'}>透析器</Tag>,
+    <>
+      <Tag color={'red'}>透析器</Tag>
+      <Tag color={'red'}>药物</Tag>
+    </>,
+    '-',
+    '-',
+    '-',
+  ];
+
   //  let result= Math.floor(Math.random() * aa.length);
 
   for (let i = 0; i < 20; i += 1) {
@@ -58,15 +106,22 @@ export default () => {
       title: '门诊号（登记号）',
       dataIndex: ['electronicMedicalRecord', 'outpatientNo'],
       sorter: true,
-      // render: (_, record) => <div>{record.electronicMedicalRecord}</div>,
+      render: (_, record) => `0000000${record.id}`,
     },
     {
       title: '姓名',
       dataIndex: 'patientName',
       sorter: true,
+      render: (_, record) => `测试患者${record.id}`,
     },
     {
-      title: '排床',
+      title: '状态',
+      dataIndex: 'state',
+      search: false,
+      render: () => <Space>{mock[Math.floor(Math.random() * mock.length)]}</Space>,
+    },
+    {
+      title: '排床规律',
       dataIndex: 'labels',
       search: false,
       render: () => (
@@ -76,14 +131,12 @@ export default () => {
               {name}
             </Tag>
           ))} */}
-          <Tag>一/晚</Tag>
-          <Tag>三/晚</Tag>
-          <Tag>五/晚</Tag>
+          {bed[Math.floor(Math.random() * bed.length)]}
         </Space>
       ),
     },
     {
-      title: '患者类型',
+      title: '感染四项',
       dataIndex: 'role',
       valueEnum: {
         a: {
@@ -114,6 +167,7 @@ export default () => {
       valueType: (item) => ({
         type: 'progress',
         status: ProcessMap[item.status],
+        value: 30,
       }),
       // valueEnum: {
       //   active: {
@@ -142,6 +196,16 @@ export default () => {
     },
     {
       title: '症状评估',
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          {zhengzhuang[Math.floor(Math.random() * zhengzhuang.length)]}
+        </Space>
+      ),
     },
     {
       title: '用药情况',
@@ -155,17 +219,17 @@ export default () => {
               {name}
             </Tag>
           ))} */}
-          <Tag>药物</Tag>
+          {guomin[Math.floor(Math.random() * guomin.length)]}
         </Space>
       ),
     },
-    {
-      title: '创建时间',
-      sorter: true,
-      search: false,
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-    },
+    // {
+    //   title: '创建时间',
+    //   sorter: true,
+    //   search: false,
+    //   dataIndex: 'createdAt',
+    //   valueType: 'dateTime',
+    // },
     {
       title: '操作',
       dataIndex: 'option',
@@ -206,7 +270,7 @@ export default () => {
             key="primary"
             onClick={() => {
               console.log(getWeek());
-              console.log(getTemplate());
+              console.log(getTemplateWeek(202133));
               console.log(getReal());
               handleCreateModalVisible(true);
             }}

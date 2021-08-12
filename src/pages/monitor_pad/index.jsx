@@ -5,6 +5,7 @@ import { FilterOutlined, PlusOutlined } from '@ant-design/icons';
 // import { PlusOutlined } from '@ant-design/icons';
 import PatientCard from './components/Card';
 import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
+import { getAreas } from '@/services/histsys/bed';
 
 // const { TabPane } = Tabs;
 // import MonitorList from './components/MonitorList';
@@ -22,7 +23,7 @@ export default () => {
 
   const aa = ['a', 'b'];
 
-  for (let i = 0; i < 10; i += 1) {
+  for (let i = 0; i < 3; i += 1) {
     MockValue.push({
       time: 'a',
       name: '测试患者',
@@ -51,12 +52,59 @@ export default () => {
               onFinish={async (values) => console.log(values)}
             >
               <ProFormSelect
-                name="area"
-                valueEnum={{
-                  one: '一区',
-                  two: '二区',
+                name="bedAreaId"
+                request={async () => {
+                  const resp = await getAreas();
+                  const value = resp.data.map((item) => ({
+                    label: item.name,
+                    value: item.id,
+                  }));
+                  return value;
                 }}
                 placeholder="分区"
+              />
+              <ProFormSelect
+                name="week"
+                valueEnum={{
+                  this: '本周',
+                  last: '上周',
+                }}
+                initialValue={'this'}
+              />
+              <ProFormRadio.Group
+                name="radio"
+                radioType="button"
+                initialValue={'Mon'}
+                options={[
+                  {
+                    value: 'Mon',
+                    label: '周一',
+                  },
+                  {
+                    value: 'Tues',
+                    label: '周二',
+                  },
+                  {
+                    value: 'Wed',
+                    label: '周三',
+                  },
+                  {
+                    value: 'Thur',
+                    label: '周四',
+                  },
+                  {
+                    value: 'Fri',
+                    label: '周五',
+                  },
+                  {
+                    value: 'Sat',
+                    label: '周六',
+                  },
+                  {
+                    value: 'Sun',
+                    label: '周日',
+                  },
+                ]}
               />
               <ProFormDatePicker name="time" placeholder="日期" />
               <ProFormRadio.Group
