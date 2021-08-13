@@ -37,7 +37,6 @@ export default () => {
           const form = {};
           // eslint-disable-next-line no-plusplus
           for (let j = 0; j < all.length; j++) {
-            console.log(all.length);
             if (all[j].day === filter.day) {
               switch (all[j].bedTime) {
                 case 'Morning':
@@ -70,12 +69,9 @@ export default () => {
         console.log(resp);
         setSeq((resp.data + 1) % 2 === 0 ? 'Even' : 'Odd');
         const now = new Date();
-        console.log(now);
         const weekDay = now.getDay();
-        console.log(weekDay);
         let time = 'Morning';
         const hour = now.getHours();
-        console.log(hour);
         let day = 'Monday';
         switch (weekDay) {
           case 0:
@@ -135,7 +131,6 @@ export default () => {
               collapseLabel={<FilterOutlined />}
               size={'large'}
               onFinish={async (values) => {
-                console.log(values);
                 setFilter(values);
                 setTimeRange(values.time);
               }}

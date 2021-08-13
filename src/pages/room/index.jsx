@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 // import { PageContainer } from '@ant-design/pro-layout';
 import { Space, Tag, Row, Col, Button } from 'antd';
-import { FilterOutlined, PlusOutlined } from '@ant-design/icons';
+import { FilterOutlined } from '@ant-design/icons';
 // import { PlusOutlined } from '@ant-design/icons';
 import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
@@ -308,7 +308,6 @@ export default () => {
                 <Space>
                   <Button
                     type="primary"
-                    icon={<PlusOutlined />}
                     onClick={() => {
                       setSelectMode(true);
                     }}

@@ -90,7 +90,9 @@ const PatientCard = (props) => {
               </Row>
               <Row>
                 {/* <div style={{ display: 'inline' }}>HD HDF 15AC</div> */}
-                <div style={{ display: 'inline' }}>登记号：000001</div>
+                <div style={{ display: 'inline' }}>
+                  登记号：{props.values.patient?.outpatientNo}
+                </div>
                 <div style={{ display: 'inline' }}>
                   <Tag type="primary">住院</Tag>
                 </div>
@@ -479,7 +481,7 @@ const PatientCard = (props) => {
                 }}
               >
                 <Row>
-                  <div style={{ fontSize: '18px' }}>监测已进行</div>
+                  <div style={{ fontSize: '18px' }}>监测</div>
                 </Row>
                 <Row>
                   <div>{monitor}</div>
@@ -554,7 +556,7 @@ const PatientCard = (props) => {
                 }}
               >
                 <Row>
-                  <div style={{ fontSize: '18px' }}>巡视已进行</div>
+                  <div style={{ fontSize: '18px' }}>巡视</div>
                 </Row>
                 <Row>
                   <div>{patrol}</div>

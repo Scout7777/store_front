@@ -122,11 +122,9 @@ const DetailList = (props) => {
           // eslint-disable-next-line no-plusplus
           for (let i = 0; i < raw.length; i++) {
             if (raw[i].bedArea.id === item.id) {
-              console.log(item.name);
               all.push(raw[i]);
             }
           }
-          console.log(all);
           const today = [];
           const form = {};
           // 遍历区域内的筛选时间的
@@ -136,7 +134,6 @@ const DetailList = (props) => {
               today.push(all[j]);
             }
           }
-          console.log(today);
           // eslint-disable-next-line no-plusplus
           for (let k = 0; k < today.length; k++) {
             switch (all[k].bedTime) {

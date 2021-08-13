@@ -128,7 +128,7 @@
   },
   {
     path: '/',
-    redirect: '/home',
+    redirect: '/room',
   },
   {
     component: './404',
