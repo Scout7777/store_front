@@ -16,11 +16,7 @@ import On from './On';
 import Down from './Down';
 import Monitor from './NMonitor';
 import Patrol from './Patrol';
-import {
-  createAdmission,
-  createProcess,
-  // updatePre
-} from '@/services/histsys/dialysis';
+import { createAdmission, createProcess, updatePre } from '@/services/histsys/dialysis';
 
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
@@ -243,20 +239,21 @@ const PatientCard = (props) => {
               >
                 <PreAssessment
                   visible={PreVisible}
-                  // onSubmit={async (value) => {
-                  //   console.log(value)
-                  //   console.log(process)
-                  //   const resp = await updatePre(process.id, value)
-                  //   console.log(resp)
-                  //   handlePreVisible(false);
-                  //   setPre(true)
-                  // }}
-                  onSubmit={(value) => {
+                  onSubmit={async (value) => {
+                    console.log(value);
                     setPreAssessment(value);
+                    const resp = await updatePre(process.id, value);
+                    console.log(resp);
                     console.log(preAssessment);
                     handlePreVisible(false);
                     setPre(true);
                   }}
+                  // onSubmit={(value) => {
+                  //   setPreAssessment(value);
+                  //   console.log(preAssessment);
+                  //   handlePreVisible(false);
+                  //   setPre(true);
+                  // }}
                   onCancel={() => {
                     handlePreVisible(false);
                   }}

@@ -31,7 +31,7 @@
   },
   {
     path: '/monitor_pad',
-    name: '透析监控-移动端',
+    name: '透析操作',
     access: 'alluser',
     icon: 'FundOutlined',
     component: './monitor_pad',

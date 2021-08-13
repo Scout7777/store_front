@@ -150,7 +150,7 @@ const CreateForm = (props) => {
               console.log(all);
               const resp = await updatePatientBed(currentPatient.id, all);
               notification.open({
-                description: resp.status + resp.message,
+                description: resp.message,
                 message: '调试',
               });
               console.log(resp);

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space, Tag } from 'antd';
+import { Button, Space, Tag, Progress } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
 import { getPatientBed, searchPatient } from '@/services/histsys/patient';
@@ -10,12 +10,12 @@ import { getProcess, getProcessLast } from '@/services/histsys/dialysis';
 import UpdateForm from './components/PatientUpdateForm';
 import CreateForm from './components/PatientCreateForm';
 
-const ProcessMap = {
-  // close: 'normal',
-  active: 'active',
-  // online: 'success',
-  disable: 'exception',
-};
+// const ProcessMap = {
+//   // close: 'normal',
+//   active: 'active',
+//   // online: 'success',
+//   disable: 'exception',
+// };
 
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
@@ -23,9 +23,6 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
-  const MockValue = [];
-  const aa = ['a', 'b'];
-  const role = ['a', 'b', 'c', 'd', 'e'];
   const mock = [
     <>
       <Tag>急诊</Tag>
@@ -76,25 +73,6 @@ export default () => {
 
   //  let result= Math.floor(Math.random() * aa.length);
 
-  for (let i = 0; i < 20; i += 1) {
-    MockValue.push({
-      time: 'a',
-      name: '测试患者',
-      problem: '心梗',
-      notice: '轮椅',
-      dashboard: '高血压',
-      way: aa[Math.floor(Math.random() * aa.length)],
-      role: role[Math.floor(Math.random() * role.length)],
-      status: 'progress',
-      bp: '90/150',
-      weight_before: '70',
-      weight_later: '68',
-      water: '2.0',
-      water_now: '1.8',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    });
-  }
-
   const columns = [
     // {
     //   title: '头像',
@@ -106,13 +84,11 @@ export default () => {
       title: '门诊号（登记号）',
       dataIndex: ['electronicMedicalRecord', 'outpatientNo'],
       sorter: true,
-      render: (_, record) => `0000000${record.id}`,
+      // render: (_, record) => `0000000${record.id}`,
     },
     {
       title: '姓名',
-      dataIndex: 'patientName',
-      sorter: true,
-      render: (_, record) => `测试患者${record.id}`,
+      dataIndex: ['electronicMedicalRecord', 'patientName'],
     },
     {
       title: '状态',
@@ -164,11 +140,11 @@ export default () => {
       title: '检验时效',
       dataIndex: 'status',
       hideInForm: false,
-      valueType: (item) => ({
-        type: 'progress',
-        status: ProcessMap[item.status],
-        value: 30,
-      }),
+      render: () => <Progress percent={30} size="small" />,
+      // valueType: () => ({
+      //   type: 'progress',
+      //   status: 'active',
+      // }),
       // valueEnum: {
       //   active: {
       //     text: '检验时效中',
