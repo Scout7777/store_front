@@ -46,10 +46,6 @@ const CreateForm = (props) => {
             <BasicCreateForm
               onSubmit={async (value) => {
                 const reform = value;
-                const [a, b] = value.id;
-                reform.idType = a;
-                reform.idNo = b;
-                delete reform.id;
                 const resp = await createPatient(reform);
                 if (resp) {
                   setCurrentPatient(resp.data);

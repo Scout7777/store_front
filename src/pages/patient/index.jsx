@@ -215,11 +215,11 @@ export default () => {
           key="config"
           onClick={() => {
             console.log(record);
-            handleUpdateModalVisible(true);
             setCurrentRow(record);
             console.log(getProcess(record.id));
             console.log(getProcessLast(record.id));
             console.log(getPatientBed(record.id));
+            handleUpdateModalVisible(true);
           }}
         >
           更新
