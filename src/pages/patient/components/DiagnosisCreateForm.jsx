@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from 'antd';
 import ProForm, {
   // ProFormSelect,
@@ -19,8 +19,14 @@ import { PlusOutlined } from '@ant-design/icons';
 选填：身高、密级、重名附加符、血型、教育程度、职业、婚姻状况、生育情况、本人电话、家庭电话、联系人电话、联系人关系、家庭住址
 上传头像，更新患者LIS信息，时间段 */
 const DiagnosisCreateForm = (props) => {
+  const formRef = useRef();
+
+  useEffect(() => {
+    formRef?.current?.setFieldsValue(props.originData);
+  }, [props.originData]);
+
   return (
-    <ProForm onFinish={props.onSubmit}>
+    <ProForm onFinish={props.onSubmit} formRef={formRef}>
       <Button type="primary" key="primary">
         <PlusOutlined />
         从HIS导入

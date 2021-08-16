@@ -17,11 +17,12 @@ import InfectionForm from './InfectionForm';
 import BedForm from './BedForm';
 import Card from './Card';
 import {
-  createPatient,
+  putPatient,
   getLongTermMedicalAdvice,
   updateLongTermMedicalAdvice,
   getPatient,
   updatePatientBed,
+  createDiagnosisInfo,
 } from '@/services/histsys/patient';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -83,18 +84,16 @@ const UpdateForm = (props) => {
         <TabPane tab="电子病历" key="1">
           <PageContainer title="电子病历" style={{ padding: 24 }}>
             <BasicCreateForm
+              originData={currentPatient.electronicMedicalRecord}
               onSubmit={async (value) => {
                 const reform = value;
-                const [a, b] = value.id;
-                reform.idType = a;
-                reform.idNo = b;
-                delete reform.id;
-                const resp = await createPatient(reform);
-                if (resp) {
-                  console.log('进入');
+                await putPatient(currentPatient.id, reform).then((resp) => {
                   setCurrentPatient(resp.data);
-                  console.log('新建成功');
-                }
+                  notification.open({
+                    description: resp.message,
+                    message: '消息',
+                  });
+                });
               }}
             />
           </PageContainer>
@@ -102,9 +101,20 @@ const UpdateForm = (props) => {
         <TabPane tab="诊断信息" key="2">
           <PageContainer title="诊断信息" style={{ padding: 24 }}>
             <DiagnosisCreateForm
-              onSubmit={async () => {
-                const resp = await getPatient(id);
-                console.log(resp);
+              originData={currentPatient.diagnosisInfo}
+              onSubmit={async (value) => {
+                if (currentPatient?.id) {
+                  const resp = await createDiagnosisInfo(currentPatient.id, value);
+                  console.log(resp);
+                  notification.open({
+                    description: resp.message,
+                    message: '消息',
+                  });
+                } else
+                  notification.open({
+                    description: '请先创建患者',
+                    message: '消息',
+                  });
               }}
             />
           </PageContainer>

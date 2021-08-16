@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Row, Col } from 'antd';
 import ProForm, {
   ProFormSelect,
   ProFormText,
   ProFormRadio,
   ProFormDatePicker,
-  ProFormFieldSet,
+  // ProFormFieldSet,
 } from '@ant-design/pro-form';
 
 import FormItemDivider from '@/components/FormItemDivider';
@@ -16,8 +16,14 @@ import FormItemDivider from '@/components/FormItemDivider';
 选填：身高、密级、重名附加符、血型、教育程度、职业、婚姻状况、生育情况、本人电话、家庭电话、联系人电话、联系人关系、家庭住址
 上传头像，更新患者LIS信息，时间段 */
 const BasicCreateForm = (props) => {
+  const formRef = useRef();
+
+  useEffect(() => {
+    formRef?.current?.setFieldsValue(props.originData);
+  }, [props.originData]);
+
   return (
-    <ProForm onFinish={props.onSubmit} title="电子病历">
+    <ProForm onFinish={props.onSubmit} title="电子病历" formRef={formRef}>
       <FormItemDivider>必填</FormItemDivider>
       <Row>
         <Col span={12}>
@@ -32,6 +38,7 @@ const BasicCreateForm = (props) => {
           <ProFormText
             name="outpatientNo"
             label="门诊号（登记号）"
+            initialValue={props.originData?.outpatientNo}
             width="md"
             rules={[{ required: true }]}
           />
@@ -43,32 +50,34 @@ const BasicCreateForm = (props) => {
           <ProFormText name="dialysisNo" label="透析号" width="md" rules={[{ required: true }]} />
         </Col>
         <Col span={12}>
-          <ProFormFieldSet name="id" label="证件" rules={[{ required: true }]}>
-            <ProFormSelect
-              width="xs"
-              request={async () => [
-                // 居民身份证(01),
-                // 居民户口簿(02),
-                // 护照(03),
-                // 军官证(04),
-                // 驾驶证(05),
-                // 港澳居民来往内地通行证(06),
-                // 台湾居民来往内地通行证(07),
-                // 其他法定有效证件(99)
-                { label: '居民身份证', value: '居民身份证' },
-                { label: '居民户口簿', value: '居民户口簿' },
-                { label: '护照', value: '护照' },
-                { label: '军官证', value: '军官证' },
-                { label: '驾驶证', value: '驾驶证' },
-                { label: '港澳居民来往内地通行证', value: '港澳居民来往内地通行证' },
-                { label: '台湾居民来往内地通行证', value: '台湾居民来往内地通行证' },
-                { label: '其他法定有效证件', value: '其他法定有效证件' },
-              ]}
-              name="idType"
-              label="类型"
-            />
-            <ProFormText width="sm" name="idNo" label="证件号码" />
-          </ProFormFieldSet>
+          <ProFormSelect
+            name="idType"
+            initialValue={props.originData?.idType}
+            label="证件类型"
+            rules={[{ required: true }]}
+            width="md"
+            request={async () => [
+              // 居民身份证(01),
+              // 居民户口簿(02),
+              // 护照(03),
+              // 军官证(04),
+              // 驾驶证(05),
+              // 港澳居民来往内地通行证(06),
+              // 台湾居民来往内地通行证(07),
+              // 其他法定有效证件(99)
+              { label: '居民身份证', value: '居民身份证' },
+              { label: '居民户口簿', value: '居民户口簿' },
+              { label: '护照', value: '护照' },
+              { label: '军官证', value: '军官证' },
+              { label: '驾驶证', value: '驾驶证' },
+              { label: '港澳居民来往内地通行证', value: '港澳居民来往内地通行证' },
+              { label: '台湾居民来往内地通行证', value: '台湾居民来往内地通行证' },
+              { label: '其他法定有效证件', value: '其他法定有效证件' },
+            ]}
+          />
+        </Col>
+        <Col span={12}>
+          <ProFormText width="md" name="idNo" label="证件号码" />
         </Col>
         <Col span={12}>
           <ProFormText
@@ -83,7 +92,6 @@ const BasicCreateForm = (props) => {
           <ProFormRadio.Group
             name="gender"
             label="性别"
-            initialValue="male"
             options={[
               { value: '男', label: '男' },
               { value: '女', label: '女' },
