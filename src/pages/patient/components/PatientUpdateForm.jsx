@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Tabs, notification, Button, Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import BasicCreateForm from './BasicCreateForm';
@@ -23,7 +23,6 @@ import {
   getPatient,
   updatePatientBed,
 } from '@/services/histsys/patient';
-import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
@@ -33,6 +32,20 @@ const UpdateForm = (props) => {
   const { id } = props.values;
   const [currentPatient, setCurrentPatient] = useState({ ...props.values });
   const [longM, setlongM] = useState({ ...props.values });
+
+  useEffect(() => {
+    console.log(id);
+    async function nowPatient() {
+      if (id) {
+        await getPatient(id).then((resp) => {
+          console.log(resp);
+          setCurrentPatient(resp.data);
+        });
+      }
+    }
+
+    nowPatient();
+  }, [id]);
 
   return (
     <Modal
@@ -108,7 +121,10 @@ const UpdateForm = (props) => {
         </TabPane>
         <TabPane tab="过敏史" key="5">
           {/* <PageContainer title="过敏史" style={{ padding: 24 }}> */}
-          <AllergyCreateForm />
+          <AllergyCreateForm
+            originData={currentPatient?.allergyHistories}
+            id={currentPatient?.id}
+          />
           {/* </PageContainer> */}
         </TabPane>
         <TabPane tab="血管通路" key="6">

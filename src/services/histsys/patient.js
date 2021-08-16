@@ -50,6 +50,16 @@ export async function createPictures(id, values) {
   });
 }
 
+export async function createAllergy(id, values) {
+  return request(`/api/patients/${id}/allergy-history`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
 export async function getPatient(id) {
   return request(`/api/patients/detail/${id}`, {
     method: 'GET',

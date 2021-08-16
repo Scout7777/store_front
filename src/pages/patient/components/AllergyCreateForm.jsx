@@ -4,14 +4,15 @@ import { EditableProTable } from '@ant-design/pro-table';
 import ProField from '@ant-design/pro-field';
 // import { ProFormRadio } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
+import { createAllergy } from '@/services/histsys/patient';
 
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+// const waitTime = (time = 100) => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(true);
+//     }, time);
+//   });
+// };
 
 const defaultData = [
   {
@@ -32,15 +33,18 @@ const defaultData = [
   },
 ];
 
-export default () => {
+export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [position] = useState('bottom');
 
+  console.log(props.originData);
+  console.log(props.id);
+
   const columns = [
     {
       title: '过敏源',
-      dataIndex: 'title',
+      dataIndex: 'name',
       formItemProps: (form, { rowIndex }) => {
         return {
           rules: rowIndex > 2 ? [{ required: true, message: '此项为必填项' }] : [],
@@ -50,51 +54,49 @@ export default () => {
       // editable: (text, record, index) => {
       //   return index !== 0;
       // },
-      width: '30%',
     },
     {
       title: '过敏类型',
-      key: 'state',
-      dataIndex: 'state',
+      key: 'type',
+      dataIndex: 'type',
       valueType: 'select',
       valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        open: {
+        药物过敏史: {
           text: '药物',
           status: 'Error',
         },
-        closed: {
+        过敏透析器: {
           text: '透析器',
           status: 'Success',
         },
-        other: {
+        其他过敏: {
           text: '其他',
           status: 'Info',
         },
       },
     },
     {
-      title: '描述',
-      dataIndex: 'decs',
-      fieldProps: (from, { rowKey, rowIndex }) => {
-        if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
-          return {
-            disabled: true,
-          };
-        }
-        if (rowIndex > 9) {
-          return {
-            disabled: true,
-          };
-        }
-        return {};
-      },
+      title: '备注',
+      dataIndex: 'remark',
+      // fieldProps: (from, { rowKey, rowIndex }) => {
+      //   if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
+      //     return {
+      //       disabled: true,
+      //     };
+      //   }
+      //   if (rowIndex > 9) {
+      //     return {
+      //       disabled: true,
+      //     };
+      //   }
+      //   return {};
+      // },
     },
-    {
-      title: '创建时间',
-      dataIndex: 'created_at',
-      valueType: 'date',
-    },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'created_at',
+    //   valueType: 'date',
+    // },
     {
       title: '操作',
       valueType: 'option',
@@ -134,11 +136,12 @@ export default () => {
             : false
         }
         columns={columns}
-        request={async () => ({
-          data: defaultData,
-          total: 3,
-          success: true,
-        })}
+        // request={async () => ({
+        //   data: defaultData,
+        //   total: 3,
+        //   success: true,
+        // })}
+        dataSource={defaultData}
         value={dataSource}
         onChange={setDataSource}
         editable={{
@@ -146,7 +149,12 @@ export default () => {
           editableKeys,
           onSave: async (rowKey, data, row) => {
             console.log(rowKey, data, row);
-            await waitTime(2000);
+            const reform = data;
+            delete reform.id;
+            delete reform.index;
+            await createAllergy(props.id, reform).then((resp) => {
+              console.log(resp);
+            });
           },
           onChange: setEditableRowKeys,
         }}
