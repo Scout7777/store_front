@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Tabs, notification } from 'antd';
+import { Modal, Tabs, notification, Button, Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import BasicCreateForm from './BasicCreateForm';
 import DiagnosisCreateForm from './DiagnosisCreateForm';
@@ -9,19 +9,22 @@ import AccessCreateForm from './AccessCreateForm';
 import ChronicCreateForm from './ChronicCreateForm';
 import AccessComplicationCreateForm from './AccessComplicationCreateForm';
 import LongCreateForm from './LongCreateForm';
-// import ChargeCreateForm from './ChargeCreateForm';
+import ChargeCreateForm from './ChargeCreateForm';
 import AssessCreateForm from './AssessCreateForm';
 import MedicalCreateForm from './MedicalCreateForm';
+import DlMedicalCreateForm from './DlMedicalCreateForm';
 import InfectionForm from './InfectionForm';
 import BedForm from './BedForm';
 import Card from './Card';
 import {
   createPatient,
   updateLongTermMedicalAdvice,
-  getPatient,
+  // getPatient,
   updatePatientBed,
+  createDiagnosisInfo,
 } from '@/services/histsys/patient';
 import { useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -48,9 +51,11 @@ const CreateForm = (props) => {
                 delete reform.id;
                 const resp = await createPatient(reform);
                 if (resp) {
-                  console.log('进入');
                   setCurrentPatient(resp.data);
-                  console.log('新建成功');
+                  notification.open({
+                    description: resp.message,
+                    message: '消息',
+                  });
                 }
               }}
             />
@@ -59,24 +64,43 @@ const CreateForm = (props) => {
         <TabPane tab="诊断信息" key="2">
           <PageContainer title="诊断信息" style={{ padding: 24 }}>
             <DiagnosisCreateForm
-              onSubmit={async () => {
-                console.log(currentPatient);
-                const resp = await getPatient(currentPatient.id);
-                console.log(resp);
+              onSubmit={async (value) => {
+                if (currentPatient?.id) {
+                  const resp = await createDiagnosisInfo(currentPatient.id, value);
+                  console.log(resp);
+                  notification.open({
+                    description: resp.message,
+                    message: '消息',
+                  });
+                } else
+                  notification.open({
+                    description: '请先创建患者',
+                    message: '消息',
+                  });
               }}
             />
           </PageContainer>
         </TabPane>
-        <TabPane tab="患者图片管理" key="3">
+        <TabPane tab="患者图片文档管理" key="3">
           <PageContainer title="患者图片管理" style={{ padding: 24 }}>
-            <ImageCreateForm />
+            <ImageCreateForm
+              onSubmit={async (value) => {
+                if (currentPatient?.id) {
+                  console.log(value);
+                } else
+                  notification.open({
+                    description: '请先创建患者',
+                    message: '消息',
+                  });
+              }}
+            />
           </PageContainer>
         </TabPane>
-        <TabPane tab="患者签字文档" key="4">
+        {/* <TabPane tab="患者签字文档" key="4">
           <PageContainer title="患者签字文档" style={{ padding: 24 }}>
             <ImageCreateForm />
           </PageContainer>
-        </TabPane>
+        </TabPane> */}
         <TabPane tab="过敏史" key="5">
           {/* <PageContainer title="过敏史" style={{ padding: 24 }}> */}
           <AllergyCreateForm />
@@ -96,23 +120,6 @@ const CreateForm = (props) => {
             onSubmit={async (value) => {
               console.log(value);
               const reform = value;
-              switch (reform.Type) {
-                case 'hd':
-                  reform.hdActive = true;
-                  reform.hd = reform.main;
-                  break;
-                case 'hdf':
-                  reform.hdfActive = true;
-                  reform.hdf = reform.main;
-                  break;
-                case 'hf':
-                  reform.hfActive = true;
-                  reform.hf = reform.main;
-                  break;
-                default:
-              }
-              delete reform.Type;
-              delete reform.main;
               console.log(reform);
               console.log(currentPatient);
               const resp = await updateLongTermMedicalAdvice(currentPatient.id, reform);
@@ -124,7 +131,7 @@ const CreateForm = (props) => {
           />
         </TabPane>
         <TabPane tab="耗材设置" key="10">
-          {/* <ChargeCreateForm /> */}
+          <ChargeCreateForm />
         </TabPane>
         <TabPane tab="传染病检查" key="11">
           <InfectionForm />
@@ -165,7 +172,7 @@ const CreateForm = (props) => {
               console.log(all);
               const resp = await updatePatientBed(currentPatient.id, all);
               notification.open({
-                description: resp.status + resp.message,
+                description: resp.message,
                 message: '调试',
               });
               console.log(resp);
@@ -178,19 +185,33 @@ const CreateForm = (props) => {
           </PageContainer>
         </TabPane>
         <TabPane tab="检验结果" key="14">
-          {/* 获取HIS信息后同步开发 */}
+          <Button type="primary" key="primary">
+            <PlusOutlined />
+            从LIS导入
+          </Button>
         </TabPane>
         <TabPane tab="住院信息" key="15">
-          {/* 获取HIS信息后同步开发 */}
+          <Button type="primary" key="primary">
+            <PlusOutlined />
+            从HIS导入
+          </Button>
         </TabPane>
         <TabPane tab="常规透析用药" key="16">
-          {/* 移动端录入 */}
+          <DlMedicalCreateForm />
         </TabPane>
         <TabPane tab="门诊用药医嘱" key="17">
           <MedicalCreateForm />
         </TabPane>
         <TabPane tab="发卡" key="18">
           <Card />
+          <Space size={[12, 18]} wrap>
+            <Button type="primary" key="primary">
+              打印
+            </Button>
+            <Button type="primary" key="primary">
+              写卡
+            </Button>
+          </Space>
         </TabPane>
       </Tabs>
     </Modal>

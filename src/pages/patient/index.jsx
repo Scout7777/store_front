@@ -1,21 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space, Tag } from 'antd';
+import { Button, Space, Tag, Progress } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
 import { getPatientBed, searchPatient } from '@/services/histsys/patient';
-import { getWeek, getReal, getTemplate } from '@/services/histsys/bed';
+import { getWeek, getReal, getTemplateWeek } from '@/services/histsys/bed';
 import { getProcess, getProcessLast } from '@/services/histsys/dialysis';
 import UpdateForm from './components/PatientUpdateForm';
 import CreateForm from './components/PatientCreateForm';
 
-const ProcessMap = {
-  // close: 'normal',
-  active: 'active',
-  // online: 'success',
-  disable: 'exception',
-};
+// const ProcessMap = {
+//   // close: 'normal',
+//   active: 'active',
+//   // online: 'success',
+//   disable: 'exception',
+// };
 
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
@@ -23,29 +23,55 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
-  const MockValue = [];
-  const aa = ['a', 'b'];
-  const role = ['a', 'b', 'c', 'd', 'e'];
-  //  let result= Math.floor(Math.random() * aa.length);
+  const mock = [
+    <>
+      <Tag>急诊</Tag>
+      <Tag>临时</Tag>
+    </>,
+    <Tag>退出</Tag>,
+    <Tag>请假</Tag>,
+    '-',
+    '-',
+    '-',
+    '-',
+  ];
+  const bed = [
+    <>
+      <Tag>一/晚</Tag>
+      <Tag>四/晚</Tag>
+    </>,
+    <>
+      <Tag>一/早</Tag>
+      <Tag>三/早</Tag>
+      <Tag>五/早</Tag>
+    </>,
+    <>
+      <Tag>二/下</Tag>
+      <Tag>四/下</Tag>
+      <Tag>六/下</Tag>
+    </>,
+    '-',
+  ];
+  const zhengzhuang = [
+    <Tag color={'purple'}>房颤</Tag>,
+    <Tag color={'purple'}>甲</Tag>,
+    '-',
+    '-',
+    '-',
+  ];
+  const guomin = [
+    <Tag color={'red'}>药物</Tag>,
+    <Tag color={'red'}>透析器</Tag>,
+    <>
+      <Tag color={'red'}>透析器</Tag>
+      <Tag color={'red'}>药物</Tag>
+    </>,
+    '-',
+    '-',
+    '-',
+  ];
 
-  for (let i = 0; i < 20; i += 1) {
-    MockValue.push({
-      time: 'a',
-      name: '测试患者',
-      problem: '心梗',
-      notice: '轮椅',
-      dashboard: '高血压',
-      way: aa[Math.floor(Math.random() * aa.length)],
-      role: role[Math.floor(Math.random() * role.length)],
-      status: 'progress',
-      bp: '90/150',
-      weight_before: '70',
-      weight_later: '68',
-      water: '2.0',
-      water_now: '1.8',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    });
-  }
+  //  let result= Math.floor(Math.random() * aa.length);
 
   const columns = [
     // {
@@ -58,15 +84,20 @@ export default () => {
       title: '门诊号（登记号）',
       dataIndex: ['electronicMedicalRecord', 'outpatientNo'],
       sorter: true,
-      // render: (_, record) => <div>{record.electronicMedicalRecord}</div>,
+      // render: (_, record) => `0000000${record.id}`,
     },
     {
       title: '姓名',
-      dataIndex: 'patientName',
-      sorter: true,
+      dataIndex: ['electronicMedicalRecord', 'patientName'],
     },
     {
-      title: '排床',
+      title: '状态',
+      dataIndex: 'state',
+      search: false,
+      render: () => <Space>{mock[Math.floor(Math.random() * mock.length)]}</Space>,
+    },
+    {
+      title: '排床规律',
       dataIndex: 'labels',
       search: false,
       render: () => (
@@ -76,14 +107,12 @@ export default () => {
               {name}
             </Tag>
           ))} */}
-          <Tag>一/晚</Tag>
-          <Tag>三/晚</Tag>
-          <Tag>五/晚</Tag>
+          {bed[Math.floor(Math.random() * bed.length)]}
         </Space>
       ),
     },
     {
-      title: '患者类型',
+      title: '感染四项',
       dataIndex: 'role',
       valueEnum: {
         a: {
@@ -111,10 +140,11 @@ export default () => {
       title: '检验时效',
       dataIndex: 'status',
       hideInForm: false,
-      valueType: (item) => ({
-        type: 'progress',
-        status: ProcessMap[item.status],
-      }),
+      render: () => <Progress percent={30} size="small" />,
+      // valueType: () => ({
+      //   type: 'progress',
+      //   status: 'active',
+      // }),
       // valueEnum: {
       //   active: {
       //     text: '检验时效中',
@@ -142,6 +172,16 @@ export default () => {
     },
     {
       title: '症状评估',
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          {zhengzhuang[Math.floor(Math.random() * zhengzhuang.length)]}
+        </Space>
+      ),
     },
     {
       title: '用药情况',
@@ -155,17 +195,17 @@ export default () => {
               {name}
             </Tag>
           ))} */}
-          <Tag>药物</Tag>
+          {guomin[Math.floor(Math.random() * guomin.length)]}
         </Space>
       ),
     },
-    {
-      title: '创建时间',
-      sorter: true,
-      search: false,
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-    },
+    // {
+    //   title: '创建时间',
+    //   sorter: true,
+    //   search: false,
+    //   dataIndex: 'createdAt',
+    //   valueType: 'dateTime',
+    // },
     {
       title: '操作',
       dataIndex: 'option',
@@ -206,7 +246,7 @@ export default () => {
             key="primary"
             onClick={() => {
               console.log(getWeek());
-              console.log(getTemplate());
+              console.log(getTemplateWeek(202133));
               console.log(getReal());
               handleCreateModalVisible(true);
             }}

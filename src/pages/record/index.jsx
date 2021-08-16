@@ -6,6 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
+import { searchPatient } from '@/services/histsys/dialysis';
 // import MonitorList from './components/MonitorList';
 
 export default () => {
@@ -48,11 +49,6 @@ export default () => {
       dataIndex: 'staffNo',
       sorter: true,
       render: (_, record, index) => <div>00000{index + 1}</div>,
-    },
-    {
-      title: '床位',
-      dataIndex: 'position',
-      render: (_, record, index) => <div>{index + 1}床</div>,
     },
     {
       title: '姓名',
@@ -153,8 +149,8 @@ export default () => {
             <PlusOutlined /> 手动补录
           </Button>,
         ]}
-        // request={searchUser}
-        dataSource={MockValue}
+        request={searchPatient}
+        // dataSource={MockValue}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {

@@ -18,17 +18,9 @@ const defaultData = [
     id: 624748504,
     title: '并发症1',
     decs: '请勿使用',
-    state: 'open',
+    state: 'b',
     created_at: '2020-05-26T09:42:56Z',
     update_at: '2020-05-26T09:42:56Z',
-  },
-  {
-    id: 624691229,
-    title: '并发症2',
-    decs: '请勿使用',
-    state: 'closed',
-    created_at: '2020-05-26T08:19:22Z',
-    update_at: '2020-05-26T08:19:22Z',
   },
 ];
 
@@ -50,46 +42,67 @@ export default () => {
       // editable: (text, record, index) => {
       //   return index !== 0;
       // },
-      width: '30%',
     },
     {
-      title: '类型',
-      key: 'state',
-      dataIndex: 'state',
+      title: '血管通路',
+      key: 'access',
+      dataIndex: 'access',
       valueType: 'select',
       valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        open: {
-          text: '类型1',
-          status: 'Error',
-        },
-        closed: {
-          text: '类型2',
-          status: 'Success',
-        },
-      },
-    },
-    {
-      title: '描述',
-      dataIndex: 'decs',
-      fieldProps: (from, { rowKey, rowIndex }) => {
-        if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
-          return {
-            disabled: true,
-          };
-        }
-        if (rowIndex > 9) {
-          return {
-            disabled: true,
-          };
-        }
-        return {};
+        a: '通路一',
+        b: '通路二',
+        c: '通路三',
       },
     },
     {
       title: '发现时间',
-      dataIndex: 'created_at',
+      dataIndex: 'find_at',
       valueType: 'date',
+    },
+    {
+      title: '并发症',
+      key: 'access',
+      dataIndex: 'com',
+      valueType: 'select',
+      valueEnum: {
+        a: '类型一',
+        b: '类型二',
+        c: '类型三',
+      },
+    },
+    {
+      title: '处理时间',
+      dataIndex: 'handle_at',
+      valueType: 'date',
+    },
+    {
+      title: '溶栓时间',
+      dataIndex: 'rong_at',
+      valueType: 'date',
+    },
+    {
+      title: '溶栓次数',
+      dataIndex: 'times',
+      valueType: 'digit',
+    },
+    {
+      title: 'PAT时间',
+      dataIndex: 'rong_at',
+      valueType: 'date',
+    },
+    {
+      title: 'PAT压力',
+      dataIndex: 'times',
+      valueType: 'digit',
+    },
+    {
+      title: 'PAT次数',
+      dataIndex: 'patTimes',
+      valueType: 'digit',
+    },
+    {
+      title: '失功原因',
+      dataIndex: 'reason',
     },
     {
       title: '操作',
@@ -121,7 +134,7 @@ export default () => {
       <EditableProTable
         rowKey="id"
         headerTitle="血管通路并发症"
-        maxLength={5}
+        scroll={{ x: 100 }}
         recordCreatorProps={
           position !== 'hidden'
             ? {

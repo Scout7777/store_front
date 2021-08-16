@@ -10,7 +10,7 @@ import ProForm, {
   // ProFormSwitch,
 } from '@ant-design/pro-form';
 
-// import FormItemDivider from '@/components/FormItemDivider';
+import FormItemDivider from '@/components/FormItemDivider';
 
 /* 功能键：从HIS获取患者信息
 患者基本信息：
@@ -24,28 +24,14 @@ const ChargeCreateForm = (props) => {
       <Row>
         <Col span={8}>
           <Card title={'收费套餐'}>
+            <FormItemDivider>HD</FormItemDivider>
             <ProFormSelect
               valueEnum={{
-                HD: 'HD',
-                HF: 'HF',
-                HDF: 'HDF',
-              }}
-              name="Type"
-              label="HD/HF/HDF类型"
-              fieldProps={{
-                onChange: (value) => {
-                  console.log(value);
-                },
-              }}
-            />
-            <ProFormSelect
-              valueEnum={{
-                HD: 'HD',
-                HF: 'HF',
-                HDF: 'HDF',
+                a: 'HD',
+                b: 'HDF',
               }}
               name="name"
-              label="血管通路名称"
+              label="血路管名称"
             />
             <ProFormDigit name="DialysisDuration" label="数量" />
             <ProFormSelect
@@ -71,7 +57,38 @@ const ChargeCreateForm = (props) => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card></Card>
+          <Card title={'收费套餐'}>
+            <FormItemDivider>HDF</FormItemDivider>
+            <ProFormSelect
+              valueEnum={{
+                a: 'HD',
+                b: 'HDF',
+              }}
+              name="name"
+              label="血路管名称"
+            />
+            <ProFormDigit name="DialysisDuration" label="数量" />
+            <ProFormSelect
+              valueEnum={{
+                HD: '类型1',
+                HF: '类型2',
+                HDF: '类型3',
+              }}
+              name="name1"
+              label="预留耗材"
+            />
+            <ProFormDigit name="DialysisDuration1" label="数量" />
+            <ProFormSelect
+              valueEnum={{
+                HD: '类型1',
+                HF: '类型2',
+                HDF: '类型3',
+              }}
+              name="name2"
+              label="穿刺针/导管护理"
+            />
+            <ProFormDigit name="DialysisDuration2" label="数量" />
+          </Card>
         </Col>
         <Col span={8}>
           <Card></Card>

@@ -16,11 +16,7 @@ import On from './On';
 import Down from './Down';
 import Monitor from './NMonitor';
 import Patrol from './Patrol';
-import {
-  createAdmission,
-  createProcess,
-  // updatePre
-} from '@/services/histsys/dialysis';
+import { createAdmission, createProcess, updatePre } from '@/services/histsys/dialysis';
 
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
@@ -94,7 +90,9 @@ const PatientCard = (props) => {
               </Row>
               <Row>
                 {/* <div style={{ display: 'inline' }}>HD HDF 15AC</div> */}
-                <div style={{ display: 'inline' }}>登记号：000001</div>
+                <div style={{ display: 'inline' }}>
+                  登记号：{props.values.patient?.outpatientNo}
+                </div>
                 <div style={{ display: 'inline' }}>
                   <Tag type="primary">住院</Tag>
                 </div>
@@ -104,7 +102,7 @@ const PatientCard = (props) => {
                   <div style={{ display: 'inline' }}>11:30</div>
                 </Col>
                 <Col span={16}>
-                  <Progress percent={30} size="small" />
+                  <Progress percent={0} size="small" />
                 </Col>
               </Row>
             </Col>
@@ -243,20 +241,21 @@ const PatientCard = (props) => {
               >
                 <PreAssessment
                   visible={PreVisible}
-                  // onSubmit={async (value) => {
-                  //   console.log(value)
-                  //   console.log(process)
-                  //   const resp = await updatePre(process.id, value)
-                  //   console.log(resp)
-                  //   handlePreVisible(false);
-                  //   setPre(true)
-                  // }}
-                  onSubmit={(value) => {
+                  onSubmit={async (value) => {
+                    console.log(value);
                     setPreAssessment(value);
+                    const resp = await updatePre(process.id, value);
+                    console.log(resp);
                     console.log(preAssessment);
                     handlePreVisible(false);
                     setPre(true);
                   }}
+                  // onSubmit={(value) => {
+                  //   setPreAssessment(value);
+                  //   console.log(preAssessment);
+                  //   handlePreVisible(false);
+                  //   setPre(true);
+                  // }}
                   onCancel={() => {
                     handlePreVisible(false);
                   }}
@@ -320,6 +319,7 @@ const PatientCard = (props) => {
                   //   const resp = await updatePre(process.id, value)
                   //   console.log(resp)
                   // }}
+                  processid={process?.id}
                   onSubmit={() => {
                     handlePunctureVisible(false);
                     setPuncture(true);
@@ -481,7 +481,7 @@ const PatientCard = (props) => {
                 }}
               >
                 <Row>
-                  <div style={{ fontSize: '18px' }}>监测已进行</div>
+                  <div style={{ fontSize: '18px' }}>监测</div>
                 </Row>
                 <Row>
                   <div>{monitor}</div>
@@ -556,7 +556,7 @@ const PatientCard = (props) => {
                 }}
               >
                 <Row>
-                  <div style={{ fontSize: '18px' }}>巡视已进行</div>
+                  <div style={{ fontSize: '18px' }}>巡视</div>
                 </Row>
                 <Row>
                   <div>{patrol}</div>

@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Row, Col } from 'antd';
+import { Button } from 'antd';
 import ProForm, {
   // ProFormSelect,
   // ProFormText,
@@ -9,6 +9,7 @@ import ProForm, {
   // ProFormFieldSet,
   ProFormCheckbox,
 } from '@ant-design/pro-form';
+import { PlusOutlined } from '@ant-design/icons';
 
 // import FormItemDivider from '@/components/FormItemDivider';
 
@@ -20,6 +21,10 @@ import ProForm, {
 const DiagnosisCreateForm = (props) => {
   return (
     <ProForm onFinish={props.onSubmit}>
+      <Button type="primary" key="primary">
+        <PlusOutlined />
+        从HIS导入
+      </Button>
       <ProFormTextArea
         name="mainDiagnosis"
         label="主要诊断"

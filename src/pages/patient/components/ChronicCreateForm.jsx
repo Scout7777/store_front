@@ -39,7 +39,7 @@ export default () => {
 
   const columns = [
     {
-      title: '并发症名称',
+      title: '并发症诊断',
       dataIndex: 'title',
       formItemProps: (form, { rowIndex }) => {
         return {
@@ -50,10 +50,9 @@ export default () => {
       // editable: (text, record, index) => {
       //   return index !== 0;
       // },
-      width: '30%',
     },
     {
-      title: '类型',
+      title: '并发症类型',
       key: 'state',
       dataIndex: 'state',
       valueType: 'select',
@@ -70,26 +69,26 @@ export default () => {
       },
     },
     {
-      title: '描述',
-      dataIndex: 'decs',
-      fieldProps: (from, { rowKey, rowIndex }) => {
-        if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
-          return {
-            disabled: true,
-          };
-        }
-        if (rowIndex > 9) {
-          return {
-            disabled: true,
-          };
-        }
-        return {};
-      },
-    },
-    {
-      title: '发现时间',
+      title: '并发症时间',
       dataIndex: 'created_at',
       valueType: 'date',
+    },
+    {
+      title: '并发症细类',
+      dataIndex: 'detail',
+    },
+    {
+      title: '转归时间',
+      dataIndex: 'gui_at',
+      valueType: 'date',
+    },
+    {
+      title: '转归',
+      dataIndex: 'gui',
+    },
+    {
+      title: '转归时间',
+      dataIndex: 'gui_handle',
     },
     {
       title: '操作',

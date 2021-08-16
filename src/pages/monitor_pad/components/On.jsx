@@ -9,10 +9,20 @@ import {
   // ProFormCheckbox
   // ProFormFieldSet,
 } from '@ant-design/pro-form';
+import Sign from './Signature';
 
-// import FormItemDivider from '@/components/FormItemDivider';
+import FormItemDivider from '@/components/FormItemDivider';
 
 const CreateForm = (props) => {
+  async function handleSubmit() {
+    console.log('执行');
+    props.onSubmit();
+  }
+
+  function handleGetMsg(value) {
+    console.log(value);
+  }
+
   return (
     <ModalForm
       title="上机"
@@ -22,10 +32,10 @@ const CreateForm = (props) => {
         onCancel: props.onCancel,
         destroyOnClose: true,
       }}
-      onFinish={props.onSubmit}
+      onFinish={handleSubmit}
     >
       <Row>
-        <Col span={12}>
+        <Col>
           <ProFormRadio.Group
             name="heparinName"
             label="抗凝剂种类"
@@ -54,8 +64,14 @@ const CreateForm = (props) => {
             ]}
           />
         </Col>
-        <ProFormDigit name="heparinAmount" label="剂量（AxaIU）"></ProFormDigit>
+        <Col>
+          <ProFormDigit name="heparinAmount" label="剂量（AxaIU）"></ProFormDigit>
+        </Col>
       </Row>
+      <FormItemDivider>上机操作签名</FormItemDivider>
+      <div>
+        <Sign getUrl={handleGetMsg} />
+      </div>
     </ModalForm>
   );
 };

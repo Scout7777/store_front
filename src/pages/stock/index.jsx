@@ -118,7 +118,7 @@ export default () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleCreateModalVisible(true);
+              // handleCreateModalVisible(true);
             }}
           >
             <PlusOutlined /> 新品入库

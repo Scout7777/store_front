@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
 // import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Space, Tag, Row, Col } from 'antd';
-import { InfoCircleFilled } from '@ant-design/icons';
+import { Space, Tag } from 'antd';
 // import { PlusOutlined } from '@ant-design/icons';
 import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
@@ -15,7 +14,6 @@ export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
   const [updateModalVisible, handleUpdateModalVisible] = useState();
   const [currentRow, setCurrentRow] = useState();
-  const [layOut] = useState('traditional');
   const actionRef = useRef();
 
   const MockValue = [];
@@ -180,121 +178,60 @@ export default () => {
 
   return (
     <div>
-      {/* <Radio.Group
-          options={options}
-          onChange={e => {setLayOut(e.target.value)}}
-          value={layOut}
-          optionType="button"
-          style={{margin: 6, right: 6}}
-        /> */}
-      {layOut === 'traditional' ? (
-        <div>
-          <ProTable
-            scroll={{ x: '100%' }}
-            actionRef={actionRef}
-            rowKey="key"
-            search={{
-              labelWidth: 120,
-            }}
-            toolBarRender={() => [
-              // <Button
-              //   type="primary"
-              //   key="primary"
-              //   onClick={() => {
-              //     handleCreateModalVisible(true);
-              //   }}
-              // >
-              //   <PlusOutlined /> 新建
-              // </Button>,
-            ]}
-            // request={searchUser}
-            dataSource={MockValue}
-            columns={columns}
-            // rowSelection={{
-            //   onChange: (_, selectedRows) => {
-            //     setSelectedRows(selectedRows);
-            //   },
-            // }}
-          />
-          <CreateForm
-            onCancel={() => {
-              handleCreateModalVisible(false);
-            }}
-            visible={createModalVisible}
-          />
-          <UpdateForm
-            onSubmit={async (value) => {
-              const { id } = currentRow || {};
-              const success = await updateUser(id, value);
-              if (success) {
-                handleUpdateModalVisible(false);
-                setCurrentRow(undefined);
-                if (actionRef.current) {
-                  actionRef.current.reload();
-                }
-              }
-            }}
-            onCancel={() => {
+      <div>
+        <ProTable
+          scroll={{ x: '100%' }}
+          actionRef={actionRef}
+          rowKey="key"
+          search={{
+            labelWidth: 120,
+          }}
+          toolBarRender={() => [
+            // <Button
+            //   type="primary"
+            //   key="primary"
+            //   onClick={() => {
+            //     handleCreateModalVisible(true);
+            //   }}
+            // >
+            //   <PlusOutlined /> 新建
+            // </Button>,
+          ]}
+          // request={searchPatient}
+          dataSource={MockValue}
+          columns={columns}
+          // rowSelection={{
+          //   onChange: (_, selectedRows) => {
+          //     setSelectedRows(selectedRows);
+          //   },
+          // }}
+        />
+        <CreateForm
+          onCancel={() => {
+            handleCreateModalVisible(false);
+          }}
+          visible={createModalVisible}
+        />
+        <UpdateForm
+          onSubmit={async (value) => {
+            const { id } = currentRow || {};
+            const success = await updateUser(id, value);
+            if (success) {
               handleUpdateModalVisible(false);
               setCurrentRow(undefined);
-            }}
-            visible={updateModalVisible}
-            values={currentRow || {}}
-          />
-        </div>
-      ) : (
-        <div>
-          <div style={{ marginBottom: '18px', fontSize: '16px' }}>一区</div>
-          <Space size={[12, 18]} wrap>
-            {MockValue.map((item, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div
-                style={{
-                  width: 216,
-                  height: 68,
-                  padding: 0,
-                  boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.06)',
-                }}
-                key={index}
-              >
-                <Row>
-                  <Col
-                    span={8}
-                    style={{
-                      fontSize: '16px',
-                      color: '#3F529E',
-                      backgroundColor: '#DADDEA',
-                      height: '68px',
-                      padding: '16px',
-                      fontFamily: 'SourceHanSansSC-Bold',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <div>{index + 1}床</div>
-                  </Col>
-                  <Col
-                    span={16}
-                    style={{ backgroundColor: 'white', height: '68px', padding: '12px' }}
-                  >
-                    <div style={{ fontSize: '20px' }}>{item.name}</div>
-                    <div style={{ display: 'inline' }}>HD</div>
-                    <div style={{ display: 'inline', marginLeft: 12 }}>住院</div>
-                    <InfoCircleFilled
-                      style={{
-                        fontSize: '21px',
-                        position: 'absolute',
-                        right: '15.5px',
-                        top: '23.5px',
-                        color: '#B5A647',
-                      }}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            ))}
-          </Space>
-        </div>
-      )}
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          onCancel={() => {
+            handleUpdateModalVisible(false);
+            setCurrentRow(undefined);
+          }}
+          visible={updateModalVisible}
+          values={currentRow || {}}
+        />
+      </div>
     </div>
   );
 };

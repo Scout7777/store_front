@@ -85,6 +85,15 @@ export async function getTemplate() {
   });
 }
 
+export async function getTemplateWeek(code) {
+  return request(`/api/bed-arrangements/${code}/template`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
 export async function getReal() {
   return request(`/api/bed-arrangements/current-week/real`, {
     method: 'GET',

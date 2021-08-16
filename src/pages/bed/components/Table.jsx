@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 // import { BadgeProps } from 'antd';
 import { Button, Space, Tag, Popover } from 'antd';
 // import { ProColumns } from '@ant-design/pro-table';
@@ -9,6 +9,7 @@ import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@an
 // @ts-ignore
 import styles from './split.less';
 import Area from './Area';
+import { getAreas, getWeek, getTemplateWeek } from '@/services/histsys/bed';
 
 // type TableListItem = {
 //   createdAtRange?: number[];
@@ -47,109 +48,54 @@ const PopTag = (props) => {
       visible={visible}
       onVisibleChange={handleVisibleChange}
     >
-      <Tag style={{ margin: 6 }} color={color}>
-        {lable}
-      </Tag>
+      <Tag color={color}>{lable}</Tag>
     </Popover>
   );
 };
 
 const DetailList = (props) => {
-  const { ip } = props;
+  const { filter, seq } = props;
   const [tableListDataSource, setTableListDataSource] = useState([]);
   const [areaShow, setAreaShow] = useState(false);
+  // const [Week, setWeek] = useState(202134);
 
   const columns = [
     {
-      title: '班次',
-      dataIndex: 'banci',
+      title: '区域',
+      dataIndex: 'name',
     },
     {
-      title: '一区',
-      width: 150,
-      render: () => (
-        <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'患者'}></PopTag>
-          <PopTag lable={'小红'}></PopTag>
-          <PopTag lable={'小刚'}></PopTag>
-          <PopTag lable={'小明'}></PopTag>
-          <PopTag lable={'普患'}></PopTag>
-        </div>
+      title: '上午班',
+      dataIndex: 'Morning',
+      render: (_, record) => (
+        <Space wrap>
+          {record.Morning?.patients?.map((patient) =>
+            patient.weekSeq === seq ? <PopTag lable={patient.patient?.patientName}></PopTag> : null,
+          )}
+        </Space>
       ),
     },
     {
-      title: '二区',
-      width: 150,
-      render: () => (
-        <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'患者'}></PopTag>
-          <PopTag lable={'小红'}></PopTag>
-          <PopTag lable={'小刚'}></PopTag>
-          <PopTag lable={'小明'}></PopTag>
-          <PopTag lable={'普患'}></PopTag>
-        </div>
-      ),
+      title: '下午班',
+      dataIndex: 'Afternoon',
+      render: (_, record) => {
+        <Space wrap>
+          {record.Afternoon?.patients?.map((patient) =>
+            patient.weekSeq === seq ? <PopTag lable={patient.patient?.patientName}></PopTag> : null,
+          )}
+        </Space>;
+      },
     },
     {
-      title: '三区',
-      width: 150,
-      render: () => (
-        <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'患者'}></PopTag>
-          <PopTag lable={'小红'}></PopTag>
-          <PopTag lable={'小刚'}></PopTag>
-          <PopTag lable={'小明'}></PopTag>
-          <PopTag lable={'普患'}></PopTag>
-        </div>
+      title: '晚上班',
+      dataIndex: 'Evening',
+      render: (_, record) => (
+        <Space wrap>
+          {record.Evening?.patients?.map((patient) =>
+            patient.weekSeq === seq ? <PopTag lable={patient.patient?.patientName}></PopTag> : null,
+          )}
+        </Space>
       ),
-    },
-    {
-      title: '乙肝区',
-      width: 150,
-      render: () => (
-        <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'小刚'} color={'red'}></PopTag>
-          <PopTag lable={'小明'} color={'red'}></PopTag>
-        </div>
-      ),
-    },
-    {
-      title: '丙肝区',
-      width: 150,
-      render: () => (
-        <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'张三'} color={'green'}></PopTag>
-          <PopTag lable={'李四'} color={'green'}></PopTag>
-          <PopTag lable={'王五'} color={'green'}></PopTag>
-        </div>
-      ),
-    },
-    {
-      title: '梅毒区',
-      width: 150,
-      render: () => (
-        <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'张三'} color={'grey'}></PopTag>
-          <PopTag lable={'李四'} color={'grey'}></PopTag>
-          <PopTag lable={'王五'} color={'grey'}></PopTag>
-        </div>
-      ),
-    },
-    {
-      title: '艾滋区',
-      width: 150,
-      render: () => (
-        <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}>
-          <PopTag lable={'张三'} color={'blue'}></PopTag>
-          <PopTag lable={'李四'} color={'blue'}></PopTag>
-          <PopTag lable={'王五'} color={'blue'}></PopTag>
-        </div>
-      ),
-    },
-    {
-      title: '临时预留区域',
-      width: 150,
-      render: () => <div style={{ flexWrap: 'wrap', display: 'inline-flex' }}></div>,
     },
     // {
     //   title: '操作',
@@ -166,9 +112,55 @@ const DetailList = (props) => {
   ];
 
   useEffect(() => {
-    const source = [{ banci: '上午班' }, { banci: '下午班' }, { banci: '晚上班' }];
-    setTableListDataSource(source);
-  }, [ip]);
+    async function Source() {
+      const source = await getAreas();
+      await getTemplateWeek(filter?.week ? filter.week : 202134).then((res) => {
+        const raw = res.data;
+        const reformData = source.data.map((item) => {
+          const all = [];
+          // 遍历全部选区域的
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i < raw.length; i++) {
+            if (raw[i].bedArea.id === item.id) {
+              all.push(raw[i]);
+            }
+          }
+          const today = [];
+          const form = {};
+          // 遍历区域内的筛选时间的
+          // eslint-disable-next-line no-plusplus
+          for (let j = 0; j < all.length; j++) {
+            if (all[j].day === filter.day) {
+              today.push(all[j]);
+            }
+          }
+          // eslint-disable-next-line no-plusplus
+          for (let k = 0; k < today.length; k++) {
+            switch (all[k].bedTime) {
+              case 'Morning':
+                form['Morning'] = today[k];
+                break;
+              case 'Afternoon':
+                form['Afternoon'] = today[k];
+                break;
+              case 'Evening':
+                form['Evening'] = today[k];
+                break;
+              default:
+            }
+          }
+          form.name = item.name;
+          form.id = item.id;
+          console.log(form);
+          return form;
+        });
+        console.log(reformData);
+        setTableListDataSource(reformData);
+      });
+    }
+    Source();
+    // week()
+  }, [filter]);
 
   return (
     <div>
@@ -177,6 +169,7 @@ const DetailList = (props) => {
         headerTitle="执行排床"
         columns={columns}
         dataSource={tableListDataSource}
+        // dataSource={MockValue}
         pagination={false}
         rowKey="key"
         search={false}
@@ -192,7 +185,13 @@ const DetailList = (props) => {
               区域管理
             </Button>,
             <Button key="list" type="primary">
-              新增排床
+              导入模板
+            </Button>,
+            <Button key="list" type="primary">
+              应用上周
+            </Button>,
+            <Button key="list" type="primary">
+              执行排床
             </Button>,
           ],
         }}
@@ -245,55 +244,60 @@ for (let i = 0; i < 20; i += 1) {
 //   onChange: (id: string) => void;
 // };
 
-const Filter = () => {
+const Filter = (props) => {
+  const formRef = useRef();
+  const { filter } = props;
+
+  useEffect(() => {
+    console.log(props);
+    formRef?.current?.setFieldsValue({
+      week: filter.week,
+      day: filter.day,
+    });
+  }, [props.filter]);
+
   return (
     <LightFilter
-      initialValues={{
-        sex: 'man',
-      }}
+      formRef={formRef}
+      initialValues={props.filter}
       bordered
       collapseLabel={<FilterOutlined />}
-      onFinish={async (values) => console.log(values)}
+      onFinish={props.onFilter}
     >
       <ProFormSelect
         name="week"
-        valueEnum={{
-          this: '本周',
-          last: '上周',
-        }}
-        initialValue={'this'}
+        // options={["202133", "202134"]}
       />
       <ProFormRadio.Group
-        name="radio"
+        name="day"
         radioType="button"
-        initialValue={'Mon'}
         options={[
           {
-            value: 'Mon',
+            value: 'Monday',
             label: '周一',
           },
           {
-            value: 'Tues',
+            value: 'Tuesday',
             label: '周二',
           },
           {
-            value: 'Wed',
+            value: 'Wednesday',
             label: '周三',
           },
           {
-            value: 'Thur',
+            value: 'Thursday',
             label: '周四',
           },
           {
-            value: 'Fri',
+            value: 'Friday',
             label: '周五',
           },
           {
-            value: 'Sat',
+            value: 'Saturday',
             label: '周六',
           },
           {
-            value: 'Sun',
+            value: 'Sunday',
             label: '周日',
           },
         ]}
@@ -311,18 +315,11 @@ const IPList = (props) => {
       title: '姓名',
       key: 'ip',
       dataIndex: 'ip',
-      // render: (_, item) => {
-      //   return <Badge status={item.status} text={item.ip} />;
-      // },
     },
     {
       title: '本周执行',
       key: 'cpu',
       dataIndex: 'cpu',
-      // valueType: {
-      //   type: 'percent',
-      //   precision: 0,
-      // },
     },
   ];
   return (
@@ -371,14 +368,76 @@ const IPList = (props) => {
 
 const Table = () => {
   const [ip, setIp] = useState('1床');
+  const [filter, setFilter] = useState({});
+  const [seq, setSeq] = useState({});
+  useEffect(() => {
+    async function getNow() {
+      await getWeek().then((resp) => {
+        console.log(resp);
+        const now = new Date();
+        console.log(now);
+        const weekDay = now.getDay();
+        console.log(weekDay);
+        let time = 'Morning';
+        const hour = now.getHours();
+        console.log(hour);
+        let day = 'Monday';
+        switch (weekDay) {
+          case 0:
+            day = 'Sunday';
+            break;
+          case 1:
+            day = 'Monday';
+            break;
+          case 2:
+            day = 'Tuesday';
+            break;
+          case 3:
+            day = 'Wednesday';
+            break;
+          case 4:
+            day = 'Thursday';
+            break;
+          case 5:
+            day = 'Friday';
+            break;
+          case 6:
+            day = 'Saturday';
+            break;
+          default:
+        }
+        if (hour > 12 && hour < 18) {
+          time = 'Afternoon';
+        } else if (hour > 18) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          time = 'Evening';
+        }
+        console.log(time);
+        setFilter({
+          week: resp.data + 1,
+          day,
+        });
+        console.log((resp.data + 1) % 2 === 0 ? 'Even' : 'Odd');
+        setSeq((resp.data + 1) % 2 === 0 ? 'Even' : 'Odd');
+        console.log(filter);
+      });
+    }
+    getNow();
+  }, []);
   return (
     <ProCard split="vertical" scroll={{ x: '100' }}>
       <ProCard colSpan="260px" ghost>
         <IPList onChange={(cIp) => setIp(cIp)} ip={ip} />
       </ProCard>
       <ProCard>
-        <Filter />
-        <DetailList />
+        <Filter
+          filter={filter}
+          onFilter={(values) => {
+            console.log(values);
+            setFilter(values);
+          }}
+        />
+        <DetailList filter={filter} seq={seq} />
       </ProCard>
     </ProCard>
   );

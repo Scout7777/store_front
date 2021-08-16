@@ -1,58 +1,35 @@
 import React from 'react';
-import { Row, Modal, Col } from 'antd';
-import ProForm, {
-  ProFormText,
-  ProFormRadio,
-  ProFormSelect,
-  ProFormDigit,
-} from '@ant-design/pro-form';
+import { Row, Modal, Tabs, Form } from 'antd';
+import ProForm, { ProFormText, ProFormSelect, ProFormDigit } from '@ant-design/pro-form';
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
 import ProCard from '@ant-design/pro-card';
 
+const { TabPane } = Tabs;
+
 const CreateForm = (props) => {
   return (
     <Modal title="查看详情" width={1200} visible={props.visible} onCancel={props.onCancel}>
-      <ProCard
-        title="基本信息"
-        // extra="2019年9月28日"
-        bordered
-        headerBordered
-      >
-        <ProForm title="基本信息">
-          <Row>
-            <Col span={8}>
-              <ProFormText
-                name="name"
-                label="姓名"
-                width="md"
-                placeholder="请输入真实姓名"
-                initialValue={'测试姓名'}
-              />
-            </Col>
-            <Col span={8}>
-              <ProFormRadio.Group
-                name="gender"
-                label="性别"
-                initialValue="male"
-                options={[
-                  { value: 'male', label: '男' },
-                  { value: 'female', label: '女' },
-                ]}
-                initialValue={'male'}
-              />
-            </Col>
-          </Row>
-          <Row>可调取所有患者字段，由院方选择</Row>
-        </ProForm>
+      <ProCard bordered headerBordered>
+        <Form title="基本信息">
+          <Form.Item label="姓名">测试患者</Form.Item>
+          <Form.Item label="性别">男</Form.Item>
+        </Form>
       </ProCard>
+      <Tabs defaultActiveKey="1">
+        {[...Array.from({ length: 30 }, (v, i) => i)].map((i) => (
+          <TabPane tab={`记录单${i + 1}`} key={i} disabled={i === 28}>
+            {/* Content of tab {i} */}
+          </TabPane>
+        ))}
+      </Tabs>
       <ProCard
-        title="透析医嘱"
+        title="长期透析医嘱"
         // extra="2019年9月28日"
         bordered
         headerBordered
       >
-        <ProForm title="透析医嘱">
+        <ProForm title="透析医嘱" submitter={false}>
           <Row>
             <ProFormSelect
               valueEnum={{

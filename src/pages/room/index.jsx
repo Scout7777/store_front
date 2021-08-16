@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 // import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
 import { Space, Tag, Row, Col, Button } from 'antd';
-import { FilterOutlined, PlusOutlined } from '@ant-design/icons';
+import { FilterOutlined } from '@ant-design/icons';
 // import { PlusOutlined } from '@ant-design/icons';
 import { updateUser } from '@/services/histsys/user';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/MonitorForm';
 import PatientCard from './components/Card';
 import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
+import { getAreas, getWeek, getTemplateWeek } from '@/services/histsys/bed';
 
 // const { TabPane } = Tabs;
 // import MonitorList from './components/MonitorList';
@@ -31,10 +31,116 @@ export default () => {
   const [selectMode, setSelectMode] = useState(false);
   const actionRef = useRef();
 
-  // const options = [
-  //   { label: '传统布局', value: 'traditional' },
-  //   { label: '卡片布局', value: 'card' }
-  // ];
+  const [filter, setFilter] = useState({});
+  const [sourceData, setSourceData] = useState([]);
+  const [timeRange, setTimeRange] = useState('Evening');
+  const [seq, setSeq] = useState('Evening');
+  const formRef = useRef();
+
+  useEffect(() => {
+    console.log('筛选');
+    console.log(filter);
+    async function Source() {
+      const source = await getAreas();
+      await getTemplateWeek(filter?.week ? filter.week : 202134).then((res) => {
+        const raw = res.data;
+        const reformData = source.data.map((item) => {
+          const all = [];
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i < raw.length; i++) {
+            if (raw[i].bedArea.id === item.id) {
+              all.push(raw[i]);
+            }
+          }
+          const form = {};
+          // eslint-disable-next-line no-plusplus
+          for (let j = 0; j < all.length; j++) {
+            console.log(all.length);
+            if (all[j].day === filter.day) {
+              switch (all[j].bedTime) {
+                case 'Morning':
+                  form['Morning'] = all[j];
+                  break;
+                case 'Afternoon':
+                  form['Afternoon'] = all[j];
+                  break;
+                case 'Evening':
+                  form['Evening'] = all[j];
+                  break;
+                default:
+              }
+            }
+          }
+          form.name = item.name;
+          form.id = item.id;
+          return form;
+        });
+        console.log(reformData);
+        setSourceData(reformData);
+      });
+    }
+    Source();
+  }, [filter]);
+
+  useEffect(() => {
+    async function getNow() {
+      await getWeek().then((resp) => {
+        console.log(resp);
+        setSeq((resp.data + 1) % 2 === 0 ? 'Even' : 'Odd');
+        const now = new Date();
+        console.log(now);
+        const weekDay = now.getDay();
+        console.log(weekDay);
+        let time = 'Morning';
+        const hour = now.getHours();
+        console.log(hour);
+        let day = 'Monday';
+        switch (weekDay) {
+          case 0:
+            day = 'Sunday';
+            break;
+          case 1:
+            day = 'Monday';
+            break;
+          case 2:
+            day = 'Tuesday';
+            break;
+          case 3:
+            day = 'Wednesday';
+            break;
+          case 4:
+            day = 'Thursday';
+            break;
+          case 5:
+            day = 'Friday';
+            break;
+          case 6:
+            day = 'Saturday';
+            break;
+          default:
+        }
+        if (hour > 12 && hour < 18) {
+          time = 'Afternoon';
+        } else if (hour > 18) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          time = 'Evening';
+        }
+        console.log(time);
+        setFilter({
+          week: resp.data + 1,
+          day,
+          time,
+        });
+        formRef?.current?.setFieldsValue({
+          week: resp.data + 1,
+          day,
+          time,
+          bedAreaId: 'all',
+        });
+      });
+    }
+    getNow();
+  }, []);
 
   const MockValue = [];
 
@@ -57,146 +163,6 @@ export default () => {
     });
   }
 
-  const columns = [
-    {
-      title: '床位',
-      dataIndex: 'position',
-      render: (_, record, index) => <div>{index + 1}床</div>,
-    },
-    {
-      title: '班次',
-      dataIndex: 'time',
-      valueEnum: {
-        a: {
-          text: '上午',
-          color: 'blue',
-        },
-        b: {
-          text: '下午',
-          color: 'red',
-        },
-        c: {
-          text: '晚间',
-          color: 'blue',
-        },
-      },
-    },
-    {
-      title: '患者号',
-      dataIndex: 'staffNo',
-      sorter: true,
-      render: (_, record, index) => <div>00000{index + 1}</div>,
-    },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      sorter: true,
-    },
-    {
-      title: '症状评估',
-      dataIndex: 'problem',
-      search: false,
-      render: () => (
-        <Space>
-          {/* {record.labels.map(({ name, color }) => (
-            <Tag color={color} key={name}>
-              {name}
-            </Tag>
-          ))} */}
-          <Tag>脑梗</Tag>
-          <Tag>糖尿病</Tag>
-        </Space>
-      ),
-    },
-    {
-      title: '评估提醒',
-      dataIndex: 'way',
-      search: false,
-      render: () => (
-        <Space>
-          {/* {record.labels.map(({ name, color }) => (
-            <Tag color={color} key={name}>
-              {name}
-            </Tag>
-          ))} */}
-          <Tag color={'orange'}>轮椅</Tag>
-        </Space>
-      ),
-    },
-    {
-      title: '监控警告',
-      dataIndex: 'dashboard',
-      search: false,
-      render: () => (
-        <Space>
-          {/* {record.labels.map(({ name, color }) => (
-            <Tag color={color} key={name}>
-              {name}
-            </Tag>
-          ))} */}
-          <Tag color={'red'}>高血压</Tag>
-        </Space>
-      ),
-    },
-    {
-      title: '临时医嘱',
-      dataIndex: 'advice',
-      sorter: true,
-    },
-    {
-      title: '透析方式',
-      dataIndex: 'way',
-      valueEnum: {
-        a: {
-          text: 'HD',
-          color: 'blue',
-        },
-        b: {
-          text: 'HDF',
-          color: 'red',
-        },
-      },
-    },
-    {
-      title: '透前血压',
-      dataIndex: 'bp',
-    },
-    {
-      title: '透前体重',
-      dataIndex: 'weight_before',
-    },
-    {
-      title: '透后体重',
-      dataIndex: 'weight_later',
-    },
-    {
-      title: '设定脱水量',
-      dataIndex: 'water',
-    },
-    {
-      title: '器显脱水量',
-      dataIndex: 'water_now',
-    },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: () => [
-        <a
-          key="config"
-          onClick={() => {
-            handleCreateModalVisible(true);
-          }}
-        >
-          查看详情/操作
-        </a>,
-        // <a key="delete" onClick={() => {}}>
-        //   查看详情/操作
-        // </a>,
-      ],
-    },
-  ];
-
   return (
     <div>
       {/* <Radio.Group
@@ -208,32 +174,6 @@ export default () => {
         /> */}
       {layOut === 'traditional' ? (
         <div>
-          <ProTable
-            actionRef={actionRef}
-            rowKey="key"
-            search={{
-              labelWidth: 120,
-            }}
-            toolBarRender={() => [
-              // <Button
-              //   type="primary"
-              //   key="primary"
-              //   onClick={() => {
-              //     handleCreateModalVisible(true);
-              //   }}
-              // >
-              //   <PlusOutlined /> 新建
-              // </Button>,
-            ]}
-            // request={searchUser}
-            dataSource={MockValue}
-            columns={columns}
-            // rowSelection={{
-            //   onChange: (_, selectedRows) => {
-            //     setSelectedRows(selectedRows);
-            //   },
-            // }}
-          />
           <CreateForm
             onCancel={() => {
               handleCreateModalVisible(false);
@@ -263,39 +203,91 @@ export default () => {
       ) : (
         <div>
           <Row>
-            <Col span={18}>
+            <Col span={16}>
               <LightFilter
-                initialValues={{
-                  area: 'one',
-                }}
+                formRef={formRef}
                 bordered
                 collapseLabel={<FilterOutlined />}
                 size={'large'}
-                onFinish={async (values) => console.log(values)}
+                onFinish={async (values) => {
+                  console.log(values);
+                  setFilter(values);
+                  setTimeRange(values.time);
+                }}
               >
                 <ProFormSelect
-                  name="area"
-                  valueEnum={{
-                    one: '一区',
-                    two: '二区',
+                  name="bedAreaId"
+                  initialValue={'all'}
+                  request={async () => {
+                    const resp = await getAreas();
+                    const value = resp.data.map((item) => ({
+                      label: item.name,
+                      value: item.id,
+                    }));
+                    value.push({
+                      label: '全部',
+                      value: 'all',
+                    });
+                    return value;
                   }}
                   placeholder="分区"
                 />
-                <ProFormDatePicker name="time" placeholder="日期" />
+                <ProFormSelect
+                  name="week"
+                  // valueEnum={{
+                  //   this: '本周',
+                  //   last: '上周',
+                  // }}
+                />
                 <ProFormRadio.Group
-                  name="radio"
+                  name="day"
                   radioType="button"
                   options={[
                     {
-                      value: 'morning',
+                      value: 'Monday',
+                      label: '周一',
+                    },
+                    {
+                      value: 'Tuesday',
+                      label: '周二',
+                    },
+                    {
+                      value: 'Wednesday',
+                      label: '周三',
+                    },
+                    {
+                      value: 'Thursday',
+                      label: '周四',
+                    },
+                    {
+                      value: 'Friday',
+                      label: '周五',
+                    },
+                    {
+                      value: 'Saturday',
+                      label: '周六',
+                    },
+                    {
+                      value: 'Sunday',
+                      label: '周日',
+                    },
+                  ]}
+                />
+                <ProFormDatePicker name="date" placeholder="日期" />
+                <ProFormRadio.Group
+                  name="time"
+                  radioType="button"
+                  options={[
+                    {
+                      value: 'Morning',
                       label: '上午',
                     },
                     {
-                      value: 'afternoon',
+                      value: 'Afternoon',
                       label: '下午',
                     },
                     {
-                      value: 'evenning',
+                      value: 'Evening',
                       label: '晚间',
                     },
                   ]}
@@ -311,19 +303,28 @@ export default () => {
                 />
               </LightFilter>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               {!selectMode ? (
-                <Button
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={() => {
-                    setSelectMode(true);
-                  }}
-                >
-                  选择我的病人
-                </Button>
+                <Space>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setSelectMode(true);
+                    }}
+                  >
+                    我的病人
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setSelectMode(true);
+                    }}
+                  >
+                    床位互换
+                  </Button>
+                </Space>
               ) : (
-                <div>
+                <Space>
                   <Button
                     type="primary"
                     onClick={() => {
@@ -334,14 +335,13 @@ export default () => {
                   </Button>
                   <Button
                     type="primary"
-                    style={{ marginLeft: 18 }}
                     onClick={() => {
                       setSelectMode(false);
                     }}
                   >
                     取消
                   </Button>
-                </div>
+                </Space>
               )}
             </Col>
           </Row>
@@ -353,22 +353,27 @@ export default () => {
               我的患者2
             </Tag>
           </Row>
-          <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>一区</div>
-          {/* <Space size={[12, 18]} wrap style={{background: (selectMode ? "#848587" : "#F0F2F5")}}> */}
-          <Space size={[12, 18]} wrap>
-            {MockValue.map((item, index) => (
-              <PatientCard selectMode={selectMode} name={item.name} index={index} />
-              // eslint-disable-next-line react/no-array-index-key
-            ))}
-          </Space>
-          <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>二区</div>
-          {/* <Space size={[12, 18]} wrap style={{background: (selectMode ? "#848587" : "#F0F2F5")}}> */}
-          <Space size={[12, 18]} wrap>
-            {MockValue.map((item, index) => (
-              <PatientCard selectMode={selectMode} name={item.name} index={index + 10} />
-              // eslint-disable-next-line react/no-array-index-key
-            ))}
-          </Space>
+
+          {sourceData.map((item, index) => (
+            // {console.log(filter.id); console.log(item); return index}
+            <>
+              <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>
+                {item.name}
+              </div>
+              <Space size={[12, 18]} wrap>
+                {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) =>
+                  patient.weekSeq === seq ? (
+                    <PatientCard
+                      selectMode={selectMode}
+                      name={patient?.patient?.patientName}
+                      index={patientIndex}
+                      values={patient}
+                    />
+                  ) : null,
+                )}
+              </Space>
+            </>
+          ))}
         </div>
       )}
     </div>
