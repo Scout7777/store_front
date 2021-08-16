@@ -22,6 +22,7 @@ import {
   // getPatient,
   updatePatientBed,
   createDiagnosisInfo,
+  getPatient,
 } from '@/services/histsys/patient';
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
@@ -103,7 +104,13 @@ const CreateForm = (props) => {
         </TabPane> */}
         <TabPane tab="过敏史" key="5">
           {/* <PageContainer title="过敏史" style={{ padding: 24 }}> */}
-          <AllergyCreateForm />
+          <AllergyCreateForm
+            onSubmit={async () => {
+              console.log(currentPatient);
+              resp = getPatient(currentPatient.id);
+              console.log(resp.data);
+            }}
+          />
           {/* </PageContainer> */}
         </TabPane>
         <TabPane tab="血管通路" key="6">
