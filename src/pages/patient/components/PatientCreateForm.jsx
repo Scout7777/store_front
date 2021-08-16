@@ -19,8 +19,9 @@ import Card from './Card';
 import {
   createPatient,
   updateLongTermMedicalAdvice,
-  getPatient,
+  // getPatient,
   updatePatientBed,
+  createDiagnosisInfo,
 } from '@/services/histsys/patient';
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
@@ -50,9 +51,11 @@ const CreateForm = (props) => {
                 delete reform.id;
                 const resp = await createPatient(reform);
                 if (resp) {
-                  console.log('进入');
                   setCurrentPatient(resp.data);
-                  console.log('新建成功');
+                  notification.open({
+                    description: resp.message,
+                    message: '消息',
+                  });
                 }
               }}
             />
@@ -61,24 +64,43 @@ const CreateForm = (props) => {
         <TabPane tab="诊断信息" key="2">
           <PageContainer title="诊断信息" style={{ padding: 24 }}>
             <DiagnosisCreateForm
-              onSubmit={async () => {
-                console.log(currentPatient);
-                const resp = await getPatient(currentPatient.id);
-                console.log(resp);
+              onSubmit={async (value) => {
+                if (currentPatient?.id) {
+                  const resp = await createDiagnosisInfo(currentPatient.id, value);
+                  console.log(resp);
+                  notification.open({
+                    description: resp.message,
+                    message: '消息',
+                  });
+                } else
+                  notification.open({
+                    description: '请先创建患者',
+                    message: '消息',
+                  });
               }}
             />
           </PageContainer>
         </TabPane>
-        <TabPane tab="患者图片管理" key="3">
+        <TabPane tab="患者图片文档管理" key="3">
           <PageContainer title="患者图片管理" style={{ padding: 24 }}>
-            <ImageCreateForm />
+            <ImageCreateForm
+              onSubmit={async (value) => {
+                if (currentPatient?.id) {
+                  console.log(value);
+                } else
+                  notification.open({
+                    description: '请先创建患者',
+                    message: '消息',
+                  });
+              }}
+            />
           </PageContainer>
         </TabPane>
-        <TabPane tab="患者签字文档" key="4">
+        {/* <TabPane tab="患者签字文档" key="4">
           <PageContainer title="患者签字文档" style={{ padding: 24 }}>
             <ImageCreateForm />
           </PageContainer>
-        </TabPane>
+        </TabPane> */}
         <TabPane tab="过敏史" key="5">
           {/* <PageContainer title="过敏史" style={{ padding: 24 }}> */}
           <AllergyCreateForm />
