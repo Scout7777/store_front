@@ -1,45 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import ProField from '@ant-design/pro-field';
 // import { ProFormRadio } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
+import { createVascularAccess } from '@/services/histsys/patient';
+import { notification } from 'antd';
 
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+// const waitTime = (time = 100) => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(true);
+//     }, time);
+//   });
+// };
 
-const defaultData = [
-  {
-    id: 624748504,
-    title: '测试数据不符合医疗标准',
-    decs: '请勿使用',
-    state: 'open',
-    use: true,
-    useless: true,
-    created_at: '2020-05-26T09:42:56Z',
-    update_at: '2020-05-26T09:42:56Z',
-  },
-  {
-    id: 624691229,
-    title: '测试数据不符合医疗标准',
-    decs: '请勿使用',
-    state: 'closed',
-    use: true,
-    useless: true,
-    created_at: '2020-05-26T08:19:22Z',
-    update_at: '2020-05-26T08:19:22Z',
-  },
-];
-
-export default () => {
+export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState([]);
-  const [dataSource, setDataSource] = useState([]);
+  const [dataSource, setDataSource] = useState(props?.originData);
   const [position] = useState('bottom');
+
+  useEffect(() => {
+    setDataSource(props.originData);
+  }, [props.originData]);
 
   const columns = [
     // {
@@ -58,99 +41,122 @@ export default () => {
     // },
     {
       title: '通路类型',
-      key: 'state',
-      dataIndex: 'state',
+      key: 'type',
+      dataIndex: 'type',
       valueType: 'select',
       valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        open: {
+        动静脉自体内膜: {
+          text: ' 动静脉自体内膜 ',
+        },
+        动静脉人工内膜: {
+          text: '动静脉人工内膜',
+        },
+        中心静脉长期导管: {
           text: '中心静脉长期导管',
         },
-        closed: {
-          text: 'TCC',
+        中心静脉临时导管: {
+          text: '中心静脉临时导管',
         },
       },
     },
     {
-      title: '方向',
-      key: 'state',
-      dataIndex: 'state',
-      valueType: 'checkbox',
+      title: '英文简写',
+      key: 'type',
+      dataIndex: 'type',
+      valueType: 'select',
       valueEnum: {
-        // all: { text: '全部', status: 'Default' },
-        open: {
+        动静脉自体内膜: {
+          text: ' AVF ',
+        },
+        动静脉人工内膜: {
+          text: 'AVG',
+        },
+        中心静脉长期导管: {
+          text: 'TDC',
+        },
+        中心静脉临时导管: {
+          text: 'CVC',
+        },
+      },
+    },
+
+    {
+      title: '方向',
+      key: 'direction',
+      dataIndex: 'direction',
+      valueType: 'select',
+      valueEnum: {
+        left: {
           text: '左',
         },
-        closed: {
+        right: {
           text: '右',
         },
       },
     },
     {
       title: '部位',
-      key: 'state',
-      dataIndex: 'state',
+      key: 'partition',
+      dataIndex: 'partition',
       valueType: 'select',
       valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        open: {
-          text: '颈内静脉',
+        upperLimbs: {
+          text: ' 上肢 ',
         },
-        closed: {
+        lowerLimbs: {
           text: '下肢',
+        },
+        neck: {
+          text: '颈部',
         },
       },
     },
     {
       title: '手术吻合方式',
-      key: 'state',
-      dataIndex: 'state',
+      key: 'surgicalAnastomosisMethod',
+      dataIndex: 'surgicalAnastomosisMethod',
       valueType: 'select',
       valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        open: {
-          text: '无',
+        terminoTerminalAnastomosis: {
+          text: ' 端端吻合 ',
         },
-        closed: {
-          text: '端端吻合',
+        endToSideAnastomosis: {
+          text: '端侧吻合',
         },
       },
     },
     {
-      title: '建立时间',
-      dataIndex: 'created_at',
-      valueType: 'date',
-    },
-    {
       title: '是否启用',
-      dataIndex: 'use',
+      dataIndex: 'active',
       valueType: 'switch',
     },
     {
       title: '启用时间',
-      dataIndex: 'created_at',
+      dataIndex: 'activeAt',
       valueType: 'date',
     },
     {
       title: '是否弃用',
-      dataIndex: 'useless',
+      dataIndex: 'disable',
       valueType: 'switch',
     },
     {
       title: '弃用原因',
-      dataIndex: 'decs',
-      fieldProps: (from, { rowKey, rowIndex }) => {
-        if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
-          return {
-            disabled: true,
-          };
-        }
-        if (rowIndex > 9) {
-          return {
-            disabled: true,
-          };
-        }
-        return {};
+      valueType: 'select',
+      dataIndex: 'disableReasonText',
+      valueEnum: {
+        narrow: {
+          text: ' 狭窄 ',
+        },
+        thrombus: {
+          text: '血栓形成',
+        },
+        infected: {
+          text: '感染',
+        },
+        other: {
+          text: '其他',
+        },
       },
     },
     {
@@ -182,7 +188,7 @@ export default () => {
       <EditableProTable
         rowKey="id"
         headerTitle="血管通路"
-        maxLength={5}
+        // maxLength={5}
         recordCreatorProps={
           position !== 'hidden'
             ? {
@@ -192,19 +198,28 @@ export default () => {
             : false
         }
         columns={columns}
-        request={async () => ({
-          data: defaultData,
-          total: 3,
-          success: true,
-        })}
+        // request={async () => ({
+        //   data: defaultData,
+        //   total: 3,
+        //   success: true,
+        // })}
         value={dataSource}
         onChange={setDataSource}
         editable={{
           type: 'multiple',
           editableKeys,
-          onSave: async (rowKey, data, row) => {
-            console.log(rowKey, data, row);
-            await waitTime(2000);
+          onSave: async (rowKey, data) => {
+            const reform = data;
+
+            delete reform.index;
+            console.log(reform);
+            if (props?.id) {
+              await createVascularAccess(props.id, reform);
+            } else
+              notification.open({
+                description: '请先创建患者',
+                message: '消息',
+              });
           },
           onChange: setEditableRowKeys,
         }}

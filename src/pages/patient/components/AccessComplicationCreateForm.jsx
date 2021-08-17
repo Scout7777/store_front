@@ -1,38 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import ProField from '@ant-design/pro-field';
 // import { ProFormRadio } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
+import { createVascularAccessComp } from '@/services/histsys/patient';
+import { notification } from 'antd';
+// import { ProFormSelect } from '@ant-design/pro-form';
+// import { getAreas } from '@/services/histsys/bed';
 
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+// const waitTime = (time = 100) => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(true);
+//     }, time);
+//   });
+// };
 
-const defaultData = [
-  {
-    id: 624748504,
-    title: '并发症1',
-    decs: '请勿使用',
-    state: 'b',
-    created_at: '2020-05-26T09:42:56Z',
-    update_at: '2020-05-26T09:42:56Z',
-  },
-];
-
-export default () => {
+export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState([]);
-  const [dataSource, setDataSource] = useState([]);
+  const [dataSource, setDataSource] = useState(props?.originData);
   const [position] = useState('bottom');
+  const [access, setAccess] = useState({});
+
+  useEffect(() => {
+    setDataSource(props.originData);
+    console.log(props.vasculardata);
+    const originData = props.vasculardata;
+    const value = {};
+    // eslint-disable-next-line no-plusplus
+    if (props?.vasculardata) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < originData.length; i++) {
+        value[`${originData[i].id}`] = { text: `${originData[i].type}${originData[i].id}` };
+      }
+    } else
+      notification.open({
+        description: '请先创建血管通路',
+        message: '消息',
+      });
+    console.log(value);
+    setAccess(value);
+  }, [props.originData, props.vasculardata]);
 
   const columns = [
     {
       title: '并发症名称',
-      dataIndex: 'title',
+      dataIndex: 'name',
       formItemProps: (form, { rowIndex }) => {
         return {
           rules: rowIndex > 2 ? [{ required: true, message: '此项为必填项' }] : [],
@@ -44,65 +58,59 @@ export default () => {
       // },
     },
     {
-      title: '血管通路',
-      key: 'access',
-      dataIndex: 'access',
-      valueType: 'select',
-      valueEnum: {
-        a: '通路一',
-        b: '通路二',
-        c: '通路三',
-      },
-    },
-    {
       title: '发现时间',
-      dataIndex: 'find_at',
+      dataIndex: 'recoverAt',
       valueType: 'date',
     },
     {
       title: '并发症',
-      key: 'access',
-      dataIndex: 'com',
-      valueType: 'select',
-      valueEnum: {
-        a: '类型一',
-        b: '类型二',
-        c: '类型三',
-      },
+      dataIndex: 'comp',
+      valueType: 'text',
     },
     {
       title: '处理时间',
-      dataIndex: 'handle_at',
+      dataIndex: 'processAt',
       valueType: 'date',
     },
     {
+      title: '血管通路ID',
+      key: 'vascularAccessId',
+      dataIndex: 'vascularAccessId',
+      valueType: 'select',
+      valueEnum: access,
+      formItemProps: {
+        rules: [{ required: true, message: '此项为必填项' }],
+      },
+    },
+    {
       title: '溶栓时间',
-      dataIndex: 'rong_at',
+      dataIndex: 'thromboAt',
       valueType: 'date',
     },
     {
       title: '溶栓次数',
-      dataIndex: 'times',
+      dataIndex: 'thromboCount',
       valueType: 'digit',
     },
     {
       title: 'PAT时间',
-      dataIndex: 'rong_at',
+      dataIndex: 'patAt',
       valueType: 'date',
     },
     {
       title: 'PAT压力',
-      dataIndex: 'times',
-      valueType: 'digit',
+      dataIndex: 'patPa',
+      valueType: 'float',
     },
     {
       title: 'PAT次数',
-      dataIndex: 'patTimes',
+      dataIndex: 'patCount',
       valueType: 'digit',
     },
     {
       title: '失功原因',
-      dataIndex: 'reason',
+      dataIndex: 'lossReasonText',
+      valueType: 'text',
     },
     {
       title: '操作',
@@ -144,23 +152,33 @@ export default () => {
             : false
         }
         columns={columns}
-        request={async () => ({
-          data: defaultData,
-          total: 3,
-          success: true,
-        })}
+        // request={async () => ({
+        //   data: defaultData,
+        //   total: 3,
+        //   success: true,
+        // })}
         value={dataSource}
         onChange={setDataSource}
         editable={{
           type: 'multiple',
           editableKeys,
-          onSave: async (rowKey, data, row) => {
-            console.log(rowKey, data, row);
-            await waitTime(2000);
+          onSave: async (rowKey, data) => {
+            const reform = data;
+            delete reform.index;
+            delete reform.id;
+            console.log(reform);
+            if (props?.id) {
+              await createVascularAccessComp(props.id, reform);
+            } else
+              notification.open({
+                description: '请先创建患者',
+                message: '消息',
+              });
           },
           onChange: setEditableRowKeys,
         }}
       />
+
       <ProCard title="表格数据" headerBordered collapsible defaultCollapsed>
         <ProField
           fieldProps={{

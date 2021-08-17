@@ -5,6 +5,7 @@ import ProField from '@ant-design/pro-field';
 // import { ProFormRadio } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import { createAllergy } from '@/services/histsys/patient';
+import { notification } from 'antd';
 
 // const waitTime = (time = 100) => {
 //   return new Promise((resolve) => {
@@ -14,32 +15,10 @@ import { createAllergy } from '@/services/histsys/patient';
 //   });
 // };
 
-const defaultData = [
-  {
-    id: 624748504,
-    title: '青霉素',
-    decs: '无',
-    state: 'open',
-    created_at: '2020-05-26T09:42:56Z',
-    update_at: '2020-05-26T09:42:56Z',
-  },
-  {
-    id: 624691229,
-    title: '透析器过敏',
-    decs: '请勿使用',
-    state: 'closed',
-    created_at: '2020-05-26T08:19:22Z',
-    update_at: '2020-05-26T08:19:22Z',
-  },
-];
-
 export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [position] = useState('bottom');
-
-  console.log(props.originData);
-  console.log(props.id);
 
   const columns = [
     {
@@ -152,9 +131,13 @@ export default (props) => {
             const reform = data;
             delete reform.id;
             delete reform.index;
-            await createAllergy(props.id, reform).then((resp) => {
-              console.log(resp);
-            });
+            if (props?.id) {
+              await createAllergy(props.id, reform);
+            } else
+              notification.open({
+                description: '请先创建患者',
+                message: '消息',
+              });
           },
           onChange: setEditableRowKeys,
         }}

@@ -137,14 +137,21 @@ const UpdateForm = (props) => {
           />
           {/* </PageContainer> */}
         </TabPane>
+
         <TabPane tab="血管通路" key="6">
-          <AccessCreateForm />
+          <AccessCreateForm originData={currentPatient?.vascularAccesses} id={currentPatient?.id} />
         </TabPane>
+
         <TabPane tab="血管通路并发症" key="7">
-          <AccessComplicationCreateForm />
+          <AccessComplicationCreateForm
+            originData={currentPatient?.vascularAccessComps}
+            vasculardata={currentPatient?.vascularAccesses}
+            id={currentPatient?.id}
+          />
         </TabPane>
+
         <TabPane tab="慢性并发症" key="8">
-          <ChronicCreateForm />
+          <ChronicCreateForm originData={currentPatient?.chronicComps} id={currentPatient?.id} />
         </TabPane>
         <TabPane
           onClick={async () => {
@@ -171,9 +178,11 @@ const UpdateForm = (props) => {
         <TabPane tab="耗材设置" key="10">
           <ChargeCreateForm />
         </TabPane>
+
         <TabPane tab="传染病检查" key="11">
-          <InfectionForm />
+          <InfectionForm originData={currentPatient?.infectiousDiseases} id={currentPatient?.id} />
         </TabPane>
+
         <TabPane tab="排床规律" key="12">
           <BedForm
             onSubmit={async (value) => {

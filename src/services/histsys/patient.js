@@ -70,6 +70,46 @@ export async function createAllergy(id, values) {
   });
 }
 
+export async function createChronicComp(id, values) {
+  return request(`/api/patients/${id}/chronic-comps`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function createInfectiousDisease(id, values) {
+  return request(`/api/patients/${id}/infectious-disease`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function createVascularAccess(id, values) {
+  return request(`/api/patients/${id}/vascular-access`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function createVascularAccessComp(id, values) {
+  return request(`/api/patients/${id}/vascular-access-comps`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
 export async function getPatient(id) {
   return request(`/api/patients/detail/${id}`, {
     method: 'GET',

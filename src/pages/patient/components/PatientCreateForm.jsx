@@ -22,7 +22,6 @@ import {
   // getPatient,
   updatePatientBed,
   createDiagnosisInfo,
-  getPatient,
 } from '@/services/histsys/patient';
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
@@ -30,7 +29,7 @@ import { PlusOutlined } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
 const CreateForm = (props) => {
-  const [currentPatient, setCurrentPatient] = useState({ id: 20 });
+  const [currentPatient, setCurrentPatient] = useState({});
 
   return (
     <Modal
@@ -101,23 +100,23 @@ const CreateForm = (props) => {
         <TabPane tab="过敏史" key="5">
           {/* <PageContainer title="过敏史" style={{ padding: 24 }}> */}
           <AllergyCreateForm
-            onSubmit={async () => {
-              console.log(currentPatient);
-              resp = getPatient(currentPatient.id);
-              console.log(resp.data);
-            }}
+            originData={currentPatient?.allergyHistories}
+            id={currentPatient?.id}
           />
           {/* </PageContainer> */}
         </TabPane>
+
         <TabPane tab="血管通路" key="6">
-          <AccessCreateForm />
+          <AccessCreateForm id={currentPatient.id} />
         </TabPane>
         <TabPane tab="血管通路并发症" key="7">
-          <AccessComplicationCreateForm />
+          <AccessComplicationCreateForm id={currentPatient.id} />
         </TabPane>
+
         <TabPane tab="慢性并发症" key="8">
-          <ChronicCreateForm />
+          <ChronicCreateForm id={currentPatient.id} />
         </TabPane>
+
         <TabPane tab="长期透析医嘱" key="9">
           <LongCreateForm
             onSubmit={async (value) => {
@@ -137,7 +136,7 @@ const CreateForm = (props) => {
           <ChargeCreateForm />
         </TabPane>
         <TabPane tab="传染病检查" key="11">
-          <InfectionForm />
+          <InfectionForm id={currentPatient.id} />
         </TabPane>
         <TabPane tab="排床规律" key="12">
           <BedForm
