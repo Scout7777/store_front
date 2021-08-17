@@ -120,7 +120,7 @@ export default (props) => {
         //   total: 3,
         //   success: true,
         // })}
-        dataSource={defaultData}
+        // dataSource={defaultData}
         value={dataSource}
         onChange={setDataSource}
         editable={{

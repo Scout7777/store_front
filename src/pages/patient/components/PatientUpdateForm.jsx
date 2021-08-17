@@ -119,14 +119,19 @@ const UpdateForm = (props) => {
             />
           </PageContainer>
         </TabPane>
-        <TabPane tab="患者图片管理" key="3">
+        <TabPane tab="患者图片文档管理" key="3">
           <PageContainer title="患者图片管理" style={{ padding: 24 }}>
-            <ImageCreateForm />
-          </PageContainer>
-        </TabPane>
-        <TabPane tab="患者签字文档" key="4">
-          <PageContainer title="患者签字文档" style={{ padding: 24 }}>
-            <ImageCreateForm />
+            <ImageCreateForm
+              onSubmit={async (value) => {
+                if (currentPatient?.id) {
+                  console.log(value);
+                } else
+                  notification.open({
+                    description: '请先创建患者',
+                    message: '消息',
+                  });
+              }}
+            />
           </PageContainer>
         </TabPane>
         <TabPane tab="过敏史" key="5">
