@@ -1,58 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import ProField from '@ant-design/pro-field';
 // import { ProFormRadio } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { createInfectiousDisease } from '@/services/histsys/patient';
 
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
+// const waitTime = (time = 100) => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(true);
+//     }, time);
+//   });
+// };
+
+const status = {
+  positive: {
+    text: ' + ',
+    status: 'positive',
+  },
+  negative: {
+    text: ' - ',
+    status: 'negative',
+  },
+  uncheck: {
+    text: ' /',
+    status: 'uncheck',
+  },
 };
 
-const value = {
-  yang: {
-    text: '+',
-    status: 'Success',
+const state = {
+  positive: {
+    text: ' + ',
+    status: 'positive',
   },
-  yin: {
-    text: '-',
-    status: 'default',
-  },
-  none: {
-    text: '未检',
-    status: 'default',
+  negative: {
+    text: ' - ',
+    status: 'negative',
   },
 };
 
-const defaultData = [
-  {
-    id: 624748504,
-    title: '药物过敏',
-    decs: '请勿使用',
-    state: 'open',
-    created_at: '2020-05-26T09:42:56Z',
-    update_at: '2020-05-26T09:42:56Z',
-  },
-  {
-    id: 624691229,
-    title: '透析器过敏',
-    decs: '请勿使用',
-    state: 'closed',
-    created_at: '2020-05-26T08:19:22Z',
-    update_at: '2020-05-26T08:19:22Z',
-  },
-];
-
-export default () => {
+export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState([]);
-  const [dataSource, setDataSource] = useState([]);
+  const [dataSource, setDataSource] = useState(props?.originData);
   const [position] = useState('bottom');
+
+  // const formRef = useRef();
+
+  useEffect(() => {
+    setDataSource(props.originData);
+  }, [props.originData]);
 
   const columns = [
     // {
@@ -69,41 +68,57 @@ export default () => {
     //   // },
     //   width: '30%',
     // },
-    { title: '检验日期', dataIndex: 'date', valueType: 'date' },
     {
       title: '乙肝',
-      dataIndex: '乙肝',
+      dataIndex: 'hB',
+      valueType: 'radio',
+      valueEnum: state,
       children: [
-        { title: '乙肝', dataIndex: 'HBV', valueType: 'radio', valueEnum: value },
-        { title: 'HBsAg', dataIndex: 'HBSAG', valueType: 'radio', valueEnum: value },
-        { title: 'HBsAb', dataIndex: 'HBSAB', valueType: 'radio', valueEnum: value },
-        { title: 'HBeAg', dataIndex: 'HBEAG', valueType: 'radio', valueEnum: value },
-        { title: 'HBeAb', dataIndex: 'HBEAB', valueType: 'radio', valueEnum: value },
-        { title: 'HBcAb', dataIndex: 'HBCAB', valueType: 'radio', valueEnum: value },
+        { title: '乙肝表面抗原', dataIndex: 'hBsAg', valueType: 'radio', valueEnum: status },
+        { title: '乙肝表面抗体', dataIndex: 'hBsAb', valueType: 'radio', valueEnum: status },
+        { title: '乙肝e抗原', dataIndex: 'hBeAg', valueType: 'radio', valueEnum: status },
+        { title: '乙肝e抗体', dataIndex: 'hBeAb', valueType: 'radio', valueEnum: status },
+        { title: '乙肝核心抗体', dataIndex: 'hBcAb', valueType: 'radio', valueEnum: status },
+        { title: '乙肝DNA测量', dataIndex: 'hBDna', valueType: 'radio', valueEnum: status },
+        { title: '乙肝DNA测量值', dataIndex: 'hBDnaValue', valueType: 'float' },
       ],
     },
     {
       title: '丙肝',
-      dataIndex: 'HCV',
+      dataIndex: 'hC',
       valueType: 'radio',
-      valueEnum: value,
+      valueEnum: state,
+      children: [
+        { title: '丙肝抗体', dataIndex: 'hCAb', valueType: 'radio', valueEnum: status },
+        { title: '丙肝RNA', dataIndex: 'hCRna', valueType: 'radio', valueEnum: status },
+      ],
     },
     {
       title: '梅毒',
-      dataIndex: 'RPR',
+      dataIndex: 'syphilis',
       valueType: 'radio',
-      valueEnum: value,
+      valueEnum: state,
+      children: [
+        { title: '梅毒TPPA', dataIndex: 'syphilisTPPA', valueType: 'radio', valueEnum: status },
+        { title: '梅毒RPR', dataIndex: 'syphilisRPR', valueType: 'radio', valueEnum: status },
+        { title: '梅毒Trust', dataIndex: 'syphilisTrust', valueType: 'radio', valueEnum: status },
+        {
+          title: '滴度',
+          dataIndex: 'titer',
+          valueType: 'float',
+        },
+      ],
     },
+
     {
       title: '艾滋',
-      dataIndex: 'HIV',
+      dataIndex: 'aids',
       valueType: 'radio',
-      valueEnum: value,
+      valueEnum: state,
     },
-    { title: '检验间隔', dataIndex: 'jiange' },
-    { title: '下次检验', dataIndex: 'date', valueType: 'date' },
-    { title: '登记医生', dataIndex: 'doctor' },
-    { title: '备注', dataIndex: 'nurse' },
+    { title: '检验日期', dataIndex: 'testAt', valueType: 'date' },
+    { title: '下次检验日期', dataIndex: 'nextTestAt', valueType: 'date' },
+    { title: '备注', dataIndex: 'remark' },
     {
       title: '操作',
       valueType: 'option',
@@ -149,20 +164,50 @@ export default () => {
           </Button>,
         ]}
         columns={columns}
-        request={async () => ({
-          data: defaultData,
-          total: 3,
-          success: true,
-        })}
+        // request={async () => ({
+        //   data: defaultData,
+        //   total: 3,
+        //   success: true,
+        // })}
         value={dataSource}
         onChange={setDataSource}
         editable={{
           type: 'multiple',
           editableKeys,
-          onSave: async (rowKey, data, row) => {
-            console.log(rowKey, data, row);
-            await waitTime(2000);
+          onSave: async (rowKey, data) => {
+            const reform = data;
+            reform.hB =
+              reform.hBsAg === 'positive' ||
+              reform.hBsAb === 'positive' ||
+              reform.hBeAg === 'positive' ||
+              reform.hBeAb === 'positive' ||
+              reform.hBcAb === 'positive'
+                ? 'positive'
+                : 'negative';
+
+            reform.hC =
+              reform.hCAb === 'positive' || reform.hCRna === 'positive' ? 'positive' : 'negative';
+
+            reform.syphilis =
+              reform.syphilisTPPA === 'positive' ||
+              reform.syphilisRPR === 'positive' ||
+              reform.syphilisTrust === 'positive'
+                ? 'positive'
+                : 'negative';
+
+            console.log(reform);
+            delete reform.id;
+            delete reform.index;
+            console.log(props);
+            if (props?.id) {
+              await createInfectiousDisease(props.id, reform);
+            } else
+              notification.open({
+                description: '请先创建患者',
+                message: '消息',
+              });
           },
+
           onChange: setEditableRowKeys,
         }}
       />
