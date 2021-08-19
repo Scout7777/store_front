@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'antd';
+import { useModel } from 'umi';
 import {
   // ProFormSelect,
   // ProFormText,
@@ -10,21 +11,44 @@ import {
   // ProFormFieldSet,
 } from '@ant-design/pro-form';
 import Sign from './Signature';
-
+import { updateHe, updateOn } from '@/services/histsys/dialysis';
 import FormItemDivider from '@/components/FormItemDivider';
+import { useRef } from 'react';
+import { useState } from 'react';
 
 const CreateForm = (props) => {
-  async function handleSubmit() {
-    console.log('执行');
-    props.onSubmit();
-  }
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
+  const processid = props.processid || 6;
+  const [signUrl, serUrl] = useState('');
+  const formRef = useRef();
 
   function handleGetMsg(value) {
-    console.log(value);
+    serUrl(value);
+  }
+
+  async function handleSubmit() {
+    console.log(formRef?.current.getFieldsValue('heparinName'));
+    console.log(formRef?.current.getFieldsValue('heparinAmount'));
+    const HeData = {
+      nurse: { id: currentUser.id },
+      nurseSign: { url: signUrl },
+      heparinName: formRef?.current.getFieldsValue().heparinName,
+      heparinAmount: formRef?.current.getFieldsValue().heparinAmount,
+    };
+
+    const OnData = {
+      nurse: { id: currentUser.id },
+      nurseSign: { url: signUrl },
+    };
+    await updateHe(processid, HeData);
+    await updateOn(processid, OnData);
+    props.onSubmit();
   }
 
   return (
     <ModalForm
+      formRef={formRef}
       title="上机"
       width={900}
       visible={props.visible}

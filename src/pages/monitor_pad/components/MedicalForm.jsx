@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Row, Col, Card } from 'antd';
-import ProForm, {
+import {
   ProFormText,
+  ModalForm,
   // ProFormRadio,
   // ProFormDatePicker,
   ProFormDigit,
@@ -25,7 +26,15 @@ const LongCreateForm = (props) => {
   }, [props.lastValue]);
 
   return (
-    <ProForm onFinish={props.onSubmit} formRef={formRef}>
+    <ModalForm
+      onFinish={props.onSubmit}
+      visible={props.visible}
+      modalProps={{
+        onCancel: props.onCancel,
+        destroyOnClose: true,
+      }}
+      formRef={formRef}
+    >
       <ProFormDigit name="netWeight" label="干体重（kg）"></ProFormDigit>
       <Row>
         <Col span={4}>
@@ -167,7 +176,7 @@ const LongCreateForm = (props) => {
           </Card>
         </Col>
       </Row>
-    </ProForm>
+    </ModalForm>
   );
 };
 export default LongCreateForm;

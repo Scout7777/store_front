@@ -66,15 +66,6 @@ const UpdateForm = (props) => {
             case '9':
               resp = await getLongTermMedicalAdvice(id);
               data = resp.data;
-              if (data.hdActive) {
-                data.Type = 'hd';
-              }
-              if (data.hfActive) {
-                data.Type = 'hf';
-              }
-              if (data.hdfActive) {
-                data.Type = 'hdf';
-              }
               setlongM(data);
               break;
             default:

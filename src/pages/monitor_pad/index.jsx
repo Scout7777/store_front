@@ -15,55 +15,48 @@ import { getAreas, getWeek, getTemplateWeek } from '@/services/histsys/bed';
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
   const [currentRow, setCurrentRow] = useState();
-  const [filter, setFilter] = useState({});
   const [sourceData, setSourceData] = useState([]);
   const [timeRange, setTimeRange] = useState('Evening');
   const [seq, setSeq] = useState('Evening');
   const formRef = useRef();
 
-  useEffect(() => {
-    console.log('筛选');
-    console.log(filter);
-    async function Source() {
-      const source = await getAreas();
-      await getTemplateWeek(filter?.week ? filter.week : 202134).then((res) => {
-        const raw = res.data;
-        const reformData = source.data.map((item) => {
-          const all = [];
-          // eslint-disable-next-line no-plusplus
-          for (let i = 0; i < raw.length; i++) {
-            if (raw[i].bedArea.id === item.id) {
-              all.push(raw[i]);
+  async function Source(value) {
+    const source = await getAreas();
+    await getTemplateWeek(value?.week ? value.week : 202134).then((res) => {
+      const raw = res.data;
+      const reformData = source.data.map((item) => {
+        const all = [];
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < raw.length; i++) {
+          if (raw[i].bedArea.id === item.id) {
+            all.push(raw[i]);
+          }
+        }
+        const form = {};
+        // eslint-disable-next-line no-plusplus
+        for (let j = 0; j < all.length; j++) {
+          if (all[j].day === value.day) {
+            switch (all[j].bedTime) {
+              case 'Morning':
+                form['Morning'] = all[j];
+                break;
+              case 'Afternoon':
+                form['Afternoon'] = all[j];
+                break;
+              case 'Evening':
+                form['Evening'] = all[j];
+                break;
+              default:
             }
           }
-          const form = {};
-          // eslint-disable-next-line no-plusplus
-          for (let j = 0; j < all.length; j++) {
-            if (all[j].day === filter.day) {
-              switch (all[j].bedTime) {
-                case 'Morning':
-                  form['Morning'] = all[j];
-                  break;
-                case 'Afternoon':
-                  form['Afternoon'] = all[j];
-                  break;
-                case 'Evening':
-                  form['Evening'] = all[j];
-                  break;
-                default:
-              }
-            }
-          }
-          form.name = item.name;
-          form.id = item.id;
-          return form;
-        });
-        console.log(reformData);
-        setSourceData(reformData);
+        }
+        form.name = item.name;
+        form.id = item.id;
+        return form;
       });
-    }
-    Source();
-  }, [filter]);
+      setSourceData(reformData);
+    });
+  }
 
   useEffect(() => {
     async function getNow() {
@@ -105,18 +98,19 @@ export default () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           time = 'Evening';
         }
-        console.log(time);
-        setFilter({
+        const value = {
           week: resp.data + 1,
           day,
           time,
-        });
+          bedAreaId: 'all',
+        };
         formRef?.current?.setFieldsValue({
           week: resp.data + 1,
           day,
           time,
           bedAreaId: 'all',
         });
+        Source(value);
       });
     }
     getNow();
@@ -133,6 +127,7 @@ export default () => {
               collapseLabel={<FilterOutlined />}
               size={'large'}
               onFinish={async (values) => {
+                Source(values);
                 setFilter(values);
                 setTimeRange(values.time);
               }}
