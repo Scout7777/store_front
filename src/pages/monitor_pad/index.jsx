@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import { PageContainer } from '@ant-design/pro-layout';
-import { Row, Col, Button } from 'antd';
-import { FilterOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col } from 'antd';
+import { FilterOutlined } from '@ant-design/icons';
 // import { PlusOutlined } from '@ant-design/icons';
 import PatientCard from './components/Card';
+import MonitorForm from './components/MonitorForm';
 import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
 import { getAreas, getWeek, getTemplateWeek } from '@/services/histsys/bed';
 
@@ -12,7 +13,8 @@ import { getAreas, getWeek, getTemplateWeek } from '@/services/histsys/bed';
 // import { orange } from '@material-ui/core/colors';
 
 export default () => {
-  const [selectMode, setSelectMode] = useState(false);
+  const [createModalVisible, handleCreateModalVisible] = useState();
+  const [currentRow, setCurrentRow] = useState();
   const [filter, setFilter] = useState({});
   const [sourceData, setSourceData] = useState([]);
   const [timeRange, setTimeRange] = useState('Evening');
@@ -124,7 +126,7 @@ export default () => {
     <div>
       <div>
         <Row>
-          <Col span={18}>
+          <Col>
             <LightFilter
               formRef={formRef}
               bordered
@@ -223,17 +225,6 @@ export default () => {
               />
             </LightFilter>
           </Col>
-          <Col span={6}>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => {
-                setSelectMode(true);
-              }}
-            >
-              接诊
-            </Button>
-          </Col>
         </Row>
         {sourceData.map((item, index) => (
           // {console.log(filter.id); console.log(item); return index}
@@ -244,16 +235,27 @@ export default () => {
             {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) =>
               patient.weekSeq === seq ? (
                 <PatientCard
-                  selectMode={selectMode}
                   name={patient?.patient?.patientName}
                   index={patientIndex}
                   values={patient}
+                  open={() => {
+                    setCurrentRow(patient?.patient);
+                    handleCreateModalVisible(true);
+                  }}
                 />
               ) : null,
             )}
           </>
         ))}
       </div>
+      <MonitorForm
+        onCancel={() => {
+          handleCreateModalVisible(false);
+          setCurrentRow(undefined);
+        }}
+        visible={createModalVisible}
+        values={currentRow || {}}
+      />
     </div>
   );
 };
