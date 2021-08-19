@@ -66,15 +66,6 @@ const UpdateForm = (props) => {
             case '9':
               resp = await getLongTermMedicalAdvice(id);
               data = resp.data;
-              if (data.hdActive) {
-                data.Type = 'hd';
-              }
-              if (data.hfActive) {
-                data.Type = 'hf';
-              }
-              if (data.hdfActive) {
-                data.Type = 'hdf';
-              }
               setlongM(data);
               break;
             default:
@@ -190,6 +181,7 @@ const UpdateForm = (props) => {
 
         <TabPane tab="排床规律" key="12">
           <BedForm
+            values={currentPatient}
             onSubmit={async (value) => {
               let reform1 = [];
               let reform2 = [];

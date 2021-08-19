@@ -70,8 +70,8 @@ const CreateForm = (props) => {
                 value: '未开瘘',
               },
               {
-                label: '其他__',
-                value: '其他__',
+                label: '其他',
+                value: '其他',
               },
             ]}
           />

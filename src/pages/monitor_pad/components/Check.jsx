@@ -1,4 +1,5 @@
 import React from 'react';
+import { useModel } from 'umi';
 // import { Row, Col } from 'antd';
 import {
   // ProFormSelect,
@@ -9,45 +10,48 @@ import {
   // ProFormFieldSet,
 } from '@ant-design/pro-form';
 import Sign from './Signature';
-
+import { updateCheck } from '@/services/histsys/dialysis';
 import FormItemDivider from '@/components/FormItemDivider';
+// import { useRef } from 'react';
+import { useState } from 'react';
 
-class CreateForm extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
+const CreateForm = (props) => {
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
+  const processid = props.processid || 6;
+  const [signUrl, serUrl] = useState('');
+
+  function handleGetMsg(value) {
+    serUrl(value);
   }
 
-  handleGetMsg = (value) => {
-    console.log(value);
-    this.setState({ value });
-  };
-  state = {};
-
-  handleSubmit = () => {
-    console.log('执行');
-    console.log(this.state.value);
-    this.props.onSubmit();
-  };
-
-  render() {
-    return (
-      <ModalForm
-        title="核对"
-        width={900}
-        visible={this.props.visible}
-        modalProps={{
-          onCancel: this.props.onCancel,
-          destroyOnClose: true,
-        }}
-        onFinish={this.handleSubmit}
-      >
-        <FormItemDivider>核对签名签名</FormItemDivider>
-        <div>
-          <Sign getUrl={this.handleGetMsg} />
-        </div>
-      </ModalForm>
-    );
+  async function handleSubmit() {
+    const data = {
+      user: { id: currentUser.id },
+      signFile: { url: signUrl },
+    };
+    await updateCheck(processid, data).then((resp) => {
+      console.log(resp);
+      props.onSubmit();
+    });
   }
-}
+
+  return (
+    <ModalForm
+      title="核对"
+      width={900}
+      visible={props.visible}
+      modalProps={{
+        onCancel: props.onCancel,
+        destroyOnClose: true,
+      }}
+      onFinish={handleSubmit}
+    >
+      <FormItemDivider>核对签名签名</FormItemDivider>
+      <div>
+        <Sign getUrl={handleGetMsg} />
+      </div>
+    </ModalForm>
+  );
+};
 export default CreateForm;

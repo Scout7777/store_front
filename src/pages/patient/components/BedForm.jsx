@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Row, Form } from 'antd';
 import ProForm, {
   ProFormSelect,
@@ -11,12 +11,67 @@ import ProForm, {
 } from '@ant-design/pro-form';
 
 import { getAreas } from '@/services/histsys/bed';
+import { getPatientBed } from '@/services/histsys/patient';
 
 // import FormItemDivider from '@/components/FormItemDivider';
 
 const DiagnosisCreateForm = (props) => {
+  const formRef = useRef();
+  const { id } = props.values;
+
+  useEffect(() => {
+    console.log(id);
+    async function nowPatient() {
+      if (id) {
+        await getPatientBed(id).then((resp) => {
+          const originData = resp.data;
+          const value = {
+            Odd: {
+              Monday: {},
+              Tuesday: {},
+              Wednesday: {},
+              Thursday: {},
+              Friday: {},
+              Saturday: {},
+              Sunday: {},
+            },
+            Even: {
+              Monday: {},
+              Tuesday: {},
+              Wednesday: {},
+              Thursday: {},
+              Friday: {},
+              Saturday: {},
+              Sunday: {},
+            },
+          };
+          let day = 'Monday';
+          value.bedAreaId = originData[0]?.bedArea?.id;
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i < originData.length; i++) {
+            if (originData[i].weekSeq === 'Odd') {
+              console.log(originData[i]);
+              day = originData[i].day;
+              value.Odd[day].bedTime = originData[i]?.bedTime;
+              console.log(value);
+              formRef?.current?.setFieldsValue(value);
+            } else {
+              console.log(originData[i]);
+              day = originData[i].day;
+              value.Even[`${originData[i].day}`].bedTime = originData[i]?.bedTime;
+              console.log(value);
+              formRef?.current?.setFieldsValue(value);
+            }
+          }
+        });
+      }
+    }
+
+    nowPatient();
+  }, [id]);
+
   return (
-    <ProForm onFinish={props.onSubmit}>
+    <ProForm onFinish={props.onSubmit} formRef={formRef}>
       <ProFormSelect
         width={'md'}
         name="bedAreaId"
@@ -108,7 +163,7 @@ const DiagnosisCreateForm = (props) => {
             placeholder="选择透析方式"
           />
           <ProFormSelect
-            name={['Odd', 'Monday', 'dialysisMachine']}
+            name={['Odd', 'Tuesday', 'dialysisMachine']}
             valueEnum={{
               HD: '设备1',
               HDF: '设备2',

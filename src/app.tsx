@@ -15,9 +15,6 @@ const loginPath = '/user/login';
 //   : `http://${process.env.HISTSYS_ENV}.histsys.wbrtest.cn`;
 const requireHost =
   window.location.hostname === 'localhost' ? 'http://localhost:8080' : window.location.origin;
-// window.location.hostname === 'localhost'
-//   ? 'http://dev.histsys.yootane.com'
-//   : window.location.origin;
 // 'http://dev.histsys.yootane.com';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */

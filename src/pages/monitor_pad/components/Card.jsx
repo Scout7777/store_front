@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useModel } from 'umi';
 import { Row, Col, Button, Tag, Progress } from 'antd';
 import {
   PhoneFilled,
@@ -15,14 +16,25 @@ import On from './On';
 import Down from './Down';
 import Monitor from './NMonitor';
 import Patrol from './Patrol';
-import { createAdmission, createProcess, updatePre } from '@/services/histsys/dialysis';
+import MedicalForm from './MedicalForm';
+import AMedical from './AMedical';
+import {
+  createAdmission,
+  createProcess,
+  updatePre,
+  updateMedical,
+} from '@/services/histsys/dialysis';
 
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
 
 const PatientCard = (props) => {
+  const { initialState } = useModel('@@initialState');
+  const { id } = props.values?.patient;
   // const [select, setSelect] = useState(false);
   const [ModalVisible, handleModalVisible] = useState();
+  const [MedicalFormModalVisible, handleMedicalFormModalVisible] = useState();
+  const [AMedicalVisible, handleAMedicalVisible] = useState();
   const [PreVisible, handlePreVisible] = useState();
   const [CheckVisible, handleCheckVisible] = useState();
   const [PunctureVisible, handlePunctureVisible] = useState();
@@ -43,6 +55,9 @@ const PatientCard = (props) => {
   const [patrol, setPatrol] = useState(0);
   const [on, setOn] = useState(false);
   const [down, setDown] = useState(false);
+
+  console.log(initialState);
+  console.log(props.values);
 
   return (
     <div
@@ -74,6 +89,7 @@ const PatientCard = (props) => {
               }}
             >
               <div
+                onClick={props.open}
                 style={{
                   borderRadius: '8px',
                   border: '0px solid',
@@ -107,16 +123,45 @@ const PatientCard = (props) => {
             </Col>
             <Col span={2}>
               <div style={{ textAlign: 'center', lineHeight: '92px' }}>
-                <Button type="primary" shape="circle" onClick={props.open}>
+                <Button
+                  type="primary"
+                  shape="circle"
+                  onClick={() => handleMedicalFormModalVisible(true)}
+                >
                   <FolderFilled />
                 </Button>
+                <MedicalForm
+                  visible={MedicalFormModalVisible}
+                  lastValue={process?.medicalAdvice}
+                  onSubmit={async (value) => {
+                    const resp = await updateMedical(process?.id || null, value);
+                    notification.open({
+                      description: resp.status + resp.message,
+                      message: '调试',
+                    });
+                    handleMedicalFormModalVisible(false);
+                  }}
+                  onCancel={() => {
+                    handleMedicalFormModalVisible(false);
+                  }}
+                />
               </div>
             </Col>
             <Col span={2}>
               <div style={{ textAlign: 'center', lineHeight: '92px' }}>
-                <Button type="primary" shape="circle">
+                <Button type="primary" shape="circle" onClick={() => handleAMedicalVisible(true)}>
                   <FolderAddFilled />
                 </Button>
+                <AMedical
+                  visible={AMedicalVisible}
+                  lastValue={process?.additionalMedicalAdviceList}
+                  onFinish={() => {
+                    handleAMedicalVisible(false);
+                  }}
+                  onCancel={() => {
+                    handleAMedicalVisible(false);
+                  }}
+                />
               </div>
             </Col>
             <Col span={2}>
@@ -153,6 +198,7 @@ const PatientCard = (props) => {
             ) : (
               <div
                 onClick={() => handleModalVisible(true)}
+                // onClick={() => handleModalVisible(true)}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -166,7 +212,7 @@ const PatientCard = (props) => {
                 <AdmissionForm
                   visible={ModalVisible}
                   onSubmit={async (value) => {
-                    const resp = await createAdmission(20, value);
+                    const resp = await createAdmission(id, value);
                     console.log(resp);
                     setAdmissionO(resp.data);
                     console.log(admissionO);
@@ -197,9 +243,7 @@ const PatientCard = (props) => {
           <Col span={4}>
             {pre ? (
               <div
-                onClick={() => {
-                  handleCreateModalVisible(true);
-                }}
+                onClick={props.open}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -269,9 +313,7 @@ const PatientCard = (props) => {
           <Col span={4}>
             {puncture ? (
               <div
-                onClick={() => {
-                  handleCreateModalVisible(true);
-                }}
+                onClick={props.open}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -338,9 +380,7 @@ const PatientCard = (props) => {
           <Col span={4}>
             {on ? (
               <div
-                onClick={() => {
-                  handleCreateModalVisible(true);
-                }}
+                onClick={props.open}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -400,9 +440,7 @@ const PatientCard = (props) => {
           <Col span={4}>
             {check ? (
               <div
-                onClick={() => {
-                  handleCreateModalVisible(true);
-                }}
+                onClick={props.open}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -458,9 +496,7 @@ const PatientCard = (props) => {
           <Col span={4}>
             {monitor > 0 ? (
               <div
-                onClick={() => {
-                  handleCreateModalVisible(true);
-                }}
+                onClick={props.open}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -533,9 +569,7 @@ const PatientCard = (props) => {
           <Col span={4}>
             {patrol > 0 ? (
               <div
-                onClick={() => {
-                  handleCreateModalVisible(true);
-                }}
+                onClick={props.open}
                 style={{
                   width: '100%',
                   height: '100%',

@@ -67,6 +67,56 @@ export async function updatePre(processId, values) {
   });
 }
 
+export async function updatePun(processId, values) {
+  return request(`/api/dialysis/${processId}/puncture`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function updateCheck(processId, values) {
+  return request(`/api/dialysis/${processId}/check/核对护士`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function updateHe(processId, values) {
+  return request(`/api/dialysis/${processId}/heparin`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function updateOn(processId, values) {
+  return request(`/api/dialysis/${processId}/board-on`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
+export async function updateMedical(processId, values) {
+  return request(`/api/dialysis/${processId}/medical-advice`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
 export async function getLongTermMedicalAdvice(id) {
   return request(`/api/patient-long-term-medical-advices/${id}`, {
     method: 'GET',
