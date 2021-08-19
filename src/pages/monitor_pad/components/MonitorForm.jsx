@@ -1,108 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Modal, Tabs, Form } from 'antd';
-import ProForm, { ProFormText, ProFormSelect, ProFormDigit } from '@ant-design/pro-form';
+import ProForm from '@ant-design/pro-form';
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
 import ProCard from '@ant-design/pro-card';
+import { getPatient } from '@/services/histsys/patient';
+import { getProcess, getProcessLast } from '@/services/histsys/dialysis';
 
 const { TabPane } = Tabs;
 
 const CreateForm = (props) => {
+  const [currentPatient, setCurrentPatient] = useState({ ...props.values });
+  const [processes, setProcesses] = useState([]);
+  const [tab, setTab] = useState();
+  const { id } = props.values;
+
+  const renderDate = (utc) => {
+    return new Date(utc).toLocaleString();
+  };
+
+  useEffect(() => {
+    console.log(id);
+    async function nowPatient() {
+      if (id) {
+        await getPatient(id).then((resp) => {
+          console.log(resp);
+          setCurrentPatient(resp.data, currentPatient);
+        });
+        await getProcess(id).then((resp) => {
+          setProcesses(resp.data.content);
+          console.log(resp);
+        });
+        await getProcessLast(id).then((resp) => {
+          console.log(resp);
+        });
+      }
+    }
+
+    nowPatient();
+  }, [id]);
   return (
     <Modal title="查看详情" width={1200} visible={props.visible} onCancel={props.onCancel}>
       <ProCard bordered headerBordered>
         <Form title="基本信息">
-          <Form.Item label="姓名">测试患者</Form.Item>
-          <Form.Item label="性别">男</Form.Item>
+          <Form.Item label="姓名">{currentPatient?.electronicMedicalRecord?.patientName}</Form.Item>
+          <Form.Item label="登记号">
+            {currentPatient?.electronicMedicalRecord?.outpatientNo}
+          </Form.Item>
+          <Form.Item label="性别">{currentPatient?.electronicMedicalRecord?.gender}</Form.Item>
         </Form>
       </ProCard>
-      <Tabs defaultActiveKey="1">
-        {[...Array.from({ length: 30 }, (v, i) => i)].map((i) => (
-          <TabPane tab={`记录单${i + 1}`} key={i} disabled={i === 28}>
+      <Tabs
+        defaultActiveKey="0"
+        onChange={(key) => {
+          console.log(key);
+          setTab(key);
+        }}
+      >
+        {processes.map((item, i) => (
+          <TabPane tab={`记录单${renderDate(item.updatedAt)}`} key={i}>
             {/* Content of tab {i} */}
           </TabPane>
         ))}
       </Tabs>
-      <ProCard
-        title="长期透析医嘱"
-        // extra="2019年9月28日"
-        bordered
-        headerBordered
-      >
+      <ProCard title="透析医嘱" bordered headerBordered>
         <ProForm title="透析医嘱" submitter={false}>
-          <Row>
-            <ProFormSelect
-              valueEnum={{
-                none: '无',
-                HD: 'HD',
-                HF: 'HF',
-                HDF: 'HDF',
-              }}
-              name="Type"
-              label="类型"
-              fieldProps={{
-                onChange: (value) => {
-                  console.log(value);
-                },
-              }}
-              initialValue={'HDF'}
-            />
-            <ProFormDigit
-              name="DialysisDuration"
-              label="透析时长（小时）"
-              initialValue={'4'}
-            ></ProFormDigit>
-            <ProFormDigit
-              name="BloodVol"
-              label="血流量（ml/min）"
-              initialValue={'240'}
-            ></ProFormDigit>
-            <ProFormDigit
-              name="Conductivity"
-              label="电导度（mS/cm）"
-              initialValue={'14'}
-            ></ProFormDigit>
-            <ProFormDigit
-              name="DlTemperature"
-              label="透析液温度（℃）"
-              initialValue={'36.5'}
-            ></ProFormDigit>
-            <ProFormDigit
-              name="DlFlow"
-              initialValue={'500'}
-              label="透析液流量（ml/min）"
-            ></ProFormDigit>
-            <ProFormDigit
-              name="BicarbonateRadical"
-              label="碳酸氢根（mmol/l）"
-              initialValue={'31.1'}
-            ></ProFormDigit>
-            <ProFormDigit
-              name="DlSodium"
-              label="透析液钠（mmol/l）"
-              initialValue={'137.8'}
-            ></ProFormDigit>
-            <ProFormDigit name="DlPotassium" initialValue={'2'} label="透析液钾"></ProFormDigit>
-            <ProFormDigit name="DlCalcium" label="透析液钙" initialValue={'1.5'}></ProFormDigit>
-            <ProFormText
-              name="Anticoagulant"
-              label="抗凝剂"
-              initialValue={'低分子肝素'}
-            ></ProFormText>
-            <ProFormDigit
-              name="AnticoagulantQuantity"
-              initialValue={'2500'}
-              label="抗凝剂剂量（AxaIU）"
-            ></ProFormDigit>
-            <ProFormDigit name="InitialAmount" label="初始量"></ProFormDigit>
-            <ProFormDigit name="MaintenanceQuantity" label="维持量"></ProFormDigit>
-            <ProFormDigit name="RlAmount" label="置换液量（L）" initialValue={'24'}></ProFormDigit>
-            <ProFormText
-              name="ReplacementMode"
-              label="置换模式"
-              initialValue={'后稀释'}
-            ></ProFormText>
-          </Row>
+          <Row></Row>
         </ProForm>
       </ProCard>
       <ProCard
@@ -111,9 +74,11 @@ const CreateForm = (props) => {
         bordered
         headerBordered
       >
-        <ProForm title="接诊评估">
-          <Row>PAD操作 PC后续添加</Row>
-        </ProForm>
+        <Form title="接诊评估" submitter={false}>
+          <Form.Item label="入室方式">{processes[tab]?.admission.walkMethod || '暂无'}</Form.Item>
+          <Form.Item label="状态">{processes[tab]?.admission.patientState || '暂无'}</Form.Item>
+          <Form.Item label="食欲">{processes[tab]?.admission.eatState || '暂无'}</Form.Item>
+        </Form>
       </ProCard>
       <ProCard
         title="透前评估"
@@ -121,9 +86,12 @@ const CreateForm = (props) => {
         bordered
         headerBordered
       >
-        <ProForm title="透前评估">
-          <Row>PAD操作 PC后续添加</Row>
-        </ProForm>
+        <Form title="透前评估" submitter={false}>
+          <Form.Item label="透前体重">
+            {processes[tab]?.preAssessment.realWeight || '暂无'}
+          </Form.Item>
+          <Form.Item label="干体重">{processes[tab]?.preAssessment.netWeight || '暂无'}</Form.Item>
+        </Form>
       </ProCard>
       <ProCard
         title="上机"
@@ -131,9 +99,17 @@ const CreateForm = (props) => {
         bordered
         headerBordered
       >
-        <ProForm title="上机">
-          <Row>PAD操作 PC后续添加</Row>
-        </ProForm>
+        <Form title="上机" submitter={false}>
+          <Form.Item label="穿刺/换药操作人">{processes[tab]?.puncture.nurse || '暂无'}</Form.Item>
+          <Form.Item label="上机操作人">{processes[tab]?.boardOn.nurse || '暂无'}</Form.Item>
+          <Form.Item label="抗凝剂名称">{processes[tab]?.heparin.heparinName || '暂无'}</Form.Item>
+          <Form.Item label="抗凝剂剂量">
+            {processes[tab]?.heparin.heparinAmount || '暂无'}
+          </Form.Item>
+          <Form.Item label="核对操作人">{processes[tab]?.check.checkNurse || '暂无'}</Form.Item>
+          <Form.Item label="责任医生">{processes[tab]?.check.responseDoctor || '暂无'}</Form.Item>
+          <Form.Item label="责任护士">{processes[tab]?.check.responseNurse || '暂无'}</Form.Item>
+        </Form>
       </ProCard>
       <ProCard
         title="监控数据"
@@ -145,67 +121,13 @@ const CreateForm = (props) => {
           <Row>PAD操作 PC后续添加</Row>
         </ProForm>
       </ProCard>
-      <ProCard
-        title="下机"
-        // extra="2019年9月28日"
-        bordered
-        headerBordered
-      >
-        <ProForm title="下机">
-          <Row>PAD操作 PC后续添加</Row>
-        </ProForm>
+      <ProCard title="下机" bordered headerBordered>
+        <ProForm title="下机"></ProForm>
       </ProCard>
-      <ProCard
-        title="透后评估"
-        // extra="2019年9月28日"
-        bordered
-        headerBordered
-      >
-        <ProForm title="透后评估">
-          <Row>PAD操作 PC后续添加</Row>
-        </ProForm>
+      <ProCard title="透后评估" bordered headerBordered>
+        <ProForm title="透后评估"></ProForm>
       </ProCard>
-      <ProCard
-        title="临时医嘱"
-        // extra="2019年9月28日"
-        bordered
-        headerBordered
-      >
-        <ProForm title="临时医嘱">
-          <Row>
-            <ProFormSelect
-              valueEnum={{
-                none: '无',
-                HD: 'HD',
-                HF: 'HF',
-                HDF: 'HDF',
-              }}
-              name="Type"
-              label="类型"
-              fieldProps={{
-                onChange: (value) => {
-                  console.log(value);
-                },
-              }}
-            />
-            <ProFormDigit name="DialysisDuration" label="透析时长（小时）"></ProFormDigit>
-            <ProFormDigit name="BloodVol" label="血流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="Conductivity" label="电导度（mS/cm）"></ProFormDigit>
-            <ProFormDigit name="DlTemperature" label="透析液温度（℃）"></ProFormDigit>
-            <ProFormDigit name="DlFlow" label="透析液流量（ml/min）"></ProFormDigit>
-            <ProFormDigit name="BicarbonateRadical" label="碳酸氢根（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlSodium" label="透析液钠（mmol/l）"></ProFormDigit>
-            <ProFormDigit name="DlPotassium" label="透析液钾"></ProFormDigit>
-            <ProFormDigit name="DlCalcium" label="透析液钙"></ProFormDigit>
-            <ProFormText name="Anticoagulant" label="抗凝剂"></ProFormText>
-            <ProFormDigit name="AnticoagulantQuantity" label="抗凝剂剂量（AxaIU）"></ProFormDigit>
-            <ProFormDigit name="InitialAmount" label="初始量"></ProFormDigit>
-            <ProFormDigit name="MaintenanceQuantity" label="维持量"></ProFormDigit>
-            <ProFormDigit name="RlAmount" label="置换液量（L）"></ProFormDigit>
-            <ProFormText name="ReplacementMode" label="置换模式"></ProFormText>
-          </Row>
-        </ProForm>
-      </ProCard>
+      <ProCard title="临时医嘱" bordered headerBordered></ProCard>
     </Modal>
   );
 };

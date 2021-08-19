@@ -49,7 +49,7 @@ export async function getProcessLast(patientId) {
 }
 
 export async function getProcess(patientId) {
-  return request(`/api/dialysis/${patientId}/process?pageSize=50`, {
+  return request(`/api/dialysis/${patientId}/process`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

@@ -7,7 +7,6 @@ import {
   CaretRightOutlined,
   PlusCircleFilled,
 } from '@ant-design/icons';
-import MonitorForm from './MonitorForm';
 import AdmissionForm from './AdmissionForm';
 import PreAssessment from './PreAssessment';
 import Puncture from './Puncture';
@@ -23,7 +22,6 @@ import { createAdmission, createProcess, updatePre } from '@/services/histsys/di
 
 const PatientCard = (props) => {
   // const [select, setSelect] = useState(false);
-  const [createModalVisible, handleCreateModalVisible] = useState();
   const [ModalVisible, handleModalVisible] = useState();
   const [PreVisible, handlePreVisible] = useState();
   const [CheckVisible, handleCheckVisible] = useState();
@@ -32,6 +30,7 @@ const PatientCard = (props) => {
   const [DownVisible, handleDownVisible] = useState();
   const [MonitorVisible, handleMonitorVisible] = useState();
   const [PatrolVisible, handlePatrolVisible] = useState();
+  // const [currentPatient, setCurrentPatient] = useState(...props.values);
   // const [value, setValue] = useState({...props.values});
   const [process, setProcess] = useState();
   const [admission, setAdmission] = useState(false);
@@ -108,13 +107,7 @@ const PatientCard = (props) => {
             </Col>
             <Col span={2}>
               <div style={{ textAlign: 'center', lineHeight: '92px' }}>
-                <Button
-                  type="primary"
-                  shape="circle"
-                  onClick={() => {
-                    handleCreateModalVisible(true);
-                  }}
-                >
+                <Button type="primary" shape="circle" onClick={props.open}>
                   <FolderFilled />
                 </Button>
               </div>
@@ -139,9 +132,7 @@ const PatientCard = (props) => {
           <Col span={4}>
             {admission ? (
               <div
-                onClick={() => {
-                  handleCreateModalVisible(true);
-                }}
+                onClick={props.open}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -670,15 +661,6 @@ const PatientCard = (props) => {
           </Col>
         </Row>
       </div>
-      <MonitorForm
-        onCancel={() => {
-          handleCreateModalVisible(false);
-        }}
-        onCancel={() => {
-          handleCreateModalVisible(false);
-        }}
-        visible={createModalVisible}
-      />
     </div>
   );
 };
