@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Row, Col, Card } from 'antd';
 import ProForm, {
   ProFormText,
@@ -18,9 +18,14 @@ import ProForm, {
 选填：身高、密级、重名附加符、血型、教育程度、职业、婚姻状况、生育情况、本人电话、家庭电话、联系人电话、联系人关系、家庭住址
 上传头像，更新患者LIS信息，时间段 */
 const LongCreateForm = (props) => {
-  console.log(props.lastValue);
+  const formRef = useRef();
+
+  useEffect(() => {
+    formRef?.current?.setFieldsValue(props.lastValue);
+  }, [props.lastValue]);
+
   return (
-    <ProForm onFinish={props.onSubmit}>
+    <ProForm onFinish={props.onSubmit} formRef={formRef}>
       <ProFormDigit name="netWeight" label="干体重（kg）"></ProFormDigit>
       <Row>
         <Col span={4}>
