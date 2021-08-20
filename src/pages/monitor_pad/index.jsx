@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import { PageContainer } from '@ant-design/pro-layout';
-import { Row, Col } from 'antd';
-import { FilterOutlined } from '@ant-design/icons';
 // import { PlusOutlined } from '@ant-design/icons';
 import PatientCard from './components/Card';
 import MonitorForm from './components/MonitorForm';
-import { LightFilter, ProFormSelect, ProFormRadio, ProFormDatePicker } from '@ant-design/pro-form';
+import Search from './components/Search';
 import { getAreas, getWeek, getTemplateWeek } from '@/services/histsys/bed';
 
 // const { TabPane } = Tabs;
@@ -26,6 +24,7 @@ export default () => {
       setTimeRange(value.time);
     }
     const source = await getAreas();
+    console.log();
     await getTemplateWeek(value?.week ? value.week : 202134).then((res) => {
       const raw = res.data;
       const reformData = source.data.map((item) => {
@@ -67,6 +66,7 @@ export default () => {
       await getWeek().then((resp) => {
         console.log(resp);
         setSeq((resp.data + 1) % 2 === 0 ? 'Even' : 'Odd');
+        console.log(seq);
         const now = new Date();
         const weekDay = now.getDay();
         let time = 'Morning';
@@ -122,126 +122,29 @@ export default () => {
 
   return (
     <div>
-      <div>
-        <Row>
-          <Col>
-            <LightFilter
-              formRef={formRef}
-              bordered
-              collapseLabel={<FilterOutlined />}
-              size={'large'}
-              onFinish={async (values) => {
-                Source(values);
-              }}
-            >
-              <ProFormSelect
-                name="bedAreaId"
-                initialValue={'all'}
-                request={async () => {
-                  const resp = await getAreas();
-                  const value = resp.data.map((item) => ({
-                    label: item.name,
-                    value: item.id,
-                  }));
-                  value.push({
-                    label: '全部',
-                    value: 'all',
-                  });
-                  return value;
-                }}
-                placeholder="分区"
-              />
-              <ProFormSelect
-                name="week"
-                // valueEnum={{
-                //   this: '本周',
-                //   last: '上周',
-                // }}
-              />
-              <ProFormRadio.Group
-                name="day"
-                radioType="button"
-                options={[
-                  {
-                    value: 'Monday',
-                    label: '周一',
-                  },
-                  {
-                    value: 'Tuesday',
-                    label: '周二',
-                  },
-                  {
-                    value: 'Wednesday',
-                    label: '周三',
-                  },
-                  {
-                    value: 'Thursday',
-                    label: '周四',
-                  },
-                  {
-                    value: 'Friday',
-                    label: '周五',
-                  },
-                  {
-                    value: 'Saturday',
-                    label: '周六',
-                  },
-                  {
-                    value: 'Sunday',
-                    label: '周日',
-                  },
-                ]}
-              />
-              <ProFormDatePicker name="date" placeholder="日期" />
-              <ProFormRadio.Group
-                name="time"
-                radioType="button"
-                options={[
-                  {
-                    value: 'Morning',
-                    label: '上午',
-                  },
-                  {
-                    value: 'Afternoon',
-                    label: '下午',
-                  },
-                  {
-                    value: 'Evening',
-                    label: '晚间',
-                  },
-                ]}
-              />
-              <ProFormSelect
-                name="nurse"
-                valueEnum={{
-                  nurse1: '护士1',
-                  nurse2: '护士2',
-                  nurse3: '护士3',
-                }}
-                placeholder="责任护士"
-              />
-            </LightFilter>
-          </Col>
-        </Row>
+      <Search
+        onSubmit={(value) => {
+          Source(value);
+        }}
+      />
+      <div style={{ width: '100%', padding: 24, overflowY: 'auto', backgroundColor: 'aliceblue' }}>
         {sourceData.map((item, index) => (
           // {console.log(filter.id); console.log(item); return index}
           <>
             <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>
               {item.name}
             </div>
-            {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) =>
-              patient.weekSeq === seq ? (
-                <PatientCard
-                  name={patient?.patient?.patientName}
-                  index={patientIndex}
-                  values={patient}
-                  open={() => {
-                    setCurrentRow(patient?.patient);
-                    handleCreateModalVisible(true);
-                  }}
-                />
-              ) : null,
-            )}
+            {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) => (
+              <PatientCard
+                name={patient?.patient?.patientName}
+                index={patientIndex}
+                values={patient}
+                open={() => {
+                  setCurrentRow(patient?.patient);
+                  handleCreateModalVisible(true);
+                }}
+              />
+            ))}
           </>
         ))}
       </div>

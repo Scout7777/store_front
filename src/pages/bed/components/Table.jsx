@@ -54,7 +54,7 @@ const PopTag = (props) => {
 };
 
 const DetailList = (props) => {
-  const { filter, seq } = props;
+  const { filter } = props;
   const [tableListDataSource, setTableListDataSource] = useState([]);
   const [areaShow, setAreaShow] = useState(false);
   // const [Week, setWeek] = useState(202134);
@@ -69,9 +69,9 @@ const DetailList = (props) => {
       dataIndex: 'Morning',
       render: (_, record) => (
         <Space wrap>
-          {record.Morning?.patients?.map((patient) =>
-            patient.weekSeq === seq ? <PopTag lable={patient.patient?.patientName}></PopTag> : null,
-          )}
+          {record.Morning?.patients?.map((patient) => (
+            <PopTag lable={patient.patient?.patientName}></PopTag>
+          ))}
         </Space>
       ),
     },
@@ -80,9 +80,9 @@ const DetailList = (props) => {
       dataIndex: 'Afternoon',
       render: (_, record) => {
         <Space wrap>
-          {record.Afternoon?.patients?.map((patient) =>
-            patient.weekSeq === seq ? <PopTag lable={patient.patient?.patientName}></PopTag> : null,
-          )}
+          {record.Afternoon?.patients?.map((patient) => (
+            <PopTag lable={patient.patient?.patientName}></PopTag>
+          ))}
         </Space>;
       },
     },
@@ -91,9 +91,9 @@ const DetailList = (props) => {
       dataIndex: 'Evening',
       render: (_, record) => (
         <Space wrap>
-          {record.Evening?.patients?.map((patient) =>
-            patient.weekSeq === seq ? <PopTag lable={patient.patient?.patientName}></PopTag> : null,
-          )}
+          {record.Evening?.patients?.map((patient) => (
+            <PopTag lable={patient.patient?.patientName}></PopTag>
+          ))}
         </Space>
       ),
     },
