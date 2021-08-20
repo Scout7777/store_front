@@ -4,7 +4,7 @@ import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
+// import Footer from '@/components/Footer';
 import { currentUser as queryCurrentUser } from './services/histsys/user';
 import { BookOutlined } from '@ant-design/icons';
 
@@ -134,11 +134,11 @@ export const request: RequestConfig = {
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
-    disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
-    footerRender: () => <Footer />,
+    disableContentMargin: true,
+    // waterMarkProps: {
+    //   content: initialState?.currentUser?.name,
+    // },
+    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login

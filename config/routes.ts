@@ -7,9 +7,26 @@
         path: '/user',
         routes: [
           {
-            name: 'login',
+            layout: false,
             path: '/user/login',
             component: './user/Login',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/mobile',
+    layout: false,
+    routes: [
+      {
+        path: '/mobile',
+        // component: '../layouts/index',
+        routes: [
+          {
+            layout: false,
+            path: '/mobile/login',
+            component: './home',
           },
         ],
       },

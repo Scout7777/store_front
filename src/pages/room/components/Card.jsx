@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'antd';
-import { InfoCircleFilled } from '@ant-design/icons';
-import MonitorForm from './MonitorForm';
+// import { InfoCircleFilled } from '@ant-design/icons';
 
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
 
 const PatientCard = (props) => {
   const [select, setSelect] = useState(false);
-  const [createModalVisible, handleCreateModalVisible] = useState();
 
   return (
     <div style={{ position: 'relative' }}>
@@ -20,9 +18,7 @@ const PatientCard = (props) => {
           boxShadow: '0px 1px 4px 0px rgba(0,0,0,0.06)',
         }}
         key={props.index}
-        onClick={() => {
-          handleCreateModalVisible(true);
-        }}
+        onClick={props.open}
       >
         <Row>
           <Col
@@ -43,7 +39,7 @@ const PatientCard = (props) => {
             <div style={{ fontSize: '20px' }}>{props.name}</div>
             <div style={{ display: 'inline' }}>HD</div>
             <div style={{ display: 'inline', marginLeft: 12 }}>住院</div>
-            <InfoCircleFilled
+            {/* <InfoCircleFilled
               style={{
                 fontSize: '21px',
                 position: 'absolute',
@@ -51,16 +47,10 @@ const PatientCard = (props) => {
                 top: '23.5px',
                 color: '#B5A647',
               }}
-            />
+            /> */}
           </Col>
         </Row>
       </div>
-      <MonitorForm
-        onCancel={() => {
-          handleCreateModalVisible(false);
-        }}
-        visible={createModalVisible}
-      />
       {props.selectMode ? (
         <div
           onClick={() => {

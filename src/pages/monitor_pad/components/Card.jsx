@@ -113,9 +113,9 @@ const PatientCard = (props) => {
                 </div>
               </Row>
               <Row>
-                <Col span={8}>
+                {/* <Col span={8}>
                   <div style={{ display: 'inline' }}>11:30</div>
-                </Col>
+                </Col> */}
                 <Col span={16}>
                   <Progress percent={0} size="small" />
                 </Col>
