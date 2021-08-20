@@ -67,6 +67,7 @@ export default () => {
       await getWeek().then((resp) => {
         console.log(resp);
         setSeq((resp.data + 1) % 2 === 0 ? 'Even' : 'Odd');
+        console.log(seq);
         const now = new Date();
         console.log(now);
         const weekDay = now.getDay();
@@ -191,20 +192,18 @@ export default () => {
               {item.name}
             </div>
             <Space size={[12, 18]} wrap>
-              {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) =>
-                patient.weekSeq === seq ? (
-                  <PatientCard
-                    selectMode={selectMode}
-                    name={patient?.patient?.patientName}
-                    index={patientIndex}
-                    values={patient}
-                    open={() => {
-                      setCurrentRow(patient?.patient);
-                      handleModalVisible(true);
-                    }}
-                  />
-                ) : null,
-              )}
+              {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) => (
+                <PatientCard
+                  selectMode={selectMode}
+                  name={patient?.patient?.patientName}
+                  index={patientIndex}
+                  values={patient}
+                  open={() => {
+                    setCurrentRow(patient?.patient);
+                    handleModalVisible(true);
+                  }}
+                />
+              ))}
             </Space>
           </>
         ))}

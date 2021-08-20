@@ -24,6 +24,7 @@ export default () => {
       setTimeRange(value.time);
     }
     const source = await getAreas();
+    console.log();
     await getTemplateWeek(value?.week ? value.week : 202134).then((res) => {
       const raw = res.data;
       const reformData = source.data.map((item) => {
@@ -65,6 +66,7 @@ export default () => {
       await getWeek().then((resp) => {
         console.log(resp);
         setSeq((resp.data + 1) % 2 === 0 ? 'Even' : 'Odd');
+        console.log(seq);
         const now = new Date();
         const weekDay = now.getDay();
         let time = 'Morning';
@@ -132,19 +134,17 @@ export default () => {
             <div style={{ marginBottom: '18px', marginTop: '18px', fontSize: '20px' }}>
               {item.name}
             </div>
-            {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) =>
-              patient.weekSeq === seq ? (
-                <PatientCard
-                  name={patient?.patient?.patientName}
-                  index={patientIndex}
-                  values={patient}
-                  open={() => {
-                    setCurrentRow(patient?.patient);
-                    handleCreateModalVisible(true);
-                  }}
-                />
-              ) : null,
-            )}
+            {sourceData[index][timeRange]?.patients?.map((patient, patientIndex) => (
+              <PatientCard
+                name={patient?.patient?.patientName}
+                index={patientIndex}
+                values={patient}
+                open={() => {
+                  setCurrentRow(patient?.patient);
+                  handleCreateModalVisible(true);
+                }}
+              />
+            ))}
           </>
         ))}
       </div>
