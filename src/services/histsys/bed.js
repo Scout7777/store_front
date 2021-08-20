@@ -86,7 +86,9 @@ export async function getTemplate() {
 }
 
 export async function getTemplateWeek(code) {
-  return request(`/api/bed-arrangements/${code}/template`, {
+  console.log(code);
+  // return request(`/api/bed-arrangements/${code}/template`, {
+  return request(`/api/bed-arrangements/202134/template`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

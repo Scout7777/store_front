@@ -21,6 +21,10 @@ export default () => {
   const formRef = useRef();
 
   async function Source(value) {
+    console.log(value);
+    if (value.time) {
+      setTimeRange(value.time);
+    }
     const source = await getAreas();
     await getTemplateWeek(value?.week ? value.week : 202134).then((res) => {
       const raw = res.data;
@@ -128,8 +132,6 @@ export default () => {
               size={'large'}
               onFinish={async (values) => {
                 Source(values);
-                setFilter(values);
-                setTimeRange(values.time);
               }}
             >
               <ProFormSelect
