@@ -202,9 +202,9 @@ const UpdateForm = (props) => {
               if (value.Even) {
                 let list = Object.keys(value.Odd);
                 list = list.map((item) => ({
-                  bedTime: value.Odd[`${item}`].bedTime,
-                  dialysisMethod: value.Odd[`${item}`].dialysisMethod,
-                  dialysisMachine: value.Odd[`${item}`].dialysisMachine,
+                  bedTime: value.Even[`${item}`].bedTime,
+                  dialysisMethod: value.Even[`${item}`].dialysisMethod,
+                  dialysisMachine: value.Even[`${item}`].dialysisMachine,
                   day: item,
                   weekSeq: 'Even',
                   bedAreaId: value.bedAreaId,
