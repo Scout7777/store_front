@@ -413,6 +413,7 @@ const PatientCard = (props) => {
               >
                 <On
                   visible={OnVisible}
+                  processid={process?.id}
                   onSubmit={async () => {
                     handleOnVisible(false);
                     setOn(true);
@@ -473,6 +474,7 @@ const PatientCard = (props) => {
               >
                 <Check
                   visible={CheckVisible}
+                  processid={process?.id}
                   onSubmit={() => {
                     handleCheckVisible(false);
                     setCheck(true);
