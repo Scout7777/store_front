@@ -21,7 +21,7 @@ import AMedical from './AMedical';
 import {
   createAdmission,
   createProcess,
-  // updatePre,
+  updatePre,
   updateMedical,
 } from '@/services/histsys/dialysis';
 
@@ -47,7 +47,7 @@ const PatientCard = (props) => {
   const [process, setProcess] = useState();
   const [admission, setAdmission] = useState(false);
   const [admissionO, setAdmissionO] = useState(false);
-  // const [preAssessment, setPreAssessment] = useState();
+  const [preAssessment, setPreAssessment] = useState();
   const [pre, setPre] = useState(false);
   const [puncture, setPuncture] = useState(false);
   const [check, setCheck] = useState(false);
@@ -278,6 +278,8 @@ const PatientCard = (props) => {
                   visible={PreVisible}
                   onSubmit={async (value) => {
                     setPreAssessment(value);
+                    await updatePre(process.id, value);
+                    console.log(preAssessment);
                     handlePreVisible(false);
                     setPre(true);
                   }}
