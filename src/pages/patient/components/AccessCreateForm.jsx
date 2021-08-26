@@ -19,26 +19,13 @@ export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState(props?.originData);
   const [position] = useState('bottom');
+  // const [disable,setdisable] =useState();
 
   useEffect(() => {
     setDataSource(props.originData);
   }, [props.originData]);
 
   const columns = [
-    // {
-    //   title: '保留',
-    //   dataIndex: 'title',
-    //   formItemProps: (form, { rowIndex }) => {
-    //     return {
-    //       rules: rowIndex > 2 ? [{ required: true, message: '此项为必填项' }] : [],
-    //     };
-    //   },
-    //   // 第二行不允许编辑
-    //   // editable: (text, record, index) => {
-    //   //   return index !== 0;
-    //   // },
-    //   // width: '30%',
-    // },
     {
       title: '通路类型',
       key: 'type',

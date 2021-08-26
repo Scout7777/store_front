@@ -1,12 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space, Tag, Progress } from 'antd';
+import { Button, Space, Tag, Progress, Popover } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
-import { getPatientBed, searchPatient } from '@/services/histsys/patient';
+import { searchPatient } from '@/services/histsys/patient';
 import { getWeek, getReal, getTemplateWeek } from '@/services/histsys/bed';
-import { getProcess, getProcessLast } from '@/services/histsys/dialysis';
 import UpdateForm from './components/PatientUpdateForm';
 import CreateForm from './components/PatientCreateForm';
 
@@ -23,18 +22,42 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
-  const mock = [
-    <>
-      <Tag>急诊</Tag>
-      <Tag>临时</Tag>
-    </>,
-    <Tag>退出</Tag>,
-    <Tag>请假</Tag>,
-    '-',
-    '-',
-    '-',
-    '-',
-  ];
+  const PopTag = (props) => {
+    const [visible, setVisible] = useState(false);
+
+    const { lable, color } = props;
+
+    function hide() {
+      setVisible(false);
+    }
+
+    function handleVisibleChange(value) {
+      setVisible({ value });
+    }
+
+    return (
+      <Popover
+        content={
+          <Space>
+            <a onClick={hide}>急诊</a>
+            <a onClick={hide}>临时</a>
+            <a onClick={hide}>退出</a>
+            <a onClick={hide}>请假</a>
+            <a onClick={hide}>住院</a>
+            <a onClick={hide}>长期</a>
+            <a onClick={hide}>新入</a>
+          </Space>
+        }
+        title="操作"
+        trigger="click"
+        visible={visible}
+        onVisibleChange={handleVisibleChange}
+      >
+        <Tag color={color}>{lable}</Tag>
+      </Popover>
+    );
+  };
+
   const bed = [
     <>
       <Tag>一/晚</Tag>
@@ -84,7 +107,6 @@ export default () => {
       title: '门诊号（登记号）',
       dataIndex: ['electronicMedicalRecord', 'outpatientNo'],
       sorter: true,
-      // render: (_, record) => `0000000${record.id}`,
     },
     {
       title: '姓名',
@@ -94,22 +116,17 @@ export default () => {
       title: '状态',
       dataIndex: 'state',
       search: false,
-      render: () => <Space>{mock[Math.floor(Math.random() * mock.length)]}</Space>,
+      render: () => (
+        <Space>
+          <PopTag></PopTag>
+        </Space>
+      ),
     },
     {
       title: '排床规律',
       dataIndex: 'labels',
       search: false,
-      render: () => (
-        <Space>
-          {/* {record.labels.map(({ name, color }) => (
-            <Tag color={color} key={name}>
-              {name}
-            </Tag>
-          ))} */}
-          {bed[Math.floor(Math.random() * bed.length)]}
-        </Space>
-      ),
+      render: () => <Space>{bed[Math.floor(Math.random() * bed.length)]}</Space>,
     },
     {
       title: '感染四项',
@@ -135,6 +152,17 @@ export default () => {
           text: '正常',
         },
       },
+      render: (_, record) => (
+        <a
+          key="config"
+          onClick={() => {
+            setCurrentRow(record);
+            handleUpdateModalVisible(true);
+          }}
+        >
+          {_}
+        </a>
+      ),
     },
     {
       title: '检验时效',
@@ -199,6 +227,56 @@ export default () => {
         </Space>
       ),
     },
+    {
+      title: '出生日期',
+      dataIndex: 'birthDate',
+      search: false,
+    },
+    {
+      title: '血型',
+      dataIndex: 'bloodType',
+      search: false,
+    },
+    {
+      title: '联系人关系',
+      dataIndex: 'contactRelation',
+      search: false,
+    },
+    {
+      title: '联系人电话',
+      dataIndex: 'contactTelephone',
+      search: false,
+    },
+    {
+      title: '性别',
+      dataIndex: 'gender',
+      search: false,
+    },
+    {
+      title: '身高',
+      dataIndex: 'height',
+      search: false,
+    },
+    {
+      title: '家庭住址',
+      dataIndex: 'homeAddress',
+      search: false,
+    },
+    {
+      title: '身份证类型',
+      dataIndex: 'idType',
+      search: false,
+    },
+    {
+      title: '身份证号码',
+      dataIndex: 'idNo',
+      search: false,
+    },
+    {
+      title: '本人电话',
+      dataIndex: 'telephone',
+      search: false,
+    },
     // {
     //   title: '创建时间',
     //   sorter: true,
@@ -214,11 +292,7 @@ export default () => {
         <a
           key="config"
           onClick={() => {
-            console.log(record);
             setCurrentRow(record);
-            console.log(getProcess(record.id));
-            console.log(getProcessLast(record.id));
-            console.log(getPatientBed(record.id));
             handleUpdateModalVisible(true);
           }}
         >

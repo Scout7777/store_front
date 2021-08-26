@@ -59,11 +59,6 @@ export default (props) => {
       valueType: 'text',
     },
     {
-      title: 'comps',
-      dataIndex: 'comps',
-      valueType: 'checkbox',
-    },
-    {
       title: '操作',
       valueType: 'option',
       width: 200,

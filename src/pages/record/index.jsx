@@ -1,21 +1,68 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button, Space, Tag, Progress } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { updateUser } from '@/services/histsys/user';
-import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/UserCreateForm';
 import { searchPatient } from '@/services/histsys/dialysis';
+import MonitorForm from '@/pages/room/components/MonitorForm';
 // import MonitorList from './components/MonitorList';
 
 export default () => {
+  const [ModalVisible, handleModalVisible] = useState();
   const [createModalVisible, handleCreateModalVisible] = useState();
-  const [updateModalVisible, handleUpdateModalVisible] = useState();
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
   const MockValue = [];
+  const mock = [
+    <Tag>急诊</Tag>,
+    <Tag>临时</Tag>,
+    <Tag>退出</Tag>,
+    <Tag>请假</Tag>,
+    <Tag>住院</Tag>,
+    <Tag>长期</Tag>,
+    <Tag>新入</Tag>,
+    '-',
+    '-',
+    '-',
+    '-',
+  ];
+  const bed = [
+    <>
+      <Tag>一/晚</Tag>
+      <Tag>四/晚</Tag>
+    </>,
+    <>
+      <Tag>一/早</Tag>
+      <Tag>三/早</Tag>
+      <Tag>五/早</Tag>
+    </>,
+    <>
+      <Tag>二/下</Tag>
+      <Tag>四/下</Tag>
+      <Tag>六/下</Tag>
+    </>,
+    '-',
+  ];
+  const zhengzhuang = [
+    <Tag color={'purple'}>房颤</Tag>,
+    <Tag color={'purple'}>甲</Tag>,
+    '-',
+    '-',
+    '-',
+  ];
+  const guomin = [
+    <Tag color={'red'}>药物</Tag>,
+    <Tag color={'red'}>透析器</Tag>,
+    <>
+      <Tag color={'red'}>透析器</Tag>
+      <Tag color={'red'}>药物</Tag>
+    </>,
+    '-',
+    '-',
+    '-',
+  ];
 
   const aa = ['a', 'b'];
   //  let result= Math.floor(Math.random() * aa.length);
@@ -45,79 +92,141 @@ export default () => {
     //   search: false,
     // },
     {
-      title: '患者号',
-      dataIndex: 'staffNo',
+      title: '门诊号（登记号）',
+      dataIndex: ['electronicMedicalRecord', 'outpatientNo'],
       sorter: true,
-      render: (_, record, index) => <div>00000{index + 1}</div>,
+      // render: (_, record) => `0000000${record.id}`,
     },
     {
       title: '姓名',
-      dataIndex: 'name',
-      sorter: true,
+      dataIndex: ['electronicMedicalRecord', 'patientName'],
     },
     {
-      title: '联系电话',
-      dataIndex: 'telephone',
+      title: '状态',
+      dataIndex: 'state',
+      search: false,
+      render: () => <Space>{mock[Math.floor(Math.random() * mock.length)]}</Space>,
     },
     {
-      title: '透析方式',
-      dataIndex: 'way',
+      title: '排床规律',
+      dataIndex: 'labels',
+      search: false,
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          {bed[Math.floor(Math.random() * bed.length)]}
+        </Space>
+      ),
+    },
+    {
+      title: '感染四项',
+      dataIndex: 'role',
       valueEnum: {
         a: {
-          text: 'HD',
-          color: 'blue',
+          text: '丙肝',
+          color: 'green',
         },
         b: {
-          text: 'HDF',
+          text: 'HIV',
+          color: 'blue',
+        },
+        c: {
+          text: '乙肝',
           color: 'red',
+        },
+        d: {
+          text: '梅毒',
+          color: 'black',
+        },
+        e: {
+          text: '正常',
         },
       },
     },
     {
-      title: '灌流器',
-      dataIndex: '灌流器',
+      title: '检验时效',
+      dataIndex: 'status',
+      hideInForm: false,
+      render: () => <Progress percent={30} size="small" />,
+      // valueType: () => ({
+      //   type: 'progress',
+      //   status: 'active',
+      // }),
+      // valueEnum: {
+      //   active: {
+      //     text: '检验时效中',
+      //     status: 'Success',
+      //   },
+      //   disable: {
+      //     text: '已过期，请及时检验',
+      //     status: 'default',
+      //   },
+      // },
     },
     {
-      title: '透析器',
-      dataIndex: 'eq1',
+      title: '血管通路',
+      hideInForm: false,
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          <Tag>AVF</Tag>
+        </Space>
+      ),
     },
     {
-      title: '透前血压',
-      dataIndex: 'bp',
+      title: '症状评估',
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          {zhengzhuang[Math.floor(Math.random() * zhengzhuang.length)]}
+        </Space>
+      ),
     },
     {
-      title: '透前体重',
-      dataIndex: 'weight_before',
+      title: '用药情况',
     },
     {
-      title: '透后体重',
-      dataIndex: 'weight_later',
+      title: '过敏史',
+      render: () => (
+        <Space>
+          {/* {record.labels.map(({ name, color }) => (
+            <Tag color={color} key={name}>
+              {name}
+            </Tag>
+          ))} */}
+          {guomin[Math.floor(Math.random() * guomin.length)]}
+        </Space>
+      ),
     },
-    {
-      title: '设定脱水量',
-      dataIndex: 'water',
-    },
-    {
-      title: '器显脱水量',
-      dataIndex: 'water_now',
-    },
-    {
-      title: '透析时间',
-      sorter: true,
-      search: false,
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-    },
+    // {
+    //   title: '创建时间',
+    //   sorter: true,
+    //   search: false,
+    //   dataIndex: 'createdAt',
+    //   valueType: 'dateTime',
+    // },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => [
-        // render: (_, record) => [
+      render: (_, record) => [
         <a
           key="config"
           onClick={() => {
-            handleCreateModalVisible(true);
+            setCurrentRow(record);
+            handleModalVisible(true);
           }}
         >
           查看详情
@@ -128,6 +237,7 @@ export default () => {
       ],
     },
   ];
+
   return (
     <PageContainer>
       <ProTable
@@ -143,7 +253,7 @@ export default () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleCreateModalVisible(true);
+              handleModalVisible(true);
             }}
           >
             <PlusOutlined /> 手动补录
@@ -158,29 +268,20 @@ export default () => {
         //   },
         // }}
       />
+
       <CreateForm
         onCancel={() => {
           handleCreateModalVisible(false);
         }}
         visible={createModalVisible}
       />
-      <UpdateForm
-        onSubmit={async (value) => {
-          const { id } = currentRow || {};
-          const success = await updateUser(id, value);
-          if (success) {
-            handleUpdateModalVisible(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
+
+      <MonitorForm
         onCancel={() => {
-          handleUpdateModalVisible(false);
+          handleModalVisible(false);
           setCurrentRow(undefined);
         }}
-        visible={updateModalVisible}
+        visible={ModalVisible}
         values={currentRow || {}}
       />
     </PageContainer>

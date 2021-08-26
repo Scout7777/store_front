@@ -54,6 +54,7 @@ const PopTag = (props) => {
 };
 
 const DetailList = (props) => {
+  console.log(props);
   const { filter } = props;
   const [tableListDataSource, setTableListDataSource] = useState([]);
   const [areaShow, setAreaShow] = useState(false);
