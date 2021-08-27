@@ -1,221 +1,177 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Tabs, Button, Popover } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { updateUser } from '@/services/histsys/user';
-import UpdateForm from './components/UserUpdateForm';
-import CreateForm from './components/UserCreateForm';
-// import MonitorList from './components/MonitorList';
+import { pageDs, createDsGroup, createDsItem, updateDsItem, deleteDsItem } from '@/services/histsys/disinfection';
+import DsGroupForm from './components/DsGroupForm';
 
+const DS_GROUP_TYPES = ["透析机消毒检测", "水处理机消毒检测", "浓缩液配制桶及容器清洁与消毒", "物表消毒", "透析室空气消毒", "透析用水检测", "透析机透析液检测", "配置透析液检测"]
 export default () => {
-  const [createModalVisible, handleCreateModalVisible] = useState();
-  const [updateModalVisible, handleUpdateModalVisible] = useState();
+  const [createModalVisible, handleCreateModalVisible] = useState({});
+  const [updateModalVisible, handleUpdateModalVisible] = useState({});
   const [currentRow, setCurrentRow] = useState();
-  const actionRef = useRef();
+  const actionRef = {
+    "透析机消毒检测": useRef(),
+    "水处理机消毒检测": useRef(),
+    "浓缩液配制桶及容器清洁与消毒": useRef(),
+    "物表消毒": useRef(),
+    "透析室空气消毒": useRef(),
+    "透析用水检测": useRef(),
+    "透析机透析液检测": useRef(),
+    "配置透析液检测": useRef(),
+  }
+  const [currentSelectedPopoverButtonVisible, handleCurrentSelectedPopoverButtonVisible] = useState()
 
-  const MockData = [
-    {
-      id: '01',
-      name: '设备1',
-      qType: 'a',
-      bed: '床位1',
-      stock: '1000',
-      type: 'a',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '02',
-      name: '设备2',
-      qType: 'b',
-      bed: '床位2',
-      stock: '1000',
-      type: 'b',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '03',
-      name: '设备3',
-      qType: 'b',
-      bed: '床位3',
-      stock: '1000',
-      type: 'c',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '05',
-      name: '设备4',
-      qType: 'a',
-      stock: '1000',
-      type: 'd',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-  ];
 
-  const columns = [
-    // {
-    //   title: '头像',
-    //   dataIndex: 'avatar',
-    //   valueType: 'avatar',
-    //   search: false,
-    // },
+  const openCreateModal = (type) => {
+    const map = {}
+    map[type] = true
+    handleCreateModalVisible(map)
+  }
+  const closeCreateModal = () => {
+    handleCreateModalVisible({})
+  }
+  const openUpdateModal = (type) => {
+    const map = {}
+    map[type] = true
+    handleUpdateModalVisible(map)
+  }
+  const closeUpdateModal = () => {
+    handleUpdateModalVisible({})
+  }
+
+  let columns = [
     {
-      title: '设备编号',
+      title: '检测编号',
       dataIndex: 'id',
-      sorter: true,
+      sorter: false,
     },
     {
-      title: '设备名称',
-      dataIndex: 'name',
-      sorter: true,
-    },
-    {
-      title: '归属床位',
-      dataIndex: 'bed',
-      sorter: true,
-    },
-    {
-      title: '设备类别',
-      dataIndex: 'qType',
-      valueEnum: {
-        a: {
-          text: '类别1',
-          color: 'green',
-        },
-        b: {
-          text: '类别2',
-          color: 'blue',
-        },
-        c: {
-          text: '类别3',
-          color: 'red',
-        },
-        d: {
-          text: '类别4',
-          color: 'pink',
-        },
-      },
-    },
-    {
-      title: '设备状态',
-      dataIndex: 'type',
-      valueEnum: {
-        a: {
-          text: '正常',
-          color: 'green',
-        },
-        b: {
-          text: '检修',
-          color: 'blue',
-        },
-        c: {
-          text: '故障',
-          color: 'red',
-        },
-        d: {
-          text: '停用',
-          color: 'gray',
-        },
-      },
-    },
-    {
-      title: '监控指标1',
-      dataIndex: 'a',
-      sorter: true,
-    },
-    {
-      title: '监控指标2',
-      dataIndex: 'b',
-      sorter: true,
-    },
-    {
-      title: '监控指标3',
-      dataIndex: 'c',
-      sorter: true,
-    },
-    {
-      title: '监控指标4',
-      dataIndex: 'd',
-      sorter: true,
-    },
-    {
-      title: '监控指标5',
-      dataIndex: 'e',
-      sorter: true,
-    },
-    {
-      title: '最近检修时间',
-      sorter: true,
-      search: false,
+      title: '检测时间',
+      sorter: false,
       dataIndex: 'createdAt',
       valueType: 'dateTime',
     },
     {
+      title: '合格情况',
+      sorter: false,
+      render: record => {
+        return <div>3/5</div>
+      }
+    }
+  ];
+
+
+  const makeColumnOps = (type) => {
+    columns.push({
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: () => [
-        // render: (_, record) => [
-        <a>查看详情</a>,
-        <a>检修</a>,
-        <a>停用</a>,
+        <a
+          key="testit"
+          onClick={() => {
+            setCurrentRow(record);
+            openUpdateModal(type);
+          }}
+        >
+          检测
+        </a>,
+        <Popover
+          key="remove"
+          content={
+          <a
+            onClick={async () => {
+              const success = await deleteDsItem('', record.recordId, record.id);
+              if (success) {
+                if (actionRef[type].current) {
+                  actionRef[type].current.reload();
+                }
+                handleCurrentSelectedPopoverButtonVisible(false)
+              }
+            }}
+          >确认删除</a>}
+          trigger="click"
+          visible={currentSelectedPopoverButtonVisible === `${record.id}`}
+          onVisibleChange={visible => handleCurrentSelectedPopoverButtonVisible(visible ? `${record.id}` : null)}
+        >
+          <a>删除</a>
+        </Popover>,
       ],
-    },
-  ];
+    })
+  }
+
   return (
     <PageContainer>
-      <ProTable
-        // headerTitle="患者列表"
-        actionRef={actionRef}
-        rowKey="key"
-        search={{
-          labelWidth: 120,
-        }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleCreateModalVisible(true);
-            }}
-          >
-            <PlusOutlined /> 新增设备
-          </Button>,
-        ]}
-        // request={searchUser}
-        dataSource={MockData}
-        columns={columns}
-        // rowSelection={{
-        //   onChange: (_, selectedRows) => {
-        //     setSelectedRows(selectedRows);
-        //   },
-        // }}
-      />
-      <CreateForm
-        onCancel={() => {
-          handleCreateModalVisible(false);
-        }}
-        visible={createModalVisible}
-      />
-      <UpdateForm
-        onSubmit={async (value) => {
-          const { id } = currentRow || {};
-          const success = await updateUser(id, value);
-          if (success) {
-            handleUpdateModalVisible(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={() => {
-          handleUpdateModalVisible(false);
-          setCurrentRow(undefined);
-        }}
-        visible={updateModalVisible}
-        values={currentRow || {}}
-      />
+       <Tabs defaultActiveKey="透析机消毒检测" onChange={null}>
+        {
+          DS_GROUP_TYPES.map(type => {
+            return <Tabs.TabPane tab={type} key={type}>
+            <ProTable
+              headerTitle={type}
+              actionRef={actionRef[type]}
+              rowKey="key"
+              search={false}
+              toolBarRender={() => [
+                <Button
+                  type="primary"
+                  key="create_group"
+                  onClick={() => {
+                    openCreateModal(type)
+                  }}
+                >
+                  <PlusOutlined /> 新增{type}记录
+                </Button>,
+              ]}
+              request={arg => pageDs(type, arg)}
+              columns={columns}
+            />
+            <DsGroupForm
+              title={`新增${type}记录`}
+              type={type}
+              onSubmit={async (value) => {
+                const groupResp = await createDsGroup(type, {}); // empty payload is ok
+                const group = groupResp.data
+                const success = await createDsItem(type, group.id, value);
+                if (success) {
+                  closeCreateModal();
+                  setCurrentRow(undefined);
+                  if (actionRef[type].current) {
+                    actionRef[type].current.reload();
+                  }
+                }
+              }}
+              onCancel={() => {
+                closeCreateModal()
+              }}
+              visible={createModalVisible[type]}
+            />
+            <DsGroupForm
+              title={type}
+              type={type}
+              onSubmit={async (value) => {
+                const { id, recordId } = currentRow || {};
+                const success = await updateDsItem(type, recordId, id, value);
+                if (success) {
+                  closeUpdateModal();
+                  setCurrentRow(undefined);
+                  if (actionRef[type].current) {
+                    actionRef[type].current.reload();
+                  }
+                }
+              }}
+              onCancel={() => {
+                closeUpdateModal();
+                setCurrentRow(undefined);
+              }}
+              visible={updateModalVisible[type]}
+              values={currentRow || {}}
+            />
+          </Tabs.TabPane>
+          })
+        }
+      </Tabs>
     </PageContainer>
   );
 };

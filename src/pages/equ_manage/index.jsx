@@ -1,107 +1,20 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { updateUser } from '@/services/histsys/user';
-import UpdateForm from './components/UserUpdateForm';
-import CreateForm from './components/UserCreateForm';
-// import MonitorList from './components/MonitorList';
+import { searchDevice, createDevice, updateDevice, statusDevice } from '@/services/histsys/device';
+import DeviceForm from './components/DeviceForm';
 
 export default () => {
-  const [createModalVisible, handleCreateModalVisible] = useState();
-  const [updateModalVisible, handleUpdateModalVisible] = useState();
-  const [currentRow, setCurrentRow] = useState();
-  const actionRef = useRef();
+  const [createModalVisible, handleCreateModalVisible] = useState()
+  const [updateModalVisible, handleUpdateModalVisible] = useState()
+  const [currentSelectedPopoverButtonVisible, handleCurrentSelectedPopoverButtonVisible] = useState()
+  const [currentRow, setCurrentRow] = useState()
+  const actionRef = useRef()
 
-  const MockValue = [];
-
-  const aa = ['a', 'b'];
-
-  const role = ['a', 'b', 'c', 'd'];
-
-  for (let i = 0; i < 20; i += 1) {
-    MockValue.push({
-      id: `20000${i + 1}`,
-      name: `设备${i + 1}`,
-      qType: aa[Math.floor(Math.random() * aa.length)],
-      bed: `床位${i + 1}`,
-      type: role[Math.floor(Math.random() * role.length)],
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    });
-  }
-
-  const last = [
-    {
-      id: '91',
-      name: '设备91',
-      qType: 'a',
-      bed: '床位1',
-      stock: '1000',
-      type: 'a',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '92',
-      name: '设备92',
-      qType: 'b',
-      bed: '床位2',
-      stock: '1000',
-      type: 'b',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '93',
-      name: '设备93',
-      qType: 'b',
-      bed: '床位3',
-      stock: '1000',
-      type: 'c',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '94',
-      name: '设备94',
-      qType: 'a',
-      stock: '1000',
-      type: 'd',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '95',
-      name: '设备95',
-      qType: 'a',
-      stock: '1000',
-      type: 'd',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '96',
-      name: '设备96',
-      qType: 'a',
-      stock: '1000',
-      type: 'd',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-    {
-      id: '97',
-      name: '设备97',
-      qType: 'a',
-      stock: '1000',
-      type: 'd',
-      createdAt: Date.now() - Math.floor(Math.random() * 10000),
-    },
-  ];
-
-  MockValue.concat(last);
-
+  console.log(currentSelectedPopoverButtonVisible)
   const columns = [
-    // {
-    //   title: '头像',
-    //   dataIndex: 'avatar',
-    //   valueType: 'avatar',
-    //   search: false,
-    // },
     {
       title: '设备编号',
       dataIndex: 'id',
@@ -112,78 +25,151 @@ export default () => {
       dataIndex: 'name',
       sorter: true,
     },
-    {
-      title: '归属床位',
-      dataIndex: 'bed',
-      sorter: true,
-    },
+    // {
+    //   title: '归属床位',
+    //   dataIndex: 'bed',
+    //   sorter: true,
+    // },
     {
       title: '设备类别',
-      dataIndex: 'qType',
+      dataIndex: 'type',
       valueEnum: {
-        a: {
-          text: '类别1',
+        血液透析机: {
+          text: '血液透析机',
           color: 'green',
         },
-        b: {
-          text: '类别2',
+        血液透析滤过机: {
+          text: '血液透析滤过机',
+          color: 'green',
+        },
+        连续肾脏替代治疗机: {
+          text: '连续肾脏替代治疗机',
+          color: 'green',
+        },
+        床纯水设备: {
+          text: '床纯水设备',
           color: 'blue',
         },
-        c: {
-          text: '类别3',
-          color: 'red',
+        中央供液设备: {
+          text: '中央供液设备',
+          color: 'blue',
         },
-        d: {
-          text: '类别4',
-          color: 'pink',
+        除颤仪名称: {
+          text: '除颤仪名称',
+          color: 'gray',
         },
-      },
+        负压吸引器名称: {
+          text: '负压吸引器名称',
+          color: 'gray',
+        },
+        简易呼吸器名称: {
+          text: '简易呼吸器名称',
+          color: 'gray',
+        },
+        其它: {
+          text: '其它',
+          color: 'gray',
+        },
+      }
     },
     {
       title: '设备状态',
-      dataIndex: 'type',
+      dataIndex: 'status',
       valueEnum: {
-        a: {
-          text: '正常',
+        空闲: {
+          text: '空闲',
           color: 'green',
         },
-        b: {
-          text: '检修',
+        工作: {
+          text: '工作',
           color: 'blue',
         },
-        c: {
-          text: '故障',
+        维修: {
+          text: '维修',
           color: 'red',
         },
-        d: {
-          text: '停用',
+        消毒: {
+          text: '消毒',
           color: 'gray',
+        },
+        报废: {
+          text: '报废',
+          color: 'black',
         },
       },
     },
     {
-      title: '最近检修时间',
+      title: '启用时间',
+      sorter: true,
+      search: false,
+      dataIndex: 'enableTime',
+      valueType: 'dateTime',
+    },
+    {
+      title: '添加时间',
       sorter: true,
       search: false,
       dataIndex: 'createdAt',
       valueType: 'dateTime',
     },
+    // {
+    //   title: '废弃时间',
+    //   sorter: true,
+    //   search: false,
+    //   dataIndex: 'discardTime',
+    //   valueType: 'dateTime',
+    //   hideInDescriptions: true,
+    // },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => [
-        // render: (_, record) => [
-        <a>查看详情</a>,
-        <a>检修</a>,
-        <a>停用</a>,
+      render: (_, record) => [
+        <a
+          key="detail"
+          onClick={() => {
+            handleUpdateModalVisible(true);
+            setCurrentRow(record);
+          }}
+        >
+          更新设备
+        </a>,
+        <a
+          key="config"
+          onClick={() => {
+            handleUpdateModalVisible(true);
+            setCurrentRow(record);
+          }}
+        >
+          检修
+        </a>,
+        <Popover
+          key="status"
+          content={
+          <a 
+            onClick={async () => {
+              const success = await statusDevice(record.id, "报废");
+              if (success) {
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+                handleCurrentSelectedPopoverButtonVisible(false)
+              }
+            }}
+          >确认报废</a>}
+          trigger="click"
+          visible={currentSelectedPopoverButtonVisible === `${record.id}`}
+          onVisibleChange={visible => handleCurrentSelectedPopoverButtonVisible(visible ? `${record.id}` : null)}
+        >
+          <a>报废</a>
+        </Popover>,
       ],
     },
   ];
   return (
     <PageContainer>
       <ProTable
-        // headerTitle="患者列表"
+        headerTitle="设备列表"
         actionRef={actionRef}
         rowKey="key"
         search={{
@@ -200,8 +186,7 @@ export default () => {
             <PlusOutlined /> 新增设备
           </Button>,
         ]}
-        // request={searchUser}
-        dataSource={MockValue}
+        request={searchDevice}
         columns={columns}
         // rowSelection={{
         //   onChange: (_, selectedRows) => {
@@ -209,16 +194,28 @@ export default () => {
         //   },
         // }}
       />
-      <CreateForm
+      <DeviceForm
+        title="新建设备"
+        onSubmit={async (value) => {
+          const success = await createDevice(value);
+          if (success) {
+            handleCreateModalVisible(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
         onCancel={() => {
           handleCreateModalVisible(false);
         }}
         visible={createModalVisible}
       />
-      <UpdateForm
+      <DeviceForm
+        title="更新设备"
+        mode="edit"
         onSubmit={async (value) => {
           const { id } = currentRow || {};
-          const success = await updateUser(id, value);
+          const success = await updateDevice(id, value);
           if (success) {
             handleUpdateModalVisible(false);
             setCurrentRow(undefined);

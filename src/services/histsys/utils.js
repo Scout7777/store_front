@@ -6,14 +6,17 @@ export const toQueryString = (payload) => {
 }
 
 export const toSearchPayload = (payload) => {
+  console.log(payload)
   const current = payload.current || 1
   const pageSize = payload.pageSize || 10
+  const sort = payload.sort || {}
   delete payload.current
   delete payload.pageSize
+  delete payload.sort
   return {
     current,
     pageSize,
+    sort,
     filter: {...payload},
-    // sort: {...payload},
   }
 }
