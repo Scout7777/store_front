@@ -121,7 +121,33 @@
     name: '质量分析',
     access: 'alluser',
     icon: 'BarChartOutlined',
-    component: './quality',
+    routes: [
+      {
+        path: '/quality/patient',
+        name: '患者统计',
+        component: './quality_patient',
+      },
+      {
+        path: '/quality/equipment',
+        name: '设施设备',
+        component: './quality_equipment',
+      },
+      {
+        path: '/quality/process',
+        name: '透析过程',
+        component: './quality_process',
+      },
+      {
+        path: '/quality/result',
+        name: '透析结果',
+        component: './quality_result',
+      },
+      {
+        path: '/quality/analysis',
+        name: '患者分析',
+        component: './quality_analysis',
+      },
+    ],
   },
   {
     path: '/dashboard',

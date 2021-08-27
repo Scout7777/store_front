@@ -53,6 +53,7 @@
     "@ant-design/pro-layout": "^6.15.3",
     "@ant-design/pro-list": "^1.10.6",
     "@ant-design/pro-table": "^2.30.8",
+    "@antv/g2": "^4.1.24",
     "@umijs/route-utils": "^1.0.36",
     "antd": "^4.14.0",
     "antd-mobile": "^2.3.4",

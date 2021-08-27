@@ -1,18 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Modal, Tabs, Form, Divider, Col } from 'antd';
+import { Row, Modal, Tabs, Form, Divider, Col, Button, notification } from 'antd';
 import ProForm from '@ant-design/pro-form';
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
 import ProCard from '@ant-design/pro-card';
 import { getPatient } from '@/services/histsys/patient';
-import { getProcess, getProcessLast } from '@/services/histsys/dialysis';
+import {
+  createAdmission,
+  createProcess,
+  getProcess,
+  getProcessLast,
+  updateMedical,
+  updatePre,
+} from '@/services/histsys/dialysis';
+
+import AdmissionForm from '@/pages/monitor_pad/components/AdmissionForm';
+import PreAssessment from '@/pages/monitor_pad/components/PreAssessment';
+// import BasicCreateForm from "@/pages/patient/components/BasicCreateForm";
+// import Puncture from '@/pages/monitor_pad/components/Puncture';
+// import Check from '@/pages/monitor_pad/components/Check';
+// import On from '@/pages/monitor_pad/components/On';
+// import Down from '@/pages/monitor_pad/components/Down';
+// import Monitor from '@/pages/monitor_pad/components/NMonitor';
+// import Patrol from '@/pages/monitor_pad/components/Patrol';
+import MedicalForm from '@/pages/monitor_pad/components/MedicalForm';
+// import AMedical from '@/pages/monitor_pad/components/AMedical';
 
 const { TabPane } = Tabs;
 // const { adviceTabPane } = Tabs;
 
 const CreateForm = (props) => {
   const [currentPatient, setCurrentPatient] = useState({ ...props.values });
+  const [ModalVisible, handleModalVisible] = useState();
   const [processes, setProcesses] = useState([]);
+  const [PreVisible, handlePreVisible] = useState();
+  const [MedicalFormModalVisible, handleMedicalFormModalVisible] = useState();
   const [tab, setTab] = useState(0);
   const { id } = props.values;
   const renderDate = (utc) => {
@@ -42,6 +64,7 @@ const CreateForm = (props) => {
 
   console.log(processes);
   console.log(currentPatient);
+  console.log(props);
 
   return (
     <Modal title="查看详情" width={1200} visible={props.visible} onCancel={props.onCancel}>
@@ -93,7 +116,6 @@ const CreateForm = (props) => {
               </Form.Item>
             </Col>
           </Row>
-          <Row></Row>
         </Form>
       </ProCard>
 
@@ -544,6 +566,24 @@ const CreateForm = (props) => {
             </TabPane>
           </Tabs>
         </ProForm>
+        <Button size={'large'} type="primary" onClick={() => handleMedicalFormModalVisible(true)}>
+          修改
+          <MedicalForm
+            visible={MedicalFormModalVisible}
+            lastValue={process?.medicalAdvice}
+            onSubmit={async (value) => {
+              const resp = await updateMedical(process?.id || null, value);
+              notification.open({
+                description: resp.status + resp.message,
+                message: '调试',
+              });
+              handleMedicalFormModalVisible(false);
+            }}
+            onCancel={() => {
+              handleMedicalFormModalVisible(false);
+            }}
+          />
+        </Button>
       </ProCard>
       <ProCard
         title="接诊评估"
@@ -590,6 +630,22 @@ const CreateForm = (props) => {
             </Col>
           </Row>
         </Form>
+        <Button size={'large'} type="primary" onClick={() => handleModalVisible(true)}>
+          修改
+          <AdmissionForm
+            visible={ModalVisible}
+            onSubmit={async (value) => {
+              const resp = await createAdmission(id, value);
+              setAdmissionO(resp.data);
+              const resp2 = await createProcess(resp.data.patientId, resp.data.id);
+              setProcess(resp2.data);
+              setAdmission(true);
+            }}
+            onCancel={() => {
+              handleModalVisible(false);
+            }}
+          />
+        </Button>
       </ProCard>
       <ProCard
         title="透前评估"
@@ -693,6 +749,27 @@ const CreateForm = (props) => {
             </Col>
           </Row>
         </Form>
+        <Button size={'large'} type="primary" onClick={() => handlePreVisible(true)}>
+          修改
+          <PreAssessment
+            visible={PreVisible}
+            onSubmit={async (value) => {
+              setPreAssessment(value);
+              await updatePre(process.id, value);
+              handlePreVisible(false);
+              setPre(true);
+            }}
+            // onSubmit={(value) => {
+            //   setPreAssessment(value);
+            //   console.log(preAssessment);
+            //   handlePreVisible(false);
+            //   setPre(true);
+            // }}
+            onCancel={() => {
+              handlePreVisible(false);
+            }}
+          />
+        </Button>
       </ProCard>
       <ProCard
         title="上机"

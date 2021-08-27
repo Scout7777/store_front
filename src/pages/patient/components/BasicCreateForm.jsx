@@ -77,7 +77,7 @@ const BasicCreateForm = (props) => {
           />
         </Col>
         <Col span={12}>
-          <ProFormText width="md" name="idNo" label="证件号码" />
+          <ProFormText width="md" name="idNo" label="证件号码" rules={[{ required: true }]} />
         </Col>
         <Col span={12}>
           <ProFormText
@@ -177,9 +177,7 @@ const BasicCreateForm = (props) => {
           />
         </Col>
       </Row>
-      <FormItemDivider>选填</FormItemDivider>
-
-      <ProFormText name="telephone" width="md" label="本人电话" />
+      <ProFormText name="telephone" width="md" label="本人电话" rules={[{ required: true }]} />
     </ProForm>
   );
 };

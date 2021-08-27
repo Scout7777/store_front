@@ -277,10 +277,8 @@ const PatientCard = (props) => {
                 <PreAssessment
                   visible={PreVisible}
                   onSubmit={async (value) => {
-                    console.log(value);
                     setPreAssessment(value);
-                    const resp = await updatePre(process.id, value);
-                    console.log(resp);
+                    await updatePre(process.id, value);
                     console.log(preAssessment);
                     handlePreVisible(false);
                     setPre(true);
