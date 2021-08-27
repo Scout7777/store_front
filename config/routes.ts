@@ -142,6 +142,11 @@
         name: '透析结果',
         component: './quality_result',
       },
+      {
+        path: '/quality/analysis',
+        name: '患者分析',
+        component: './quality_analysis',
+      },
     ],
   },
   {
