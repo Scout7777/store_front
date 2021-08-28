@@ -45,6 +45,12 @@ export async function updateDsItem(itemType, groupId, itemId, values) {
   });
 }
 
+export async function deleteDsGroup(groupType, groupId) {
+  return request(`/api/disinfections/records/${groupType}/${groupId}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function deleteDsItem(itemType, groupId, itemId) {
   return request(`/api/disinfections/records/${groupId}/${itemType}/${itemId}`, {
     method: 'DELETE',
