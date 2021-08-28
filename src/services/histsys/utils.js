@@ -6,7 +6,7 @@ export const toQueryString = (payload) => {
 }
 
 export const toSearchPayload = (payload) => {
-  console.log(payload)
+  // console.log(payload)
   const current = payload.current || 1
   const pageSize = payload.pageSize || 10
   const sort = payload.sort || {}

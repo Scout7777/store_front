@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Tabs, Button, Popover } from 'antd';
+import { Tabs, Button, Popover, Progress } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { pageDs, createDsGroup, createDsItem, updateDsItem, deleteDsItem } from '@/services/histsys/disinfection';
+import { pageDs, deleteDsGroup } from '@/services/histsys/disinfection';
 import DsGroupForm from './components/DsGroupForm';
 
 const DS_GROUP_TYPES = ["透析机消毒检测", "水处理机消毒检测", "浓缩液配制桶及容器清洁与消毒", "物表消毒", "透析室空气消毒", "透析用水检测", "透析机透析液检测", "配置透析液检测"]
@@ -21,8 +21,7 @@ export default () => {
     "透析机透析液检测": useRef(),
     "配置透析液检测": useRef(),
   }
-  const [currentSelectedPopoverButtonVisible, handleCurrentSelectedPopoverButtonVisible] = useState()
-
+  const [currentSelectedPopoverVisibleId, handleCurrentSelectedPopoverVisibleId] = useState()
 
   const openCreateModal = (type) => {
     const map = {}
@@ -41,7 +40,7 @@ export default () => {
     handleUpdateModalVisible({})
   }
 
-  let columns = [
+  const columns = [
     {
       title: '检测编号',
       dataIndex: 'id',
@@ -54,21 +53,53 @@ export default () => {
       valueType: 'dateTime',
     },
     {
+      title: '处理人',
+      dataIndex: 'recordUser',
+      render: recordUser => {
+        if (recordUser.name)
+          return <div>{`${recordUser.staffNo}(${recordUser.name})`}</div>
+        return <div>{`${recordUser.staffNo}`}</div>
+      }
+    },
+    {
       title: '合格情况',
       sorter: false,
       render: record => {
-        return <div>3/5</div>
+        // 遍历子表，找到合格情况
+        let total = 0;
+        let success = 0;
+        for (let field in record) {
+          if (field.endsWith('Records')) {
+            total += 1;
+            let list = record[field]
+            for (let i = 0; i < list.length; i += 1) {
+              if (list[i].isQualified) { // 监测到有一个合格即算合格
+                success += 1;
+                break;
+              }
+            }
+          }
+        }
+        if (success === total) {
+          return <div style={{paddingRight: 20}}>
+             <Progress percent={100} size="small"/>
+          </div>
+        }
+        return <div style={{paddingRight: 20}}>
+          <Progress percent={100*success/total} size="small" status="exception" />
+        </div>
       }
     }
   ];
 
 
   const makeColumnOps = (type) => {
-    columns.push({
+    let cols = []
+    cols.push({
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => [
+      render: (_, record) => [
         <a
           key="testit"
           onClick={() => {
@@ -76,30 +107,32 @@ export default () => {
             openUpdateModal(type);
           }}
         >
-          检测
+          检测记录
         </a>,
         <Popover
-          key="remove"
+          key={`remove-${record.type}-${record.id}`}
           content={
           <a
             onClick={async () => {
-              const success = await deleteDsItem('', record.recordId, record.id);
+              const success = await deleteDsGroup(record.type, record.id);
               if (success) {
                 if (actionRef[type].current) {
                   actionRef[type].current.reload();
                 }
-                handleCurrentSelectedPopoverButtonVisible(false)
+                handleCurrentSelectedPopoverVisibleId(false)
               }
             }}
           >确认删除</a>}
           trigger="click"
-          visible={currentSelectedPopoverButtonVisible === `${record.id}`}
-          onVisibleChange={visible => handleCurrentSelectedPopoverButtonVisible(visible ? `${record.id}` : null)}
+          visible={currentSelectedPopoverVisibleId === `${record.id}`}
+          onVisibleChange={visible => {console.log(visible, record)
+            handleCurrentSelectedPopoverVisibleId(visible ? `${record.id}` : false)}}
         >
           <a>删除</a>
         </Popover>,
       ],
     })
+    return cols;
   }
 
   return (
@@ -125,49 +158,69 @@ export default () => {
                 </Button>,
               ]}
               request={arg => pageDs(type, arg)}
-              columns={columns}
+              columns={columns.concat(makeColumnOps(type))}
             />
-            <DsGroupForm
-              title={`新增${type}记录`}
-              type={type}
-              onSubmit={async (value) => {
-                const groupResp = await createDsGroup(type, {}); // empty payload is ok
-                const group = groupResp.data
-                const success = await createDsItem(type, group.id, value);
-                if (success) {
-                  closeCreateModal();
-                  setCurrentRow(undefined);
+            {
+              createModalVisible[type]
+              &&
+              <DsGroupForm
+                title={`新增${type}记录`}
+                type={type}
+                // onSubmit={async (value) => {
+                //   const groupResp = await createDsGroup(type, {}); // empty payload is ok
+                //   const group = groupResp.data
+                //   const success = await createDsItem(type, group.id, value);
+                //   if (success) {
+                //     closeCreateModal();
+                //     setCurrentRow(undefined);
+                //     if (actionRef[type].current) {
+                //       actionRef[type].current.reload();
+                //     }
+                //   }
+                // }}
+                onClose={() => {
+                  closeCreateModal()
+                }}
+                onDataSavedDone={() => {
+                  // 刷新
                   if (actionRef[type].current) {
                     actionRef[type].current.reload();
                   }
-                }
-              }}
-              onCancel={() => {
-                closeCreateModal()
-              }}
-              visible={createModalVisible[type]}
-            />
-            <DsGroupForm
-              title={type}
-              type={type}
-              onSubmit={async (value) => {
-                const { id, recordId } = currentRow || {};
-                const success = await updateDsItem(type, recordId, id, value);
-                if (success) {
+                }}
+                visible={createModalVisible[type]}
+              />
+            }
+            {
+              updateModalVisible[type]
+              &&
+              <DsGroupForm
+                title={type}
+                type={type}
+                // onSubmit={async (value) => {
+                //   const { id, recordId } = currentRow || {};
+                //   const success = await updateDsItem(type, recordId, id, value);
+                //   if (success) {
+                //     closeUpdateModal();
+                //     setCurrentRow(undefined);
+                //     if (actionRef[type].current) {
+                //       actionRef[type].current.reload();
+                //     }
+                //   }
+                // }}
+                onClose={() => {
                   closeUpdateModal();
                   setCurrentRow(undefined);
+                }}
+                onDataSavedDone={() => {
+                  // 刷新
                   if (actionRef[type].current) {
                     actionRef[type].current.reload();
                   }
-                }
-              }}
-              onCancel={() => {
-                closeUpdateModal();
-                setCurrentRow(undefined);
-              }}
-              visible={updateModalVisible[type]}
-              values={currentRow || {}}
-            />
+                }}
+                visible={updateModalVisible[type]}
+                values={currentRow || {}}
+              />
+            }
           </Tabs.TabPane>
           })
         }
