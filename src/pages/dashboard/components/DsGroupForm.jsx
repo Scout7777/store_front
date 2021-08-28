@@ -4,6 +4,7 @@ import { createDsItem, updateDsItem, createDsGroup } from '@/services/histsys/di
 import { EditableProTable } from '@ant-design/pro-table';
 import DeviceSelect from './DeviceSelect';
 import moment from 'moment';
+import FileUpload from './FileUpload';
 
 const DS_ITEM_FieldColumn = {
   "inspectionValue": {
@@ -30,8 +31,8 @@ const DS_ITEM_FieldColumn = {
     }
   },
   "caseOrder": {
-    title: '检测顺序号',
-    width: 100,
+    title: '序号',
+    width: 50,
     key: 'caseOrder',
     dataIndex: 'caseOrder',
     editable: false,
@@ -59,22 +60,42 @@ const DS_ITEM_FieldColumn = {
   },
   "waterType": {
     title: '水类型',
-    width: 80,
+    width: 100,
     key: 'waterType',
     dataIndex: 'waterType',
     valueEnum: {纯水: "纯水", 浓缩液: "浓缩液", 透析液: "透析液"}
   },
   "fileInfo": {
     title: '上传图片/PDF',
-    width: 100,
+    width: 140,
     key: 'fileInfo',
     dataIndex: 'fileInfo',
+    render: file => {
+      if (file != null && file.url) {
+        return <a href={`${file.url}`} target="_blank">{file.fileName}</a>
+      }
+      return <div style={{color: '#999', fontSize: '12px'}}>{'<暂无文件>'}</div>
+    },
+    renderFormItem: (_, { record={} }) => {
+      console.log(record)
+      return <FileUpload file={record.fileInfo}/>
+    }
   },
   "inspectionValueFile": {
-    title: '检测结果',
-    width: 100,
+    title: '检测结果(图片/PDF)',
+    width: 140,
     key: 'inspectionValue',
     dataIndex: 'inspectionValue',
+    render: file => {
+      if (file != null && file.url) {
+        return <a href={`${file.url}`} target="_blank">{file.fileName}</a>
+      }
+      return <div style={{color: '#999', fontSize: '12px'}}>{'<暂无文件>'}</div>
+    },
+    renderFormItem: (_, { record={} }) => {
+      // console.log(record)
+      return <FileUpload file={record.fileInfo}/>
+    }
   },
   "device": {
     title: '设备',
