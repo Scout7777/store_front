@@ -14,7 +14,7 @@ const FileUpload = ({ value, onChange, ...props }) => {
       case "done":
         if (file.response && file.response.status === 201) {
           const fileInfo = file.response.data
-          console.log('文件上传后端返回的数据：', fileInfo)
+          // console.log('文件上传后端返回的数据：', fileInfo)
           onChange && onChange(fileInfo)
         }
         break;
