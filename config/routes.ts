@@ -151,7 +151,7 @@
   },
   {
     path: '/dashboard',
-    name: '消毒检测',
+    name: '设备检测',
     access: 'alluser',
     icon: 'DashboardOutlined',
     component: './dashboard',
