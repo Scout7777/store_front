@@ -77,7 +77,7 @@ const DS_ITEM_FieldColumn = {
       return <div style={{color: '#999', fontSize: '12px'}}>{'<暂无文件>'}</div>
     },
     renderFormItem: (_, { record={} }) => {
-      console.log(record)
+      // console.log(record)
       return <FileUpload file={record.fileInfo}/>
     }
   },
