@@ -39,20 +39,20 @@
     icon: 'home',
     component: './home',
   },
-  {
-    path: '/room',
-    name: '透析室',
-    access: 'alluser',
-    icon: 'AppstoreOutlined',
-    component: './room',
-  },
-  {
-    path: '/monitor_pad',
-    name: '透析操作',
-    access: 'alluser',
-    icon: 'FundOutlined',
-    component: './monitor_pad',
-  },
+  // {
+  //   path: '/room',
+  //   name: '透析室',
+  //   access: 'alluser',
+  //   icon: 'AppstoreOutlined',
+  //   component: './room',
+  // },
+  // {
+  //   path: '/monitor_pad',
+  //   name: '透析操作',
+  //   access: 'alluser',
+  //   icon: 'FundOutlined',
+  //   component: './monitor_pad',
+  // },
   {
     path: '/monitor',
     name: '透析监控',
@@ -96,6 +96,13 @@
     component: './schedule',
   },
   {
+    path: '/bed_management',
+    name: '床位管理',
+    access: 'worker',
+    icon: 'GoldOutlined',
+    component: './bed_manage',
+  },
+  {
     path: '/equipment_management',
     name: '设备管理',
     access: 'alluser',
@@ -103,18 +110,18 @@
     component: './equ_manage',
   },
   {
+    path: '/dashboard',
+    name: '设备检测',
+    access: 'alluser',
+    icon: 'DashboardOutlined',
+    component: './dashboard',
+  },
+  {
     path: '/stock',
     name: '库存管理',
     access: 'worker',
     icon: 'GoldOutlined',
     component: './stock',
-  },
-  {
-    path: '/bed_management',
-    name: '床位管理',
-    access: 'worker',
-    icon: 'GoldOutlined',
-    component: './bed_manage',
   },
   {
     path: '/account',
@@ -155,13 +162,6 @@
         component: './quality_analysis',
       },
     ],
-  },
-  {
-    path: '/dashboard',
-    name: '设备检测',
-    access: 'alluser',
-    icon: 'DashboardOutlined',
-    component: './dashboard',
   },
   {
     path: '/system',
