@@ -110,6 +110,13 @@
     component: './stock',
   },
   {
+    path: '/bed_management',
+    name: '床位管理',
+    access: 'worker',
+    icon: 'GoldOutlined',
+    component: './bed_manage',
+  },
+  {
     path: '/account',
     name: '费用管理',
     access: 'worker',
