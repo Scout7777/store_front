@@ -29,7 +29,7 @@ export async function getAreas() {
       'Content-Type': 'application/json',
     },
   }).then((response) => {
-    console.log(response);
+    // console.log(response);
     return {
       data: response.data || [],
       success: true,
@@ -86,7 +86,7 @@ export async function getTemplate() {
 }
 
 export async function getTemplateWeek(code) {
-  console.log(code);
+  // console.log(code);
   // return request(`/api/bed-arrangements/${code}/template`, {
   return request(`/api/bed-arrangements/${code}/template`, {
     method: 'GET',

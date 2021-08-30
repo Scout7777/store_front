@@ -13,7 +13,7 @@ export default () => {
   const [currentRow, setCurrentRow] = useState()
   const actionRef = useRef()
 
-  console.log(currentSelectedPopoverButtonVisible)
+  // console.log(currentSelectedPopoverButtonVisible)
   const columns = [
     {
       title: '设备编号',
