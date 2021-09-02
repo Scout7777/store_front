@@ -4,6 +4,8 @@ import ProTable from '@ant-design/pro-table';
 import { Space, Tag } from 'antd';
 // import { PlusOutlined } from '@ant-design/icons';
 import { updateUser } from '@/services/histsys/user';
+import { processes } from '@/services/histsys/dialysis';
+import MonitorForm from '@/pages/room/components/MonitorForm';
 import UpdateForm from './components/UserUpdateForm';
 import CreateForm from './components/MonitorForm';
 
@@ -13,6 +15,7 @@ import CreateForm from './components/MonitorForm';
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
   const [updateModalVisible, handleUpdateModalVisible] = useState();
+  const [ModalVisible, handleModalVisible] = useState();
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
@@ -160,18 +163,17 @@ export default () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => [
+      render: (_, record) => [
         <a
           key="config"
           onClick={() => {
-            handleCreateModalVisible(true);
+            console.log(record.patient);
+            setCurrentRow(record.patient);
+            handleModalVisible(true);
           }}
         >
           查看详情/操作
         </a>,
-        // <a key="delete" onClick={() => {}}>
-        //   查看详情/操作
-        // </a>,
       ],
     },
   ];
@@ -197,8 +199,8 @@ export default () => {
             //   <PlusOutlined /> 新建
             // </Button>,
           ]}
-          // request={searchPatient}
-          dataSource={MockValue}
+          request={processes}
+          // dataSource={MockValue}
           columns={columns}
           // rowSelection={{
           //   onChange: (_, selectedRows) => {
@@ -211,6 +213,14 @@ export default () => {
             handleCreateModalVisible(false);
           }}
           visible={createModalVisible}
+        />
+        <MonitorForm
+          onCancel={() => {
+            handleModalVisible(false);
+            setCurrentRow(undefined);
+          }}
+          visible={ModalVisible}
+          values={currentRow || {}}
         />
         <UpdateForm
           onSubmit={async (value) => {

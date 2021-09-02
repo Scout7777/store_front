@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Modal, Tabs, Form, Divider, Col, Button, notification } from 'antd';
+import {
+  Row,
+  Modal,
+  Tabs,
+  Form,
+  Col,
+  Button,
+  notification,
+  Divider,
+  Tag,
+  Space,
+  Table,
+} from 'antd';
 import ProForm from '@ant-design/pro-form';
 // import { PageContainer } from '@ant-design/pro-layout';
 // import FormItemDivider from '@/components/FormItemDivider';
@@ -40,6 +52,96 @@ const CreateForm = (props) => {
   const renderDate = (utc) => {
     return new Date(utc).toLocaleDateString();
   };
+
+  const renderTime = (utc) => {
+    return new Date(utc).toLocaleString();
+  };
+
+  const Plist = [
+    {
+      title: '巡视时间',
+      dataIndex: 'createdAt',
+      valueType: 'time',
+      search: false,
+    },
+    {
+      title: '巡视人',
+      dataIndex: ['nurse', 'name'],
+      search: false,
+    },
+  ];
+
+  const Mlist = [
+    {
+      title: '监测时间',
+      dataIndex: 'createdAt',
+      valueType: 'time',
+    },
+    {
+      title: '症状',
+      dataIndex: 'complication',
+      render: (_, record) => (
+        <Space wrap>
+          {record.complication?.map((item) => (
+            <Tag>{item}</Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: '处置',
+      dataIndex: 'complicationProcess',
+      render: (_, record) => (
+        <Space wrap>
+          {record.complicationProcess?.map((item) => (
+            <Tag>{item}</Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+    },
+  ];
+
+  const Nursinglist = [
+    {
+      title: '护理名称',
+      dataIndex: 'name',
+    },
+    {
+      title: '数量',
+      dataIndex: 'amount',
+    },
+  ];
+
+  const Druglist = [
+    {
+      title: '名称',
+      dataIndex: 'name',
+    },
+    {
+      title: '数量',
+      dataIndex: 'amount',
+    },
+    {
+      title: '单位',
+      dataIndex: 'unit',
+    },
+    {
+      title: '用法',
+      dataIndex: 'method',
+    },
+    {
+      title: '频率',
+      dataIndex: 'freq',
+    },
+    {
+      title: '使用时机',
+      dataIndex: 'use',
+    },
+  ];
 
   useEffect(() => {
     console.log(id);
@@ -136,13 +238,16 @@ const CreateForm = (props) => {
       <ProCard title="透析医嘱" bordered headerBordered>
         <ProForm title="透析医嘱" submitter={false}>
           <Row>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item label="干体重（kg）">
                 {processes[tab]?.medicalAdvice.netWeight || '/'}
               </Form.Item>
             </Col>
+            <Col span={8}>
+              <Form.Item label="透析方式">{processes[tab]?.medicalAdvice.comment || '/'}</Form.Item>
+            </Col>
           </Row>
-
+          <Divider>主透析</Divider>
           <Tabs centered size={'large'}>
             <TabPane tab="HD" disabled={!processes[tab]?.medicalAdvice.hdActive} key="hd">
               <Row>
@@ -565,6 +670,8 @@ const CreateForm = (props) => {
               </Row>
             </TabPane>
           </Tabs>
+
+          <Divider>副透析</Divider>
         </ProForm>
         <Button size={'large'} type="primary" onClick={() => handleMedicalFormModalVisible(true)}>
           修改
@@ -584,6 +691,19 @@ const CreateForm = (props) => {
             }}
           />
         </Button>
+      </ProCard>
+      <ProCard title="临时医嘱" bordered headerBordered>
+        {processes[tab]?.additionalMedicalAdviceList.map((am) =>
+          am.ensureStatus === '已执行' ? (
+            <>
+              <Form.Item label="时间">{renderTime(am.createdAt)}</Form.Item>
+              <Table search={false} columns={Nursinglist} dataSource={am.nursings} />
+              <Table search={false} columns={Druglist} dataSource={am.drugs} />
+            </>
+          ) : (
+            ''
+          ),
+        )}
       </ProCard>
       <ProCard
         title="接诊评估"
@@ -772,27 +892,94 @@ const CreateForm = (props) => {
         </Button>
       </ProCard>
       <ProCard
+        title="穿刺换药"
+        // extra="2019年9月28日"
+        bordered
+        headerBordered
+      >
+        <Form title="穿刺换药" submitter={false}>
+          <Col>
+            <Form.Item label="操作人">{processes[tab]?.puncture.nurse?.name || '/'}</Form.Item>
+            <img
+              style={{ height: '50px' }}
+              mode="aspectFit"
+              src={processes[tab]?.puncture.nurseSign?.url || null}
+            />
+          </Col>
+        </Form>
+      </ProCard>
+      <ProCard
+        title="肝素"
+        // extra="2019年9月28日"
+        bordered
+        headerBordered
+      >
+        <Form title="肝素" submitter={false}>
+          <Col>
+            <Form.Item label="类型">{processes[tab]?.heparin.heparinName || '/'}</Form.Item>
+          </Col>
+          <Col>
+            <Form.Item label="剂量">{processes[tab]?.heparin.heparinAmount || '/'}</Form.Item>
+          </Col>
+          <Col>
+            <Form.Item label="操作人">{processes[tab]?.heparin.nurse?.name || '/'}</Form.Item>
+            <img
+              style={{ height: '50px' }}
+              mode="aspectFit"
+              src={processes[tab]?.heparin.nurseSign?.url || null}
+            />
+          </Col>
+        </Form>
+      </ProCard>
+      <ProCard
         title="上机"
         // extra="2019年9月28日"
         bordered
         headerBordered
       >
         <Form title="上机" submitter={false}>
-          <Row></Row>
-          <Divider />
-          <Row></Row>
-          <Divider />
+          <Col>
+            <Form.Item label="操作人">{processes[tab]?.boardOn.nurse?.name || '/'}</Form.Item>
+            <img
+              style={{ height: '50px' }}
+              mode="aspectFit"
+              src={processes[tab]?.boardOn.nurseSign?.url || null}
+            />
+          </Col>
         </Form>
       </ProCard>
       <ProCard
-        title="监控数据"
+        title="核对"
         // extra="2019年9月28日"
         bordered
         headerBordered
       >
-        <ProForm title="监控数据" submitter={false}>
-          <Row>PAD操作 PC后续添加</Row>
-        </ProForm>
+        <Form title="核对" submitter={false}>
+          <Col>
+            <Form.Item label="核对人">{processes[tab]?.check.checkNurse?.name || '/'}</Form.Item>
+            <img
+              style={{ height: '50px' }}
+              mode="aspectFit"
+              src={processes[tab]?.check.checkNurseSign?.url || null}
+            />
+          </Col>
+        </Form>
+      </ProCard>
+      <ProCard
+        title="监测"
+        // extra="2019年9月28日"
+        bordered
+        headerBordered
+      >
+        <Table search={false} columns={Mlist} dataSource={processes[tab]?.monitorList} />
+      </ProCard>
+      <ProCard
+        title="巡视"
+        // extra="2019年9月28日"
+        bordered
+        headerBordered
+      >
+        <Table search={false} columns={Plist} dataSource={processes[tab]?.patrolList} />
       </ProCard>
       <ProCard title="下机" bordered headerBordered>
         <ProForm title="下机" submitter={false}></ProForm>
@@ -800,7 +987,6 @@ const CreateForm = (props) => {
       <ProCard title="透后评估" bordered headerBordered>
         <ProForm title="透后评估" submitter={false}></ProForm>
       </ProCard>
-      <ProCard title="临时医嘱" bordered headerBordered></ProCard>
     </Modal>
   );
 };

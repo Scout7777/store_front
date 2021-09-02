@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space, Tag, Progress } from 'antd';
+import { Button, Space, Tag, Progress, Popover } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import CreateForm from './components/UserCreateForm';
 import { searchPatient } from '@/services/histsys/dialysis';
@@ -14,15 +14,52 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
+  const PopTag = (props) => {
+    const [visible, setVisible] = useState(false);
+
+    const { label, color } = props;
+
+    function hide() {
+      setVisible(false);
+    }
+
+    function handleVisibleChange(value) {
+      console.log(value);
+      setVisible({ value });
+    }
+
+    return (
+      <Popover
+        content={
+          <Space>
+            <a onClick={hide}>急诊</a>
+            <a onClick={hide}>临时</a>
+            <a onClick={hide}>退出</a>
+            <a onClick={hide}>请假</a>
+            <a onClick={hide}>住院</a>
+            <a onClick={hide}>长期</a>
+            <a onClick={hide}>新入</a>
+          </Space>
+        }
+        title="操作"
+        trigger="click"
+        visible={visible}
+        onVisibleChange={handleVisibleChange}
+      >
+        <Tag color={color}>{label}</Tag>
+      </Popover>
+    );
+  };
+
   const MockValue = [];
   const mock = [
-    <Tag>急诊</Tag>,
-    <Tag>临时</Tag>,
-    <Tag>退出</Tag>,
-    <Tag>请假</Tag>,
-    <Tag>住院</Tag>,
-    <Tag>长期</Tag>,
-    <Tag>新入</Tag>,
+    <PopTag label="急诊"></PopTag>,
+    <PopTag label="临时"></PopTag>,
+    <PopTag label="退出">退出</PopTag>,
+    <PopTag label="请假">请假</PopTag>,
+    <PopTag label="住院">住院</PopTag>,
+    <PopTag label="长期">长期</PopTag>,
+    <PopTag label="新入">新入</PopTag>,
     '-',
     '-',
     '-',
@@ -210,6 +247,56 @@ export default () => {
         </Space>
       ),
     },
+    {
+      title: '出生日期',
+      dataIndex: ['electronicMedicalRecord', 'birthDate'],
+      search: false,
+    },
+    {
+      title: '血型',
+      dataIndex: 'bloodType',
+      search: false,
+    },
+    {
+      title: '联系人关系',
+      dataIndex: 'contactRelation',
+      search: false,
+    },
+    {
+      title: '联系人电话',
+      dataIndex: 'contactTelephone',
+      search: false,
+    },
+    {
+      title: '性别',
+      dataIndex: ['electronicMedicalRecord', 'gender'],
+      search: false,
+    },
+    {
+      title: '身高',
+      dataIndex: ['electronicMedicalRecord', 'height'],
+      search: false,
+    },
+    {
+      title: '家庭住址',
+      dataIndex: 'homeAddress',
+      search: false,
+    },
+    {
+      title: '身份证类型',
+      dataIndex: ['electronicMedicalRecord', 'idType'],
+      search: false,
+    },
+    {
+      title: '身份证号码',
+      dataIndex: ['electronicMedicalRecord', 'idNo'],
+      search: false,
+    },
+    {
+      title: '本人电话',
+      dataIndex: ['electronicMedicalRecord', 'telephone'],
+      search: false,
+    },
     // {
     //   title: '创建时间',
     //   sorter: true,
@@ -225,6 +312,7 @@ export default () => {
         <a
           key="config"
           onClick={() => {
+            console.log(record);
             setCurrentRow(record);
             handleModalVisible(true);
           }}

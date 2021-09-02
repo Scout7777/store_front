@@ -8,6 +8,7 @@ import { searchPatient } from '@/services/histsys/patient';
 import { getWeek, getReal, getTemplateWeek } from '@/services/histsys/bed';
 import UpdateForm from './components/PatientUpdateForm';
 import CreateForm from './components/PatientCreateForm';
+import { ProFormCheckbox, ModalForm } from '@ant-design/pro-form';
 
 // const ProcessMap = {
 //   // close: 'normal',
@@ -19,19 +20,21 @@ import CreateForm from './components/PatientCreateForm';
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
   const [updateModalVisible, handleUpdateModalVisible] = useState();
+  const [updateStateVisible, handleUpdateStateVisible] = useState();
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
   const PopTag = (props) => {
     const [visible, setVisible] = useState(false);
 
-    const { lable, color } = props;
+    const { label, color } = props;
 
     function hide() {
       setVisible(false);
     }
 
     function handleVisibleChange(value) {
+      console.log(value);
       setVisible({ value });
     }
 
@@ -53,10 +56,24 @@ export default () => {
         visible={visible}
         onVisibleChange={handleVisibleChange}
       >
-        <Tag color={color}>{lable}</Tag>
+        <Tag color={color}>{label}</Tag>
       </Popover>
     );
   };
+
+  const mock = [
+    <PopTag label="急诊"></PopTag>,
+    <PopTag label="临时"></PopTag>,
+    <PopTag label="退出">退出</PopTag>,
+    <PopTag label="请假">请假</PopTag>,
+    <PopTag label="住院">住院</PopTag>,
+    <PopTag label="长期">长期</PopTag>,
+    <PopTag label="新入">新入</PopTag>,
+    '-',
+    '-',
+    '-',
+    '-',
+  ];
 
   const bed = [
     <>
@@ -116,11 +133,7 @@ export default () => {
       title: '状态',
       dataIndex: 'state',
       search: false,
-      render: () => (
-        <Space>
-          <PopTag></PopTag>
-        </Space>
-      ),
+      render: () => <Space>{mock[Math.floor(Math.random() * mock.length)]}</Space>,
     },
     {
       title: '排床规律',
@@ -229,7 +242,9 @@ export default () => {
     },
     {
       title: '出生日期',
-      dataIndex: 'birthDate',
+      dataIndex: ['electronicMedicalRecord', 'birthDate'],
+      valueType: 'date',
+      // hideInTable: true,
       search: false,
     },
     {
@@ -249,12 +264,12 @@ export default () => {
     },
     {
       title: '性别',
-      dataIndex: 'gender',
+      dataIndex: ['electronicMedicalRecord', 'gender'],
       search: false,
     },
     {
       title: '身高',
-      dataIndex: 'height',
+      dataIndex: ['electronicMedicalRecord', 'height'],
       search: false,
     },
     {
@@ -264,17 +279,17 @@ export default () => {
     },
     {
       title: '身份证类型',
-      dataIndex: 'idType',
+      dataIndex: ['electronicMedicalRecord', 'idType'],
       search: false,
     },
     {
       title: '身份证号码',
-      dataIndex: 'idNo',
+      dataIndex: ['electronicMedicalRecord', 'idNo'],
       search: false,
     },
     {
       title: '本人电话',
-      dataIndex: 'telephone',
+      dataIndex: ['electronicMedicalRecord', 'telephone'],
       search: false,
     },
     // {
@@ -296,7 +311,17 @@ export default () => {
             handleUpdateModalVisible(true);
           }}
         >
-          更新
+          更新信息
+        </a>,
+        <a
+          key="config"
+          onClick={() => {
+            setCurrentRow(record);
+            handleUpdateStateVisible(true);
+            console.log(actionRef.current);
+          }}
+        >
+          更新状态
         </a>,
         <a key="delete" onClick={() => {}}>
           查看
@@ -351,12 +376,28 @@ export default () => {
         visible={updateModalVisible}
         values={currentRow || {}}
       />
-      {/* <CreateForm
-        onCancel={() => {
-          handleUpdateModalVisible(false);
+      <ModalForm
+        title="更新状态"
+        width={900}
+        bodyStyle={{ padding: '32px 40px 48px' }}
+        visible={updateStateVisible}
+        modalProps={{
+          onCancel: () => {
+            handleUpdateStateVisible(false);
+            setCurrentRow(undefined);
+          },
+          destroyOnClose: true,
+          bodyStyle: { padding: '32px 0 36px 68px' },
         }}
-        visible={updateModalVisible}
-      /> */}
+        onFinish={console.log('更新')}
+      >
+        <ProFormCheckbox.Group
+          name="checkbox"
+          // layout="vertical"
+          label="状态"
+          options={['急诊', '临时', '退出', '请假', '住院', '长期', '新入']}
+        />
+      </ModalForm>
     </PageContainer>
   );
 };

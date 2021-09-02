@@ -20,6 +20,24 @@ export async function searchPatient(payload) {
   });
 }
 
+export async function processes(payload) {
+  // console.log(payload);
+  // const { params: { pageSize = 20, current = 1 } = {}, sort, filter } = payload
+  return request(`/api/dialysis/page`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: toSearchPayload(payload),
+  }).then((response) => {
+    return {
+      data: response.data || [],
+      success: true,
+      total: response.data.length || 0,
+    };
+  });
+}
+
 export async function createAdmission(patientId, values) {
   return request(`/api/dialysis/${patientId}/admission`, {
     method: 'POST',
