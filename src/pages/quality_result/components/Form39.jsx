@@ -1,37 +1,37 @@
 import { Pie } from '@ant-design/charts';
-
-const AgeOfPatients = () => {
+// AgeOfPatients
+const Form1 = () => {
   const data = [
     {
-      type: '20岁以下',
+      key: '20岁以下',
       value: 27,
     },
     {
-      type: '20-30',
+      key: '20-30',
       value: 25,
     },
     {
-      type: '30-40',
+      key: '30-40',
       value: 18,
     },
     {
-      type: '40-50',
+      key: '40-50',
       value: 15,
     },
     {
-      type: '50-60',
+      key: '50-60',
       value: 10,
     },
     {
-      type: '60-70',
+      key: '60-70',
       value: 10,
     },
     {
-      type: '70-80',
+      key: '70-80',
       value: 10,
     },
     {
-      type: '80岁以上',
+      key: '80岁以上',
       value: 5,
     },
   ];
@@ -39,7 +39,7 @@ const AgeOfPatients = () => {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: 'type',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -58,4 +58,4 @@ const AgeOfPatients = () => {
   return <Pie {...config} />;
 };
 
-export default AgeOfPatients;
+export default Form1;

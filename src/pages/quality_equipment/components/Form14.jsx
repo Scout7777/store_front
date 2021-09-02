@@ -1,13 +1,13 @@
 import { Pie } from '@ant-design/charts';
 // AgeOfPatients
-const Form14 = () => {
+const Form4 = () => {
   const data = [
     {
-      透析装置: '血液透析装置',
-      value: 27,
+      key: '单种血液透析装置数量',
+      value: 2,
     },
     {
-      透析装置: '血液透析过滤装置',
+      key: '透析以及过滤装置',
       value: 25,
     },
   ];
@@ -15,7 +15,7 @@ const Form14 = () => {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: '透析装置',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -34,4 +34,4 @@ const Form14 = () => {
   return <Pie {...config} />;
 };
 
-export default Form14;
+export default Form4;

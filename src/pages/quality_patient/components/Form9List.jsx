@@ -1,57 +1,22 @@
-import React from 'react';
-import ProCard from '@ant-design/pro-card';
-import { Col, Row } from 'antd';
+import { Descriptions } from 'antd';
 
-const Form9List = () => {
+const Form1List = () => {
   return (
-    <ProCard size={'small'}>
-      <Row>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line', fontFamily: '' }}>
-            {' '}
-            同期血液透析模式总例次:
-            <br />
-            76469
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            HD:
-            <br />
-            42893
-          </div>
-        </Col>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            HDF:
-            <br />
-            21123
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            HFD:
-            <br />
-            7193
-          </div>
-        </Col>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            HP:
-            <br />
-            5360
-          </div>
-        </Col>
-      </Row>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={2}
+    >
+      <Descriptions.Item label="同期血液透析模式总例次" span={4}>
+        76469
+      </Descriptions.Item>
+      <Descriptions.Item label="HD">42893</Descriptions.Item>
+      <Descriptions.Item label="HDF">21123</Descriptions.Item>
+      <Descriptions.Item label="HFD">7193</Descriptions.Item>
+      <Descriptions.Item label="HP">5360</Descriptions.Item>
+    </Descriptions>
   );
 };
 
-export default Form9List;
+export default Form1List;

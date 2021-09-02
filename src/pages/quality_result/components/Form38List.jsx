@@ -6,11 +6,10 @@ const Form1List = () => {
       bordered
       contentStyle={{ fontSize: '22px' }}
       labelStyle={{ fontSize: '22px', width: '22%' }}
-      column={1}
+      column={2}
     >
-      <Descriptions.Item label="平均数">5</Descriptions.Item>
-      <Descriptions.Item label="中位数">3</Descriptions.Item>
-      <Descriptions.Item label="标准差">0.5</Descriptions.Item>
+      <Descriptions.Item label="同期维持性血液透析患者的患者年">30</Descriptions.Item>
+      <Descriptions.Item label="维持性血液透析患者住院人次 ">12</Descriptions.Item>
     </Descriptions>
   );
 };

@@ -1,25 +1,29 @@
 // PrevalenceOfChronicComplication
 import { Bar } from '@ant-design/charts';
 
-const Form12 = () => {
+const Form10 = () => {
   const data = [
     {
-      核准开放床位: '开放2班床位',
-      使用率: 0.31,
+      key: '2班床位使用率',
+      value: 0.25,
     },
     {
-      核准开放床位: '开放3班床位',
-      使用率: 0.42,
+      key: '3班床位使用率',
+      value: 0.75,
     },
   ];
   const config = {
     data,
-    xField: '使用率',
-    yField: '核准开放床位',
-    seriesField: '核准开放床位',
+    xField: 'value',
+    yField: 'key',
+    seriesField: 'key',
     legend: { position: 'top-left' },
+    label: {
+      position: 'middle',
+      layout: [{ type: 'value' }],
+    },
   };
   return <Bar {...config} />;
 };
 
-export default Form12;
+export default Form10;

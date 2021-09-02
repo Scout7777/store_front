@@ -1,11 +1,11 @@
 // PrevalenceOfChronicComplication
 import { Bar } from '@ant-design/charts';
 
-const Form10 = () => {
+const Form3 = () => {
   const data = [
     {
-      key: '实际/核准开放床位数比例',
-      value: 0.25,
+      key: '维持性血液透析患者年住院率',
+      value: 0.22,
     },
   ];
   const config = {
@@ -23,4 +23,4 @@ const Form10 = () => {
   return <Bar {...config} />;
 };
 
-export default Form10;
+export default Form3;

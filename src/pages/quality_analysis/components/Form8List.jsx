@@ -8,9 +8,7 @@ const Form1List = () => {
       labelStyle={{ fontSize: '22px', width: '22%' }}
       column={1}
     >
-      <Descriptions.Item label="平均数">5</Descriptions.Item>
-      <Descriptions.Item label="中位数">3</Descriptions.Item>
-      <Descriptions.Item label="标准差">0.5</Descriptions.Item>
+      <Descriptions.Item label="（超滤量）设定与实际差值">30</Descriptions.Item>
     </Descriptions>
   );
 };

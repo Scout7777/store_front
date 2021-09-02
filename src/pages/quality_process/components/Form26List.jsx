@@ -8,8 +8,10 @@ const Form1List = () => {
       labelStyle={{ fontSize: '22px', width: '22%' }}
       column={2}
     >
-      <Descriptions.Item label="单种血液透析装置数量">76469</Descriptions.Item>
-      <Descriptions.Item label="透析以及过滤装置">42893</Descriptions.Item>
+      <Descriptions.Item label="乙肝">30</Descriptions.Item>
+      <Descriptions.Item label="丙肝">30</Descriptions.Item>
+      <Descriptions.Item label="艾滋">30</Descriptions.Item>
+      <Descriptions.Item label="梅毒">30</Descriptions.Item>
     </Descriptions>
   );
 };
