@@ -1,37 +1,29 @@
 import { Pie } from '@ant-design/charts';
-
-const Pie7 = () => {
+// AgeOfPatients
+const Form1 = () => {
   const data = [
     {
-      type: '病因a',
+      key: '自体动静脉内瘘',
       value: 27,
     },
     {
-      type: '病因b',
+      key: '移植物内瘘',
       value: 25,
     },
     {
-      type: '病因b',
+      key: '中心静脉导管（带隧道带涤纶套的导管）',
       value: 18,
     },
     {
-      type: '病因b',
+      key: '其他类',
       value: 15,
-    },
-    {
-      type: '病因b0',
-      value: 10,
-    },
-    {
-      type: '病因b',
-      value: 5,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: 'type',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -50,4 +42,4 @@ const Pie7 = () => {
   return <Pie {...config} />;
 };
 
-export default Pie7;
+export default Form1;

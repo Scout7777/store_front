@@ -1,37 +1,33 @@
 import { Pie } from '@ant-design/charts';
-
-const Prevalence = () => {
+// AgeOfPatients
+const Form1 = () => {
   const data = [
     {
-      type: '病因a',
+      key: '主要死因',
       value: 27,
     },
     {
-      type: '病因b',
+      key: '心血管事件',
       value: 25,
     },
     {
-      type: '病因b',
+      key: '脑血管事件',
       value: 18,
     },
     {
-      type: '病因b',
+      key: '消化道出血等出血性疾病',
       value: 15,
     },
     {
-      type: '病因b0',
+      key: '其他',
       value: 10,
-    },
-    {
-      type: '病因b',
-      value: 5,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: 'type',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -50,4 +46,4 @@ const Prevalence = () => {
   return <Pie {...config} />;
 };
 
-export default Prevalence;
+export default Form1;

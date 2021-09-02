@@ -1,37 +1,37 @@
 import { Pie } from '@ant-design/charts';
-
-const Pie7 = () => {
+// AgeOfPatients
+const Form1 = () => {
   const data = [
     {
-      type: '病因a',
-      value: 27,
+      key: '死亡',
+      value: 1,
     },
     {
-      type: '病因b',
+      key: '肾移植',
       value: 25,
     },
     {
-      type: '病因b',
+      key: '放弃治疗',
       value: 18,
     },
     {
-      type: '病因b',
+      key: '转为腹透患者',
       value: 15,
     },
     {
-      type: '病因b0',
+      key: '好转脱离透析',
       value: 10,
     },
     {
-      type: '病因b',
-      value: 5,
+      key: '其他',
+      value: 10,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: 'type',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -50,4 +50,4 @@ const Pie7 = () => {
   return <Pie {...config} />;
 };
 
-export default Pie7;
+export default Form1;
