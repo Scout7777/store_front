@@ -1,58 +1,22 @@
-import React from 'react';
-import ProCard from '@ant-design/pro-card';
-import { Col, Row } from 'antd';
+import { Descriptions } from 'antd';
 
-const Form5List = () => {
+const Form1List = () => {
   return (
-    <ProCard size={'small'}>
-      <Row>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line', fontFamily: '' }}>
-            {' '}
-            同期传染病总数:
-            <br />
-            100
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            乙肝HBV:
-            <br />
-            21
-          </div>
-        </Col>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            丙肝HCV:
-            <br />
-            37
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            梅毒检测状态代码RPR:
-            <br />
-            12
-          </div>
-        </Col>
-        <Col span={12}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            艾滋病HIV:
-            <br />
-            30
-          </div>
-        </Col>
-      </Row>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={2}
+    >
+      <Descriptions.Item label="同期传染病总数" span={4}>
+        100
+      </Descriptions.Item>
+      <Descriptions.Item label="乙肝HBV">21</Descriptions.Item>
+      <Descriptions.Item label="丙肝HCV">37</Descriptions.Item>
+      <Descriptions.Item label="梅毒检测状态代码RPR">12</Descriptions.Item>
+      <Descriptions.Item label="艾滋病HIV">30</Descriptions.Item>
+    </Descriptions>
   );
 };
 
-export default Form5List;
+export default Form1List;

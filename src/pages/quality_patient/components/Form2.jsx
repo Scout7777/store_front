@@ -3,19 +3,19 @@ import { Pie } from '@ant-design/charts';
 const Form1 = () => {
   const data = [
     {
-      人数: '区域内血透室总人数',
-      value: 300,
+      key: '总人数-区域内透析人数',
+      value: 65,
     },
     {
-      人数: '区域内患者总人数',
-      value: 3000,
+      key: '区域内透析人数',
+      value: 35,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: '人数',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',

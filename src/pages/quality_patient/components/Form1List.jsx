@@ -1,61 +1,24 @@
-import React from 'react';
-import ProCard from '@ant-design/pro-card';
-import { Row, Col } from 'antd';
+import { Descriptions } from 'antd';
 
 const Form1List = () => {
   return (
-    <ProCard size={'small'}>
-      <Row>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line', fontFamily: '' }}>
-            {' '}
-            构成总人数:
-            <br />
-            300
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            20岁以下:
-            <br />5
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            20-40:
-            <br />
-            12
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            40-60:
-            <br />
-            24
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            60-80:
-            <br />
-            50
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            80岁以上:
-            <br />9
-          </div>
-        </Col>
-      </Row>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={2}
+    >
+      <Descriptions.Item label="构成总人数" span={4}>
+        300
+      </Descriptions.Item>
+      <Descriptions.Item label="20岁以下">5</Descriptions.Item>
+      <Descriptions.Item label="20-40">12</Descriptions.Item>
+      <Descriptions.Item label="40-60">24</Descriptions.Item>
+      <Descriptions.Item label="60-80" s>
+        50
+      </Descriptions.Item>
+      <Descriptions.Item label=" 80岁以上">9</Descriptions.Item>
+    </Descriptions>
   );
 };
 
