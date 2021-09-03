@@ -5,6 +5,7 @@ import { Button, Space, Tag, Progress, Popover } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // import { searchUser, updateUser } from '@/services/histsys/user';
 import { searchPatient } from '@/services/histsys/patient';
+import { updateStatus } from '@/services/histsys/patient';
 import { getWeek, getReal, getTemplateWeek } from '@/services/histsys/bed';
 import UpdateForm from './components/PatientUpdateForm';
 import CreateForm from './components/PatientCreateForm';
@@ -389,10 +390,16 @@ export default () => {
           destroyOnClose: true,
           bodyStyle: { padding: '32px 0 36px 68px' },
         }}
-        onFinish={console.log('更新')}
+        onFinish={async (value) => {
+          await updateStatus(currentRow.id, value);
+          handleUpdateStateVisible(false);
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }}
       >
         <ProFormCheckbox.Group
-          name="checkbox"
+          name="status"
           // layout="vertical"
           label="状态"
           options={['急诊', '临时', '退出', '请假', '住院', '长期', '新入']}

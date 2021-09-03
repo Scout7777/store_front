@@ -30,6 +30,16 @@ export async function createPatient(values) {
   });
 }
 
+export async function updateStatus(id, values) {
+  return request(`/api/patients/${id}/status`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { ...values },
+  });
+}
+
 export async function putPatient(id, values) {
   return request(`/api/patients/${id}/medical-record`, {
     method: 'PUT',

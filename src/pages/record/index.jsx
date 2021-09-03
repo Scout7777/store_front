@@ -250,6 +250,7 @@ export default () => {
     {
       title: '出生日期',
       dataIndex: ['electronicMedicalRecord', 'birthDate'],
+      valueType: 'date',
       search: false,
     },
     {
