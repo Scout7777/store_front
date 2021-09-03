@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space, Tag, Progress, Popover } from 'antd';
+import { Button, Space, Tag, Progress } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import CreateForm from './components/UserCreateForm';
 import { searchPatient } from '@/services/histsys/dialysis';
@@ -14,57 +14,57 @@ export default () => {
   const [currentRow, setCurrentRow] = useState();
   const actionRef = useRef();
 
-  const PopTag = (props) => {
-    const [visible, setVisible] = useState(false);
+  // const PopTag = (props) => {
+  //   const [visible, setVisible] = useState(false);
 
-    const { label, color } = props;
+  //   const { label, color } = props;
 
-    function hide() {
-      setVisible(false);
-    }
+  //   function hide() {
+  //     setVisible(false);
+  //   }
 
-    function handleVisibleChange(value) {
-      console.log(value);
-      setVisible({ value });
-    }
+  //   function handleVisibleChange(value) {
+  //     console.log(value);
+  //     setVisible({ value });
+  //   }
 
-    return (
-      <Popover
-        content={
-          <Space>
-            <a onClick={hide}>急诊</a>
-            <a onClick={hide}>临时</a>
-            <a onClick={hide}>退出</a>
-            <a onClick={hide}>请假</a>
-            <a onClick={hide}>住院</a>
-            <a onClick={hide}>长期</a>
-            <a onClick={hide}>新入</a>
-          </Space>
-        }
-        title="操作"
-        trigger="click"
-        visible={visible}
-        onVisibleChange={handleVisibleChange}
-      >
-        <Tag color={color}>{label}</Tag>
-      </Popover>
-    );
-  };
+  //   return (
+  //     <Popover
+  //       content={
+  //         <Space>
+  //           <a onClick={hide}>急诊</a>
+  //           <a onClick={hide}>临时</a>
+  //           <a onClick={hide}>退出</a>
+  //           <a onClick={hide}>请假</a>
+  //           <a onClick={hide}>住院</a>
+  //           <a onClick={hide}>长期</a>
+  //           <a onClick={hide}>新入</a>
+  //         </Space>
+  //       }
+  //       title="操作"
+  //       trigger="click"
+  //       visible={visible}
+  //       onVisibleChange={handleVisibleChange}
+  //     >
+  //       <Tag color={color}>{label}</Tag>
+  //     </Popover>
+  //   );
+  // };
 
   const MockValue = [];
-  const mock = [
-    <PopTag label="急诊"></PopTag>,
-    <PopTag label="临时"></PopTag>,
-    <PopTag label="退出">退出</PopTag>,
-    <PopTag label="请假">请假</PopTag>,
-    <PopTag label="住院">住院</PopTag>,
-    <PopTag label="长期">长期</PopTag>,
-    <PopTag label="新入">新入</PopTag>,
-    '-',
-    '-',
-    '-',
-    '-',
-  ];
+  // const mock = [
+  //   <PopTag label="急诊"></PopTag>,
+  //   <PopTag label="临时"></PopTag>,
+  //   <PopTag label="退出">退出</PopTag>,
+  //   <PopTag label="请假">请假</PopTag>,
+  //   <PopTag label="住院">住院</PopTag>,
+  //   <PopTag label="长期">长期</PopTag>,
+  //   <PopTag label="新入">新入</PopTag>,
+  //   '-',
+  //   '-',
+  //   '-',
+  //   '-',
+  // ];
   const bed = [
     <>
       <Tag>一/晚</Tag>
@@ -142,7 +142,12 @@ export default () => {
       title: '状态',
       dataIndex: 'state',
       search: false,
-      render: () => <Space>{mock[Math.floor(Math.random() * mock.length)]}</Space>,
+      render: (_, record) =>
+        record.status.map((item, index) => (
+          <>
+            <Tag index={index}>{item}</Tag>
+          </>
+        )),
     },
     {
       title: '排床规律',
