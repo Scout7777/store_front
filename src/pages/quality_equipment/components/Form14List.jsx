@@ -1,42 +1,17 @@
-import React, { useState } from 'react';
-import ProCard, { StatisticCard } from '@ant-design/pro-card';
-import RcResizeObserver from 'rc-resize-observer';
+import { Descriptions } from 'antd';
 
-const { Divider } = StatisticCard;
-
-const Form14List = () => {
-  const [responsive, setResponsive] = useState(false);
-
+const Form1List = () => {
   return (
-    <ProCard>
-      <RcResizeObserver
-        key="resize-observer"
-        onResize={(offset) => {
-          setResponsive(offset.width < 596);
-        }}
-      >
-        <StatisticCard.Group
-          title="血透室（中心）各种透析用装置数量和构成"
-          direction={responsive ? 'column' : 'row'}
-        >
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <StatisticCard
-            statistic={{
-              title: '血液透析装置',
-              value: 183,
-            }}
-          />
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <StatisticCard
-            statistic={{
-              title: '血液透析过滤装置',
-              value: 79,
-            }}
-          />
-        </StatisticCard.Group>
-      </RcResizeObserver>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={1}
+    >
+      <Descriptions.Item label="单种血液透析装置数量">134</Descriptions.Item>
+      <Descriptions.Item label="透析以及过滤装置">462</Descriptions.Item>
+    </Descriptions>
   );
 };
 
-export default Form14List;
+export default Form1List;

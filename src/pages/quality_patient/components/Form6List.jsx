@@ -1,78 +1,25 @@
-import React from 'react';
-import ProCard from '@ant-design/pro-card';
-import { Col, Row } from 'antd';
+import { Descriptions } from 'antd';
 
-const Form6List = () => {
+const Form1List = () => {
   return (
-    <ProCard size={'small'}>
-      <Row>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line', fontFamily: '' }}>
-            {' '}
-            同期总支付人数:
-            <br />
-            300
-          </div>
-        </Col>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            基本医保:
-            <br />
-            75
-          </div>
-        </Col>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            新农合:
-            <br />
-            46
-          </div>
-        </Col>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            自费医疗:
-            <br />
-            34
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            公费医疗:
-            <br />
-            87
-          </div>
-        </Col>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            商业保险:
-            <br />6
-          </div>
-        </Col>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            军队医疗:
-            <br />4
-          </div>
-        </Col>
-        <Col span={6}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            其他:
-            <br />
-            48
-          </div>
-        </Col>
-      </Row>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={2}
+    >
+      <Descriptions.Item label="同期总支付人数" span={4}>
+        300
+      </Descriptions.Item>
+      <Descriptions.Item label="基本医保">75</Descriptions.Item>
+      <Descriptions.Item label="新农合">46</Descriptions.Item>
+      <Descriptions.Item label="自费医疗">34</Descriptions.Item>
+      <Descriptions.Item label="公费医疗">87</Descriptions.Item>
+      <Descriptions.Item label="商业保险">6</Descriptions.Item>
+      <Descriptions.Item label="军队医疗">4</Descriptions.Item>
+      <Descriptions.Item label="其他">48</Descriptions.Item>
+    </Descriptions>
   );
 };
 
-export default Form6List;
+export default Form1List;

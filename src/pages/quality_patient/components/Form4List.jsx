@@ -1,98 +1,27 @@
-import React from 'react';
-import ProCard from '@ant-design/pro-card';
-import { Col, Row } from 'antd';
+import { Descriptions } from 'antd';
 
-const Form4List = () => {
+const Form1List = () => {
   return (
-    <ProCard size={'small'}>
-      <Row>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line', fontFamily: '' }}>
-            {' '}
-            同期原发病诊断总数:
-            <br />
-            300
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            原发性肾小球疾病:
-            <br />
-            102
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            继发性肾小球疾病:
-            <br />
-            55
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            遗传性及先天性疾病:
-            <br />
-            12
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            肾小管间质疾病:
-            <br />7
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            药物性肾损害:
-            <br />
-            46
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            泌尿系肿瘤:
-            <br />
-            23
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            泌尿系感染和结实:
-            <br />
-            12
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            肾脏切除术后:
-            <br />8
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            原发病不明确:
-            <br />
-            35
-          </div>
-        </Col>
-      </Row>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={2}
+    >
+      <Descriptions.Item label="同期原发病诊断总数" span={4}>
+        300
+      </Descriptions.Item>
+      <Descriptions.Item label="原发性肾小球疾病">102</Descriptions.Item>
+      <Descriptions.Item label="继发性肾小球疾病">55</Descriptions.Item>
+      <Descriptions.Item label="遗传性及先天性疾病">12</Descriptions.Item>
+      <Descriptions.Item label="肾小管间质疾病">7</Descriptions.Item>
+      <Descriptions.Item label="药物性肾损害">46</Descriptions.Item>
+      <Descriptions.Item label="泌尿系肿瘤">23</Descriptions.Item>
+      <Descriptions.Item label="泌尿系感染和结实">12</Descriptions.Item>
+      <Descriptions.Item label="肾脏切除术后">8</Descriptions.Item>
+      <Descriptions.Item label="原发病不明确">35</Descriptions.Item>
+    </Descriptions>
   );
 };
 
-export default Form4List;
+export default Form1List;

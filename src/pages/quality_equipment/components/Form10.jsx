@@ -1,21 +1,37 @@
-// PrevalenceOfChronicComplication
-import { Bar } from '@ant-design/charts';
-
-const Form10 = () => {
+import { Pie } from '@ant-design/charts';
+// AgeOfPatients
+const Form13 = () => {
   const data = [
     {
-      床位: '实际/核准开放床位数比例',
-      value: 0.25,
+      key: '实际开放床位数',
+      value: 27,
+    },
+    {
+      key: '核准开放床位数-实际开放床位数',
+      value: 25,
     },
   ];
   const config = {
+    appendPadding: 10,
     data,
-    xField: 'value',
-    yField: '床位',
-    seriesField: '床位',
-    legend: { position: 'top-left' },
+    angleField: 'value',
+    colorField: 'key',
+    radius: 0.9,
+    label: {
+      type: 'inner',
+      offset: '-30%',
+      content: function content(_ref) {
+        const { percent } = _ref;
+        return ''.concat((percent * 100).toFixed(0), '%');
+      },
+      style: {
+        fontSize: 14,
+        textAlign: 'center',
+      },
+    },
+    interactions: [{ type: 'element-active' }],
   };
-  return <Bar {...config} />;
+  return <Pie {...config} />;
 };
 
-export default Form10;
+export default Form13;

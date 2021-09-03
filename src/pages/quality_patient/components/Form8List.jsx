@@ -1,38 +1,18 @@
-import React from 'react';
-import ProCard from '@ant-design/pro-card';
-import { Col, Row } from 'antd';
+import { Descriptions } from 'antd';
 
-const Form8List = () => {
+const Form1List = () => {
   return (
-    <ProCard size={'small'}>
-      <Row style={{ marginTop: 60 }}>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line', fontFamily: '' }}>
-            {' '}
-            平均数:
-            <br />
-            5年
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            中位数:
-            <br />
-            3年
-          </div>
-        </Col>
-        <Col span={8}>
-          <div style={{ fontSize: '22px', whiteSpace: 'pre-line' }}>
-            {' '}
-            标准差:
-            <br />
-            0.5年
-          </div>
-        </Col>
-      </Row>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={1}
+    >
+      <Descriptions.Item label="平均数">5</Descriptions.Item>
+      <Descriptions.Item label="中位数">3</Descriptions.Item>
+      <Descriptions.Item label="标准差">0.5</Descriptions.Item>
+    </Descriptions>
   );
 };
 
-export default Form8List;
+export default Form1List;

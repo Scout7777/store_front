@@ -1,42 +1,17 @@
-import React, { useState } from 'react';
-import ProCard, { StatisticCard } from '@ant-design/pro-card';
-import RcResizeObserver from 'rc-resize-observer';
+import { Descriptions } from 'antd';
 
-const { Divider } = StatisticCard;
-
-const Form4List = () => {
-  const [responsive, setResponsive] = useState(false);
-
+const Form1List = () => {
   return (
-    <ProCard>
-      <RcResizeObserver
-        key="resize-observer"
-        onResize={(offset) => {
-          setResponsive(offset.width < 596);
-        }}
-      >
-        <StatisticCard.Group
-          title="血透室（中心）实际/核准开放床位数比例"
-          direction={responsive ? 'column' : 'row'}
-        >
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <StatisticCard
-            statistic={{
-              title: '实际开放床位数',
-              value: 893,
-            }}
-          />
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <StatisticCard
-            statistic={{
-              title: '核准开放床位数',
-              value: 5893,
-            }}
-          />
-        </StatisticCard.Group>
-      </RcResizeObserver>
-    </ProCard>
+    <Descriptions
+      bordered
+      contentStyle={{ fontSize: '22px' }}
+      labelStyle={{ fontSize: '22px', width: '22%' }}
+      column={1}
+    >
+      <Descriptions.Item label="实际开放床位数">25</Descriptions.Item>
+      <Descriptions.Item label="核准开放床位数">50</Descriptions.Item>
+    </Descriptions>
   );
 };
 
-export default Form4List;
+export default Form1List;
