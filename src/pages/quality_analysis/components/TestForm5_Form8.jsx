@@ -1,37 +1,21 @@
 import { Pie } from '@ant-design/charts';
 // AgeOfPatients
-const Form13 = () => {
+const Form1 = () => {
   const data = [
     {
-      原发病类型: '原发病A',
-      value: 27,
+      key: '达标次数',
+      value: 34,
     },
     {
-      原发病类型: '原发病A',
-      value: 25,
-    },
-    {
-      原发病类型: '原发病B',
-      value: 18,
-    },
-    {
-      原发病类型: '原发病C',
-      value: 15,
-    },
-    {
-      原发病类型: '原发病D',
-      value: 10,
-    },
-    {
-      原发病类型: '原发病E',
-      value: 10,
+      key: '已完成次数-达标次数',
+      value: 36,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: '原发病类型',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -50,4 +34,4 @@ const Form13 = () => {
   return <Pie {...config} />;
 };
 
-export default Form13;
+export default Form1;

@@ -1,33 +1,21 @@
 import { Pie } from '@ant-design/charts';
 // AgeOfPatients
-const Form18 = () => {
+const Form1 = () => {
   const data = [
     {
-      血液透析模式: 'HD',
-      value: 27,
+      key: '达标次数',
+      value: 34,
     },
     {
-      血液透析模式: 'HDF',
-      value: 25,
-    },
-    {
-      血液透析模式: 'HFD',
-      value: 18,
-    },
-    {
-      血液透析模式: 'HP',
-      value: 15,
-    },
-    {
-      血液透析模式: 'CRRT',
-      value: 10,
+      key: '已完成次数-达标次数',
+      value: 36,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: '血液透析模式',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -46,4 +34,4 @@ const Form18 = () => {
   return <Pie {...config} />;
 };
 
-export default Form18;
+export default Form1;

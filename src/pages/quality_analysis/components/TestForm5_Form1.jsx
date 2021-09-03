@@ -1,29 +1,21 @@
 import { Pie } from '@ant-design/charts';
 // AgeOfPatients
-const Form16 = () => {
+const Form1 = () => {
   const data = [
     {
-      年龄: '小于12个月',
-      value: 27,
+      key: '达标次数',
+      value: 34,
     },
     {
-      年龄: '12-36',
-      value: 25,
-    },
-    {
-      年龄: '36-60',
-      value: 18,
-    },
-    {
-      年龄: '大于60个月',
-      value: 15,
+      key: '已完成次数-达标次数',
+      value: 36,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: '年龄',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -42,4 +34,4 @@ const Form16 = () => {
   return <Pie {...config} />;
 };
 
-export default Form16;
+export default Form1;

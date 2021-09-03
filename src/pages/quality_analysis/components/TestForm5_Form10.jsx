@@ -1,33 +1,21 @@
 import { Pie } from '@ant-design/charts';
 // AgeOfPatients
-const Form15 = () => {
+const Form1 = () => {
   const data = [
     {
-      医疗支付方式: '医保卡',
-      value: 27,
+      key: '合格次数',
+      value: 34,
     },
     {
-      医疗支付方式: '微信',
-      value: 25,
-    },
-    {
-      医疗支付方式: '支付宝',
-      value: 18,
-    },
-    {
-      医疗支付方式: '银行卡',
-      value: 15,
-    },
-    {
-      医疗支付方式: '现金',
-      value: 10,
+      key: '已完成次数-合格次数',
+      value: 36,
     },
   ];
   const config = {
     appendPadding: 10,
     data,
     angleField: 'value',
-    colorField: '医疗支付方式',
+    colorField: 'key',
     radius: 0.9,
     label: {
       type: 'inner',
@@ -46,4 +34,4 @@ const Form15 = () => {
   return <Pie {...config} />;
 };
 
-export default Form15;
+export default Form1;

@@ -1,17 +1,50 @@
-import { Descriptions } from 'antd';
+import { Table } from 'antd';
 
-const Form1List = () => {
-  return (
-    <Descriptions
-      bordered
-      contentStyle={{ fontSize: '22px' }}
-      labelStyle={{ fontSize: '22px', width: '22%' }}
-      column={2}
-    >
-      <Descriptions.Item label="透前体重与干体重差值">11</Descriptions.Item>
-      <Descriptions.Item label="干体重与透后体重差值">2</Descriptions.Item>
-    </Descriptions>
-  );
+const columns = [
+  {
+    title: '日期',
+    dataIndex: 'date',
+    width: '20%',
+  },
+  {
+    title: '透前体重与干体重差值',
+    dataIndex: 'BeforeMinusDry',
+    width: '40%',
+  },
+  {
+    title: '干体重与透后体重差值',
+    dataIndex: 'DryMinusAfter',
+    width: '40%',
+  },
+];
+
+const data = [
+  {
+    date: '8.11',
+    BeforeMinusDry: 15,
+    DryMinusAfter: 11,
+  },
+  {
+    date: '8.12',
+    BeforeMinusDry: 11,
+    DryMinusAfter: 11,
+  },
+  {
+    date: '8.13',
+    BeforeMinusDry: 14,
+    DryMinusAfter: 12,
+  },
+  {
+    date: '8.14',
+    BeforeMinusDry: 6,
+    DryMinusAfter: 9,
+  },
+  {
+    date: '8.15',
+    BeforeMinusDry: 7,
+    DryMinusAfter: 8,
+  },
+];
+export default () => {
+  return <Table columns={columns} dataSource={data} />;
 };
-
-export default Form1List;

@@ -4,33 +4,53 @@ import { Line } from '@ant-design/charts';
 const DemoLine = () => {
   const data = [
     {
-      key: '1992',
+      key: '8.11',
       value: 8,
       lable: 'kt/V',
     },
     {
-      key: '1992',
+      key: '8.11',
       value: 9,
       lable: 'URR',
     },
     {
-      key: '1993',
+      key: '8.12',
       value: 11,
       lable: 'URR',
     },
     {
-      key: '1993',
+      key: '8.12',
       value: 15,
       lable: 'kt/V',
     },
     {
-      key: '1998',
+      key: '8.13',
       value: 45,
       lable: 'URR',
     },
     {
-      key: '1998',
+      key: '8.13',
       value: 12,
+      lable: 'kt/V',
+    },
+    {
+      key: '8.14',
+      value: 47,
+      lable: 'URR',
+    },
+    {
+      key: '8.14',
+      value: 8,
+      lable: 'kt/V',
+    },
+    {
+      key: '8.15',
+      value: 48,
+      lable: 'URR',
+    },
+    {
+      key: '8.15',
+      value: 9,
       lable: 'kt/V',
     },
   ];

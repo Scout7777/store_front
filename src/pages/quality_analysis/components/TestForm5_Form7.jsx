@@ -1,14 +1,14 @@
 import { Pie } from '@ant-design/charts';
 // AgeOfPatients
-const Form13 = () => {
+const Form1 = () => {
   const data = [
     {
-      key: '2班透析治疗的例次',
-      value: 27,
+      key: '合格次数',
+      value: 34,
     },
     {
-      key: '2班预期给定床位数×12×周数-2班透析治疗的例次',
-      value: 25,
+      key: '已完成次数-合格次数',
+      value: 36,
     },
   ];
   const config = {
@@ -34,4 +34,4 @@ const Form13 = () => {
   return <Pie {...config} />;
 };
 
-export default Form13;
+export default Form1;

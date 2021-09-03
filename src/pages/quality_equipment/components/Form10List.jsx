@@ -8,8 +8,8 @@ const Form1List = () => {
       labelStyle={{ fontSize: '22px', width: '22%' }}
       column={1}
     >
-      <Descriptions.Item label="实际开放床位数">76469</Descriptions.Item>
-      <Descriptions.Item label="核准开放床位数">42893</Descriptions.Item>
+      <Descriptions.Item label="实际开放床位数">25</Descriptions.Item>
+      <Descriptions.Item label="核准开放床位数">50</Descriptions.Item>
     </Descriptions>
   );
 };
