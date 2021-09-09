@@ -7,7 +7,7 @@ const Form1 = () => {
       value: 15,
     },
     {
-      key: '区域透析人数-本院透析人数',
+      key: '',
       value: 22,
     },
   ];
@@ -17,6 +17,7 @@ const Form1 = () => {
     angleField: 'value',
     colorField: 'key',
     radius: 0.9,
+    color: ['#2ca02c', '#1E90FF'],
 
     label: {
       type: 'inner',

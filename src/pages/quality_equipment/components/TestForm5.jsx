@@ -19,7 +19,7 @@ const test = () => {
               <p>
                 <RoomThing />
                 <div style={{ fontSize: '22px', whiteSpace: 'pre-wrap' }}>
-                  检测次数：22次 合格次数：15次 合格率：22%
+                  检测次数：22次 | | 合格次数：15次 | | 合格率：22%
                 </div>
               </p>
             </Panel>
@@ -27,7 +27,7 @@ const test = () => {
               <p>
                 <RoomAir />
                 <div style={{ fontSize: '22px', whiteSpace: 'pre-wrap' }}>
-                  检测次数：22次 合格次数：15次 合格率：22%
+                  检测次数：22次 | | 合格次数：15次 | | 合格率：22%
                 </div>
               </p>
             </Panel>

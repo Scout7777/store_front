@@ -10,7 +10,7 @@ function callback(key) {
 }
 const test = () => {
   return (
-    <Collapse onChange={callback}>
+    <Collapse onChange={callback} defaultActiveKey={['1', '2']}>
       <Panel header="状态" key="1">
         <p>
           <Form4List />

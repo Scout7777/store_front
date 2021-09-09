@@ -4,9 +4,10 @@ const Form1List = () => {
   return (
     <Descriptions
       bordered
-      contentStyle={{ fontSize: '22px' }}
-      labelStyle={{ fontSize: '22px', width: '22%' }}
-      column={2}
+      contentStyle={{ fontSize: '16px' }}
+      labelStyle={{ fontSize: '16px' }}
+      layout={'vertical'}
+      column={4}
     >
       <Descriptions.Item label="(Kt/v)应完成患者">30</Descriptions.Item>
       <Descriptions.Item label="(Kt/v)已完成患者">12</Descriptions.Item>

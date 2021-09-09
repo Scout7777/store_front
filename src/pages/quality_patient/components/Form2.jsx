@@ -3,7 +3,7 @@ import { Pie } from '@ant-design/charts';
 const Form1 = () => {
   const data = [
     {
-      key: '总人数-区域内透析人数',
+      key: '',
       value: 65,
     },
     {
@@ -17,6 +17,7 @@ const Form1 = () => {
     angleField: 'value',
     colorField: 'key',
     radius: 0.9,
+    color: ['#FFA07A', '#1E90FF'],
     label: {
       type: 'inner',
       offset: '-30%',

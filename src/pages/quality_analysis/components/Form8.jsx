@@ -1,5 +1,5 @@
 import React from 'react';
-import { Area } from '@ant-design/charts';
+import { Line } from '@ant-design/charts';
 
 const DemoArea = () => {
   const data = [
@@ -20,8 +20,9 @@ const DemoArea = () => {
     xField: 'key',
     yField: 'value',
     seriesField: 'lable',
+    smooth: true,
   };
-  return <Area {...config} />;
+  return <Line {...config} />;
 };
 
 export default DemoArea;

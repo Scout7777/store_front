@@ -4,11 +4,12 @@ const Form1List = () => {
   return (
     <Descriptions
       bordered
-      contentStyle={{ fontSize: '22px' }}
-      labelStyle={{ fontSize: '22px', width: '22%' }}
-      column={2}
+      contentStyle={{ fontSize: '16px' }}
+      labelStyle={{ fontSize: '16px' }}
+      layout={'vertical'}
+      column={10}
     >
-      <Descriptions.Item label="同期传染病总数" span={4}>
+      <Descriptions.Item label="同期传染病总数" span={40}>
         100
       </Descriptions.Item>
       <Descriptions.Item label="乙肝HBV">21</Descriptions.Item>
