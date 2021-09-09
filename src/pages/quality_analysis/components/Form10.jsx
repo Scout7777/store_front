@@ -98,17 +98,6 @@ const DemoLine = () => {
         lineWidth: 2,
       },
     },
-    tooltip: { showMarkers: false },
-    state: {
-      active: {
-        style: {
-          shadowBlur: 4,
-          stroke: '#000',
-          fill: 'red',
-        },
-      },
-    },
-    interactions: [{ type: 'marker-active' }],
   };
   return <Line {...config} />;
 };

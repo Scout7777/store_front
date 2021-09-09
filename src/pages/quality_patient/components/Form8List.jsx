@@ -4,9 +4,10 @@ const Form1List = () => {
   return (
     <Descriptions
       bordered
-      contentStyle={{ fontSize: '22px' }}
-      labelStyle={{ fontSize: '22px', width: '22%' }}
-      column={1}
+      contentStyle={{ fontSize: '16px' }}
+      labelStyle={{ fontSize: '16px' }}
+      layout={'vertical'}
+      column={10}
     >
       <Descriptions.Item label="平均数">5</Descriptions.Item>
       <Descriptions.Item label="中位数">3</Descriptions.Item>

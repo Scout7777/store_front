@@ -31,6 +31,7 @@ import TestForm5_Form8Lists from '@/pages/quality_analysis/components/TestForm5_
 import TestForm5_Form9Lists from '@/pages/quality_analysis/components/TestForm5_Form9Lists';
 import TestForm5_Form10Lists from '@/pages/quality_analysis/components/TestForm5_Form10Lists';
 import Form11List from '@/pages/quality_analysis/components/Form11List';
+import Form12List from '@/pages/quality_analysis/components/Form12List';
 
 const { Panel } = Collapse;
 
@@ -39,7 +40,7 @@ function callback(key) {
 }
 const test = () => {
   return (
-    <Collapse onChange={callback}>
+    <Collapse onChange={callback} defaultActiveKey={['1', '2']}>
       <Panel header="检验指标" key="1">
         <p>
           <Collapse onChange={callback}>
@@ -124,8 +125,10 @@ const test = () => {
                 <Form11List />
               </p>
             </Panel>
-            <Panel header="透析并发症" key="2">
-              <p></p>
+            <Panel header="远期并发症" key="2">
+              <p>
+                <Form12List />
+              </p>
             </Panel>
             <Panel header="其他并发症" key="3">
               <p></p>

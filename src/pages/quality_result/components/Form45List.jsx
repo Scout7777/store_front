@@ -4,8 +4,9 @@ const Form1List = () => {
   return (
     <Descriptions
       bordered
-      contentStyle={{ fontSize: '22px' }}
-      labelStyle={{ fontSize: '22px', width: '22%' }}
+      contentStyle={{ fontSize: '16px' }}
+      labelStyle={{ fontSize: '16px' }}
+      layout={'vertical'}
       column={2}
     >
       <Descriptions.Item label="同期使用动静脉内瘘的维持性血液透析的总患者日">30</Descriptions.Item>

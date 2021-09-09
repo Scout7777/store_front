@@ -4,11 +4,12 @@ const Form1List = () => {
   return (
     <Descriptions
       bordered
-      contentStyle={{ fontSize: '22px' }}
-      labelStyle={{ fontSize: '22px', width: '22%' }}
-      column={2}
+      contentStyle={{ fontSize: '16px' }}
+      labelStyle={{ fontSize: '16px' }}
+      layout={'vertical'}
+      column={15}
     >
-      <Descriptions.Item label="同期血透室（中心）血透患者的总死亡人数" span={4}>
+      <Descriptions.Item label="同期血透室（中心）血透患者的总死亡人数" span={40}>
         1
       </Descriptions.Item>
       <Descriptions.Item label="主要死因">0</Descriptions.Item>

@@ -16,7 +16,7 @@ const test = () => {
         <p>
           <MachineGerm />
           <div style={{ fontSize: '22px', whiteSpace: 'pre-wrap' }}>
-            检测次数：22次 合格次数：15次 合格率：22%
+            检测次数：22次 | | 合格次数：15次 | | 合格率：22%
           </div>
         </p>
       </Panel>
@@ -24,7 +24,7 @@ const test = () => {
         <p>
           <MachineEndotoxin />
           <div style={{ fontSize: '22px', whiteSpace: 'pre-wrap' }}>
-            检测次数：22次 合格次数：15次 合格率：22%
+            检测次数：22次 | | 合格次数：15次 | | 合格率：22%
           </div>
         </p>
       </Panel>

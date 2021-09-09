@@ -17,7 +17,7 @@ const test = () => {
         <p>
           <WaterQuality />
           <div style={{ fontSize: '22px', whiteSpace: 'pre-wrap' }}>
-            检测次数：22次 合格次数：15次 合格率：22%
+            检测次数：22次 | | 合格次数：15次 | | 合格率：22%
           </div>
         </p>
       </Panel>
@@ -25,7 +25,7 @@ const test = () => {
         <p>
           <WaterGerm />
           <div style={{ fontSize: '22px', whiteSpace: 'pre-wrap' }}>
-            检测次数：22次 合格次数：15次 合格率：22%
+            检测次数：22次 | | 合格次数：15次 | | 合格率：22%
           </div>
         </p>
       </Panel>
@@ -33,7 +33,7 @@ const test = () => {
         <p>
           <WaterEndotoxin />
           <div style={{ fontSize: '22px', whiteSpace: 'pre-wrap' }}>
-            检测次数：22次 合格次数：15次 合格率：22%
+            检测次数：22次 | | 合格次数：15次 | | 合格率：22%
           </div>
         </p>
       </Panel>

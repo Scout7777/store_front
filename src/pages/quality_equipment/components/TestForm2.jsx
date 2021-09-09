@@ -23,23 +23,23 @@ const test = () => {
           <Collapse onChange={callback}>
             <Panel header="医生" key="1">
               <p>
+                <div style={{ fontSize: '22px' }}>医生总人数：100</div>
                 <DoctorEducationBackground />
                 <DoctorProfessionalTitle />
-                <div style={{ fontSize: '22px' }}>医生总人数：100</div>
               </p>
             </Panel>
             <Panel header="护士" key="2">
               <p>
+                <div style={{ fontSize: '22px' }}>护士总人数：100</div>
                 <NurseEducationBackground />
                 <NurseProfessionalTitle />
-                <div style={{ fontSize: '22px' }}>护士总人数：100</div>
               </p>
             </Panel>
             <Panel header="工程师" key="3">
               <p>
+                <div style={{ fontSize: '22px' }}>工程师总人数：100</div>
                 <EngineerEducationBackground />
                 <NurseProfessionalTitle />
-                <div style={{ fontSize: '22px' }}>工程师总人数：100</div>
               </p>
             </Panel>
           </Collapse>

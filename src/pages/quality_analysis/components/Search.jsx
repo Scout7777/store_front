@@ -26,6 +26,7 @@ export default (props) => {
             <ProFormSelect
               width="md"
               name="week"
+              placeholder="请选择时间"
               valueEnum={{
                 1: '三个月内',
                 2: '半年内',
@@ -35,11 +36,41 @@ export default (props) => {
               }}
             />
           </Col>
-        </Row>
-        <Row>
           <Col>
             <RangePicker
               defaultValue={[moment('2015-06-06', dateFormat), moment('2018-06-06', dateFormat)]}
+            />
+          </Col>
+
+          <Col push={4}>
+            <div style={{ fontSize: '20px', marginTop: '4px' }}>责任医师：</div>
+          </Col>
+          <Col push={4}>
+            <ProFormSelect
+              width="md"
+              name="doctor"
+              placeholder="请选择责任医师"
+              valueEnum={{
+                1: '泰勒医生',
+                2: '李时珍医师',
+                3: '毛医生',
+              }}
+            />
+          </Col>
+
+          <Col push={8}>
+            <div style={{ fontSize: '20px', marginTop: '4px' }}>患者：</div>
+          </Col>
+          <Col push={8}>
+            <ProFormSelect
+              width="md"
+              name="patient"
+              placeholder="请选择患者"
+              valueEnum={{
+                1: '小明',
+                2: '小红',
+                3: '小李',
+              }}
             />
           </Col>
         </Row>
