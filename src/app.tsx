@@ -10,11 +10,12 @@ import { BookOutlined } from '@ant-design/icons';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-// const requireHost = !process.env.HISTSYS_ENV
-//   ? 'http://localhost:8080'
-//   : `http://${process.env.HISTSYS_ENV}.histsys.wbrtest.cn`;
-const requireHost = window.location.hostname === 'localhost' ? 'http://localhost:8080' : window.location.origin;
-// 'http://dev.histsys.yootane.com';
+const requireHost =
+  // !process.env.HISTSYS_ENV
+  //   ? 'http://localhost:8080'
+  //   : `http://${process.env.HISTSYS_ENV}.histsys.wbrtest.cn`;
+  // const requireHost = window.location.hostname === 'localhost' ? 'http://localhost:8080' : window.location.origin;
+  'http://dev.histsys.yootane.com';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {

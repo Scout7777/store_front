@@ -4,8 +4,8 @@ import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { searchUser, createUser, updateUser, deleteUser } from '@/services/histsys/user';
-import UpdateForm from './components/UserUpdateForm';
-import CreateForm from './components/UserCreateForm';
+import BuyCreateForm from './components/BuyCreateForm';
+import SellCreateForm from './components/SellCreateForm';
 
 export default () => {
   const [createModalVisible, handleCreateModalVisible] = useState();
@@ -15,56 +15,58 @@ export default () => {
 
   const columns = [
     {
-      title: '头像',
-      dataIndex: 'avatar',
-      valueType: 'avatar',
-      search: false,
+      title: '名称',
+      dataIndex: 'thingname',
+      search: true,
     },
     {
-      title: '工号',
-      dataIndex: 'staffNo',
+      title: '图片',
+      dataIndex: 'picture',
       sorter: true,
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
+      title: '价格',
+      dataIndex: 'price',
       sorter: true,
     },
+
     {
-      title: '手机',
-      dataIndex: 'telephone',
-    },
-    {
-      title: '用户类型',
-      dataIndex: 'role',
+      title: '商品类型',
+      dataIndex: 'type',
       valueEnum: {
         admin: {
-          text: '管理员',
+          text: '日用品',
           color: 'pink',
         },
         doctor: {
-          text: '用户',
+          text: '电器',
           color: 'red',
         },
-      },
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        active: {
-          text: '激活',
-          status: 'Success',
+        nurse: {
+          text: '食品',
+          color: 'yellow',
         },
-        disable: {
-          text: '禁用',
-          status: 'default',
+        engineer: {
+          text: '床上用品',
+          color: 'blue',
         },
       },
     },
     {
-      title: '创建时间',
+      title: '卖家信誉分',
+      dataIndex: 'score',
+      sorter: true,
+    },
+    {
+      title: '卖家电话',
+      dataIndex: 'telephone',
+    },
+    {
+      title: '卖家留言',
+      dataIndex: 'comment',
+    },
+    {
+      title: '上架时间',
       sorter: true,
       search: false,
       dataIndex: 'createdAt',
@@ -82,7 +84,7 @@ export default () => {
             setCurrentRow(record);
           }}
         >
-          更新
+          购买商品
         </a>,
         <a
           key="delete"
@@ -95,7 +97,7 @@ export default () => {
             }
           }}
         >
-          删除
+          查看商家
         </a>,
       ],
     },
@@ -118,18 +120,13 @@ export default () => {
               handleCreateModalVisible(true);
             }}
           >
-            <PlusOutlined /> 新建
+            <PlusOutlined /> 上架商品
           </Button>,
         ]}
         request={searchUser}
         columns={columns}
-        // rowSelection={{
-        //   onChange: (_, selectedRows) => {
-        //     setSelectedRows(selectedRows);
-        //   },
-        // }}
       />
-      <CreateForm
+      <SellCreateForm
         onSubmit={async (value) => {
           const reform = value;
           const [a, b] = value.id;
@@ -149,7 +146,8 @@ export default () => {
         }}
         visible={createModalVisible}
       />
-      <UpdateForm
+
+      <BuyCreateForm
         onSubmit={async (value) => {
           const { id } = currentRow || {};
           const reform = value;

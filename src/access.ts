@@ -6,10 +6,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser | u
   return {
     alluser: currentUser && currentUser.role,
     admin: currentUser && currentUser.role === 'admin',
-    worker:
-      currentUser &&
-      (currentUser.role === 'admin' ||
-        currentUser.role === 'doctor' ||
-        currentUser.role === 'nurse'),
+    worker: currentUser && (currentUser.role === 'admin' || currentUser.role === 'user'),
   };
 }

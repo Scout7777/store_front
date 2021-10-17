@@ -13,12 +13,11 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '血液透析系统',
+  title: '南科大二手交易系统',
   pwa: false,
   menu: {
     locale: false, //关闭国际化
   },
-  logo: '/logo.svg',
   iconfontUrl: '',
 };
 
